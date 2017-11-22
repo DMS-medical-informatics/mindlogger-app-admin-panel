@@ -1,0 +1,28 @@
+{
+  "name": "react-router-firebase-auth",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "^1.0.17"
+  },
+  "dependencies": {
+    "adminlte-reactjs": "^1.0.6",
+    "bootstrap": "^3.3.7",
+    "firebase": "^3.6.1",
+    "re-base": "^3.2.0",
+    "react": "^16.1.0",
+    "react-bootstrap": "^0.31.5",
+    "react-dom": "^16.1.0",
+    "react-dropzone": "^4.2.3",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.0.0-beta.8",
+    "redux": "^3.7.2",
+    "redux-form": "^7.1.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}

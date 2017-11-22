@@ -1,0 +1,32 @@
+
+.image-cell{
+    position: relative;
+    float:left;
+    width: 150px;
+    height: 100px;
+    text-align: center;
+}
+.image-cell img {
+    height: 100%;
+}
+
+.image-cell p {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.8)
+}
+
+.image-cell span.remove {
+    position: absolute;
+    right:4px;
+    top:4px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.image-cell:not(:hover) span.remove {
+    display: none;
+}
