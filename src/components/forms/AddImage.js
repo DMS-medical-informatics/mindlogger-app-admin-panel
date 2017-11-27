@@ -17,7 +17,10 @@ class AddImage extends Component {
         const file = files[0]
         const path = "images/"+(new Date()).getTime()+file.name
         var ref = storageRef.child(path)
-        let uploadTask = ref.put(file)
+        var newMetadata = {
+            cacheControl: 'public,max-age=3600',
+        }
+        let uploadTask = ref.put(file, newMetadata)
         this.setState({disabled: true})
         uploadTask.on('state_changed', function(snapshot){
             // Observe state change events such as progress, pause, and resume
