@@ -1,5 +1,5 @@
 # Auth with React Router V4 and Firebase V3
-This is an example repo for authenticating with Firebase and React Router.
+Authenticate with Firebase and React Router.
 
 
 #### Features:

@@ -74,6 +74,9 @@ export default class App extends Component {
                   <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
                 </li>
                 <li>
+                <Link to="/images" className="navbar-brand">Images</Link>
+              </li>
+                <li>
                   {this.state.authed
                     ? <button
                         style={{border: 'none', background: 'transparent'}}
