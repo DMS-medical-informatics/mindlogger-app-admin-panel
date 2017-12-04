@@ -8,6 +8,8 @@ import Register from './Register'
 import Home from './Home'
 import Dashboard from './protected/Dashboard'
 import Images from './protected/Images'
+import Users from './protected/Users'
+import Answers from './protected/Answers'
 import { logout } from '../helpers/auth'
 import { firebaseAuth } from '../config/constants'
 
@@ -74,8 +76,11 @@ export default class App extends Component {
                   <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
                 </li>
                 <li>
-                <Link to="/images" className="navbar-brand">Images</Link>
-              </li>
+                  <Link to="/users" className="navbar-brand">Users</Link>
+                </li>
+                <li>
+                  <Link to="/images" className="navbar-brand">Images</Link>
+                </li>
                 <li>
                   {this.state.authed
                     ? <button
@@ -100,6 +105,8 @@ export default class App extends Component {
                 <PublicRoute authed={this.state.authed} path='/register' component={Register} />
                 <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
                 <PrivateRoute authed={this.state.authed} path='/images' component={Images} />
+                <PrivateRoute authed={this.state.authed} path='/users/:id/answers' component={Answers} />
+                <PrivateRoute authed={this.state.authed} path='/users' component={Users} />
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
             </div>
