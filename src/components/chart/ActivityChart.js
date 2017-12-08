@@ -1,7 +1,4 @@
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import ReactDOM from 'react-dom'
-import {Table, Row, Col, Button, Panel, Modal, Clearfix} from 'react-bootstrap'
 import eventDrops from 'event-drops'
 import * as d3 from 'd3'
 const colors = d3.schemeCategory10

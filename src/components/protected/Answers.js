@@ -3,9 +3,10 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
-import {Row, Col, Panel, Table, Pagination, Button} from 'react-bootstrap'
+import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap'
 import moment from 'moment'
 import firebase from 'firebase'
+import './Answers.css'
 
 import {base, storageRef} from '../../config/constants'
 
@@ -30,9 +31,6 @@ class Answers extends Component {
         console.log(answer)
         const path = `answers/${answer.activity_type}_${answer.title}_${moment(answer.updated_at).format('M-D-YYYY')}.json`
         var ref = storageRef.child(path)
-        var newMetadata = {
-            cacheControl: 'public,max-age=3600',
-        }
         let uploadTask
         switch(answer.activity_type) {
             default:
@@ -46,9 +44,59 @@ class Answers extends Component {
             window.location.href = downloadUrl;
         });
     }
+
+    downloadAudioFile = (answer) => {
+        window.location.href = answer.output_url
+    }
+
+    close = () => {
+        this.setState({ showModal: false });
+    }
+
+    open = () => {
+        this.setState({ showModal: true });
+    }
+
+    renderLine(line, idx) {
+        const pointStr = line.points.map(point => point.join(",")).join(" ")
+        return (<polyline key={idx}
+            points={pointStr}
+            fill={line.fill || 'none'}
+            stroke="black"
+            strokeWidth="3"
+        />)
+    }
+    
+    renderImage() {
+        const {answer} = this.state
+        return (
+            <Modal show={this.state.showModal} onHide={this.close}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Image Answer : {moment(answer.updated_at).format('llll')}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <div className="drawboard-container">
+                    <img src={answer.image_url} className="drawboard-image" />
+                    <div className="drawboard">
+                        <svg width="300" height="200">
+                        {answer.lines.map(this.renderLine)}
+                        </svg>
+                    </div>
+                </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={this.close}>Close</Button>
+                </Modal.Footer>
+        </Modal>)
+
+    }
+
+    viewImage = (answer) => {
+        this.setState({answer})
+        this.open()
+    }
     render () {
-        const {answers, page} = this.state
-        console.log(answers)
+        const {answers, page, answer} = this.state
         
         // let data = [
         //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
@@ -80,6 +128,10 @@ class Answers extends Component {
                             <td>{answer.title}</td>
                             <td>
                                 <Button bsStyle="info" onClick={() => this.downloadAnswer(answer)}>Download</Button>
+                                {' '}
+                                {answer.activity_type === 'voice' && <Button bsStyle="warning" onClick={()=> this.downloadAudioFile(answer)}>Download File</Button>}
+                                {' '}
+                                {answer.activity_type === 'drawing' && <Button bsStyle="warning" onClick={() => this.viewImage(answer)}>View Image</Button>}
                             </td>
                             </tr>
                         ))}
@@ -101,6 +153,7 @@ class Answers extends Component {
                 }
             </Col>
             </Row>
+            {answer && this.renderImage()}
         </div>
         )
     }

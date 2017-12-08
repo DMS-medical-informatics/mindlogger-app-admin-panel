@@ -1,0 +1,17 @@
+
+.drawboard{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.drawboard-container{
+    position: relative;
+    width: 300px;
+    height: 200px;
+    display: block;
+}
+.drawboard-image{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
