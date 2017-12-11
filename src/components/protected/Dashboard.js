@@ -58,16 +58,57 @@ export default class Dashboard extends Component {
     let data = users && answers && getActivityChartData(users,answers)
     this.setState({data})
   }
-  
 
-  renderImage() {
-    const {answer} = this.state
+  downloadAnswer = (answer) => {
+    console.log(answer)
+    const path = `answers/${answer.activity_type}_${answer.title}_${moment(answer.updated_at).format('M-D-YYYY')}.json`
+    var ref = storageRef.child(path)
+    let uploadTask
+    switch(answer.activity_type) {
+        default:
+            console.log(JSON.stringify(answer))
+            uploadTask = ref.putString(JSON.stringify(answer,null, 2))
+            break
+    }
+    if(!uploadTask) return
+    uploadTask.then(function(snapshot) {
+        var downloadUrl = snapshot.downloadURL;
+        window.location.href = downloadUrl;
+    });
+  }
+
+  downloadAudioFile = (answer) => {
+      window.location.href = answer.output_url
+  }
+
+  renderLine(line, idx) {
+    const pointStr = line.points.map(point => point.join(",")).join(" ")
+    return (<polyline key={idx}
+        points={pointStr}
+        fill={line.fill || 'none'}
+        stroke="black"
+        strokeWidth="3"
+    />)
+  }
+
+  close = () => {
+    this.setState({showModal:false})
+  }
+
+  renderAnswerDialog() {
+    const {answer, users} = this.state
     return (
         <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>
-                <Modal.Title>Image Answer : {moment(answer.updated_at).format('llll')}</Modal.Title>
+                <Modal.Title>{answer.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
+            <div>
+              <h4>Taken at : {moment(answer.updated_at).format('llll')}</h4>
+              <h4>Activity Type: {answer.activity_type}</h4>
+              <h4>Patient: {users[answer.participant] && users[answer.participant].name}</h4>
+            </div>
+            {(answer.activity_type === 'image') &&
             <div className="drawboard-container">
                 <img src={answer.image_url} className="drawboard-image" />
                 <div className="drawboard">
@@ -75,6 +116,11 @@ export default class Dashboard extends Component {
                     {answer.lines.map(this.renderLine)}
                     </svg>
                 </div>
+            </div>}
+            <div>
+              <Button bsStyle="info" onClick={() => this.downloadAnswer(answer)}>Download</Button>
+              {' '}
+              {answer.activity_type === 'voice' && <Button bsStyle="warning" onClick={()=> this.downloadAudioFile(answer)}>Download File</Button>}
             </div>
             </Modal.Body>
             <Modal.Footer>
@@ -84,8 +130,9 @@ export default class Dashboard extends Component {
 
 }
 
-  onSelect = (data) => {
-    
+  onSelect = (answer) => {
+    this.setState({showModal:true, answer})
+    console.log(answer)
   }
 
   onHover = (answer, event) => {
@@ -112,6 +159,7 @@ export default class Dashboard extends Component {
       placement="bottom"
       positionLeft={this.cx-140}
       positionTop={this.cy}
+      onClick={() => this.onSelect(answer)}
       title={moment(answer.updated_at).format('llll')}
     > {users[answer.participant].name} did <strong>{answer.activity_type}</strong> activity. Check by clicking it
     </Popover>
@@ -156,6 +204,7 @@ export default class Dashboard extends Component {
           </Col>
         </Row>
         { hover && this.renderHover()}
+        { this.state.answer && this.renderAnswerDialog()}
       </div>
   )
   }
