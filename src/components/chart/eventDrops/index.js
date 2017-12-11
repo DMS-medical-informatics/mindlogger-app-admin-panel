@@ -1,4 +1,3 @@
-import configurable from 'configurable.js';
 import filterData from './filterData';
 import * as d3 from 'd3'
 import './style.css';
@@ -69,8 +68,6 @@ export default function eventDrops(config = {}) {
 
         return chart;
     }
-
-    configurable(eventDropGraph, finalConfiguration);
 
     return eventDropGraph;
 }
