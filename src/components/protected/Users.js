@@ -19,7 +19,7 @@ class Users extends Component {
         });
     }
     selectPage = (page) => {
-        this.setState(page)
+        this.setState({page})
     }
 
     viewAnswers = (user) => {
@@ -51,7 +51,7 @@ class Users extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {users && users.slice((page-1)*10,10).map((user, index) => (
+                        {users && users.slice((page-1)*10,page*10).map((user, index) => (
                             <tr key={index}>
                             <td>{user.name}</td>
                             <td>{user.role}</td>

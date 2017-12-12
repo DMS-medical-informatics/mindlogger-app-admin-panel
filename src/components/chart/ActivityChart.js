@@ -15,14 +15,14 @@ export default class ActivityChart extends Component {
         if(this.node) return
         this.node = node
         const {start, result} = data
-        const {onSelect, onHover, onOut} = this.props
+        const {onSelect, onHover, onOut, onColor} = this.props
 
         let chart = eventDrops(
             {date:(d => d.date),
             start:(start),
             margin:({ top: 60, left: 50, bottom: 40, right: 100 }),
             labelsWidth:(100),
-            eventLineColor:((d, i) => colors[i]),
+            eventColor:(onColor),
             click:(onSelect),
             mouseover:(data => { 
                 onHover(data, currentEvent)}),

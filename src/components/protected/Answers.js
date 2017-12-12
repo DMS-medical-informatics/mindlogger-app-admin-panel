@@ -5,12 +5,13 @@ import { withRouter } from 'react-router'
 import { Link } from 'react-router-dom'
 import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap'
 import moment from 'moment'
-import firebase from 'firebase'
+
 import './Answers.css'
+import AnswerBase from './AnswerBase'
 
 import {base, storageRef} from '../../config/constants'
 
-class Answers extends Component {
+class Answers extends AnswerBase {
     state = { page:1 }
     componentWillMount() {
         const {userId} = this.props
@@ -27,77 +28,18 @@ class Answers extends Component {
         });
     }
 
-    downloadAnswer = (answer) => {
-        console.log(answer)
-        const path = `answers/${answer.activity_type}_${answer.title}_${moment(answer.updated_at).format('M-D-YYYY')}.json`
-        var ref = storageRef.child(path)
-        let uploadTask
-        switch(answer.activity_type) {
-            default:
-                console.log(JSON.stringify(answer))
-                uploadTask = ref.putString(JSON.stringify(answer,null, 2))
-                break
-        }
-        if(!uploadTask) return
-        uploadTask.then(function(snapshot) {
-            var downloadUrl = snapshot.downloadURL;
-            window.location.href = downloadUrl;
-        });
+    selectPage = (page) => {
+        this.setState({page})
     }
-
-    downloadAudioFile = (answer) => {
-        window.location.href = answer.output_url
+    open() {
+        this.setState({showModal:true})
     }
-
-    close = () => {
-        this.setState({ showModal: false });
-    }
-
-    open = () => {
-        this.setState({ showModal: true });
-    }
-
-    renderLine(line, idx) {
-        const pointStr = line.points.map(point => point.join(",")).join(" ")
-        return (<polyline key={idx}
-            points={pointStr}
-            fill={line.fill || 'none'}
-            stroke="black"
-            strokeWidth="3"
-        />)
-    }
-    
-    renderImage() {
-        const {answer} = this.state
-        return (
-            <Modal show={this.state.showModal} onHide={this.close}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Image Answer : {moment(answer.updated_at).format('llll')}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                <div className="drawboard-container">
-                    <img src={answer.image_url} className="drawboard-image" />
-                    <div className="drawboard">
-                        <svg width="300" height="200">
-                        {answer.lines.map(this.renderLine)}
-                        </svg>
-                    </div>
-                </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.close}>Close</Button>
-                </Modal.Footer>
-        </Modal>)
-
-    }
-
-    viewImage = (answer) => {
+    viewDetail = (answer) => {
         this.setState({answer})
         this.open()
     }
     render () {
         const {answers, page, answer} = this.state
-        
         // let data = [
         //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
         //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
@@ -121,17 +63,17 @@ class Answers extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {answers && answers.slice((page-1)*10,10).map((answer, index) => (
+                        {answers && answers.slice((page-1)*10,page*10).map((answer, index) => (
                             <tr key={index}>
                             <td>{moment(answer.updated_at).format('llll')}</td>
                             <td>{answer.activity_type}</td>
                             <td>{answer.title}</td>
                             <td>
-                                <Button bsStyle="info" onClick={() => this.downloadAnswer(answer)}>Download</Button>
+                                <Button bsStyle="info" onClick={() => this.downloadAnswer(answer)}>JSON</Button>
                                 {' '}
                                 {answer.activity_type === 'voice' && <Button bsStyle="warning" onClick={()=> this.downloadAudioFile(answer)}>Download File</Button>}
                                 {' '}
-                                {answer.activity_type === 'drawing' && <Button bsStyle="warning" onClick={() => this.viewImage(answer)}>View Image</Button>}
+                                {<Button onClick={() => this.viewDetail(answer)}>View Detail</Button>}
                             </td>
                             </tr>
                         ))}
@@ -139,7 +81,7 @@ class Answers extends Component {
                     </Table>
                     <div>
                         <Pagination prev next first last boundaryLinks
-                        items={answers.length/10+1} maxButtons={5} activePage={page}
+                        items={Math.ceil(answers.length/10)} maxButtons={5} activePage={page}
                         onSelect={this.selectPage} />
                     </div>
                 </Panel>
@@ -153,7 +95,7 @@ class Answers extends Component {
                 }
             </Col>
             </Row>
-            {answer && this.renderImage()}
+            {answer && this.renderAnswerDialog()}
         </div>
         )
     }
