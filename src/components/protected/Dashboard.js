@@ -63,7 +63,6 @@ export default class Dashboard extends AnswerBase {
     this.setState({data})
   }
 
-
   onSelect = (answer) => {
     this.setState({showModal:true, answer})
     console.log(answer)
@@ -97,11 +96,6 @@ export default class Dashboard extends AnswerBase {
     )
   }
 
-  onColor = (data, idx) => {
-    const typeArray = ['survey', 'voice', 'drawing']
-    const key = typeArray.indexOf(data.activity_type)
-    return colors[key]
-  }
   render () {
     const {surveys, answers, users, hover, data} = this.state
     // let data = [
@@ -135,7 +129,6 @@ export default class Dashboard extends AnswerBase {
             <Panel header="Activities">
               <div style={{position:'relative'}} onMouseOver={this.mouseOver}>
               {this.state.data && <ActivityChart data={this.state.data} onSelect={this.onSelect} onHover={this.onHover} onOut={this.onOut} onColor={this.onColor} />}
-              
               </div>
             </Panel>
           </Col>
