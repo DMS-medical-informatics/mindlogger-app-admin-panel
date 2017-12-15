@@ -68,6 +68,11 @@ class Answers extends AnswerBase {
                 this.onData()
             }
         });
+
+        base.bindToState(`users/${userId}`,{
+            context: this,
+            state: 'user',
+        })
     }
 
     selectPage = (page) => {
@@ -124,16 +129,13 @@ class Answers extends AnswerBase {
     }
 
     render() {
-        const {answers, page, answer, data, showModal, hover} = this.state
-        // let data = [   { name: "http requests", data: [{date: new Date('2014/09/15
-        // 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo:
-        // 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },   { name:
-        // "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'},
-        // {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new
-        // Date('2014/09/15 13:25:04'), foo: 'bar2'}] } ]
+        const {answers, page, answer, data, showModal, hover, user} = this.state
         return (
             <div>
-                <h2 className="text-center">Answers</h2>
+                <Link to='/users'>
+                    <Button>Back</Button>
+                </Link>
+                <h2 className="text-center">{user && user.name}</h2>
                 <Row>
                     <Col xs={12}>
                         <Panel header={`Activity map`}>
@@ -151,9 +153,6 @@ class Answers extends AnswerBase {
                         {answers
                             ? (
                                 <Panel header={`Total ${answers.length} Answers`}>
-                                    <Link to='/users'>
-                                        <Button>Back</Button>
-                                    </Link>
                                     <Table responsive bordered>
                                         <thead>
                                             <tr>
