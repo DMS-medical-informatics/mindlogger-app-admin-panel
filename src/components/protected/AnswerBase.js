@@ -4,6 +4,11 @@ import {Row, Col, Panel, Popover, Modal, Button, Table, Glyphicon} from 'react-b
 import moment from 'moment'
 
 import {base, storageRef} from '../../config/constants'
+import './Answers.css'
+
+function currentTime() {
+  return (new Date()).getTime()
+}
 
 export default class AnswerBase extends Component {
 
@@ -27,8 +32,16 @@ export default class AnswerBase extends Component {
       window.location.href = answer.output_url
   }
 
-  renderLine(line, idx) {
-    const pointStr = line.points.map(point => point.join(",")).join(" ")
+  renderLine = (line, idx) => {
+    let points
+    const {time} = this.state
+    if(time === undefined) {
+      points = line.points
+    } else {
+      points = line.points.filter(point => point.time<time)
+    }
+    
+    const pointStr = points.map(point => `${point.x*3},${point.y*3}`).join(" ")
     return (<polyline key={idx}
         points={pointStr}
         fill={line.fill || 'none'}
@@ -71,17 +84,34 @@ export default class AnswerBase extends Component {
       );
   }
 
-  renderTableSurveyCell(type, rowIdx, colIdx, answer) {
-    switch(type) {
+  renderTableSurveyCell(question, rowIdx, colIdx, answer) {
+    switch(question.type) {
           case 'text':
-              return answer[rowIdx][colIdx]
+            return answer[rowIdx][colIdx]
           case 'number':
-              return answer[rowIdx][colIdx]
+            return answer[rowIdx][colIdx]
           case 'single_sel':
-              return answer[rowIdx] == colIdx && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
+            return answer[rowIdx] == colIdx && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
           case 'multi_sel':
-              return answer[rowIdx][colIdx] && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
+            return answer[rowIdx][colIdx] && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
+          case 'image_sel':
+            return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] == colIdx ? "" : "unselected-image" } height="50px" />
     }
+  }
+
+  playImage() {
+    if(this.intervalId)
+      clearInterval(this.intervalId)
+    this.startTime = currentTime()
+    this.intervalId = setInterval(() => {
+      const time = currentTime() - this.startTime
+      if(this.state.answer.updated_at - this.state.answer.start_time<time) {
+        clearInterval(this.intervalId)
+        this.setState({time: undefined})
+      } else {
+        this.setState({time})
+      }
+    },100)
   }
 
   renderActivity(data) {
@@ -94,7 +124,7 @@ export default class AnswerBase extends Component {
             <tr><th></th><th>Question</th><th>Answer</th></tr>
             </thead>
             <tbody>
-            {questions.map((question,idx) => data.answers && this.renderSurveyRow(idx, question, data.answers[idx]))}
+            {questions.map((question,idx) => data.answers && this.renderSurveyRow(idx, question, data.answers[idx].result))}
             </tbody>
           </Table>)
       } else {
@@ -112,7 +142,7 @@ export default class AnswerBase extends Component {
           {question.rows.map((row, rowIdx) => (
             <tr key={rowIdx}>
                 <td>{row.text}</td>
-                {question.cols.map( (col, colIdx) => <td key={colIdx}>{data.answers && this.renderTableSurveyCell(question.type, rowIdx, colIdx, data.answers[idx])}</td> )}
+                {question.cols.map( (col, colIdx) => <td key={colIdx}>{data.answers && this.renderTableSurveyCell(question, rowIdx, colIdx, data.answers[idx].result)}</td> )}
             </tr>))}
           </tbody>
           </Table>
@@ -124,7 +154,7 @@ export default class AnswerBase extends Component {
         <div className="drawboard-container">
           <img src={data.image_url} className="drawboard-image" />
           <div className="drawboard">
-              <svg width="300" height="200">
+              <svg width="300" height="300">
               {data.lines.map(this.renderLine)}
               </svg>
           </div>
@@ -155,9 +185,10 @@ export default class AnswerBase extends Component {
             </div>
               {this.renderActivity(answer)}
             <div>
-              <Button bsStyle="info" onClick={() => this.downloadAnswer(answer)}>JSON</Button>
+              <Button bsStyle="primary" onClick={() => this.downloadAnswer(answer)}><Glyphicon glyph="download" />JSON</Button>
               {' '}
-              {answer.activity_type === 'voice' && <Button bsStyle="warning" onClick={()=> this.downloadAudioFile(answer)}>Download File</Button>}
+              {answer.activity_type === 'voice' && <Button bsStyle="warning" onClick={()=> this.downloadAudioFile(answer)}><Glyphicon glyph="download-alt" />Download File</Button>}
+              {answer.activity_type === 'drawing' && <Button bsStyle="info" onClick={()=> this.playImage()}><Glyphicon glyph="play" />Play</Button>}
             </div>
             </Modal.Body>
             <Modal.Footer>
