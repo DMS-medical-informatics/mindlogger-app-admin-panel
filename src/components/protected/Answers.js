@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
@@ -10,7 +10,6 @@ import {
     Table,
     Pagination,
     Button,
-    Modal,
     Popover
 } from 'react-bootstrap'
 import moment from 'moment'
@@ -18,7 +17,8 @@ import moment from 'moment'
 import './Answers.css'
 import AnswerBase from './AnswerBase'
 import ActivityChart from '../chart/ActivityChart'
-import {base, storageRef} from '../../config/constants'
+import {base} from '../../config/constants'
+import { DateRange } from 'react-date-range'
 
 const getActivityChartData = (answers) => {
     let dict = {}
@@ -128,8 +128,22 @@ class Answers extends AnswerBase {
         )
     }
 
+    handleSelect = (range) => {
+        this.setState({range})
+    }
+
+    showRange = () => {
+        
+    }
+
     render() {
-        const {answers, page, answer, data, showModal, hover, user} = this.state
+        const {answers, page, data, showModal, hover, user, range, showRange} = this.state
+        let list
+        if(answers) list = answers
+        if(range) {
+            console.log(range)
+            list = list.filter(answer => answer.updated_at>range.startDate.valueOf() && answer.updated_at<range.endDate.valueOf())
+        }
         return (
             <div>
                 <Link to='/users'>
@@ -153,6 +167,16 @@ class Answers extends AnswerBase {
                         {answers
                             ? (
                                 <Panel header={`Total ${answers.length} Answers`}>
+                                    <div>
+                                    {range && (<p>Range: {range.startDate.format("MM/DD/YYYY")} - {range.endDate.format("MM/DD/YYYY")}</p>)}
+                                    {data && 
+                                    <DateRange
+                                        startDate = {moment(data.start)}
+                                        endDate = {moment()}
+                                        onInit={this.handleSelect}
+                                        onChange={this.handleSelect}
+                                    />}
+                                    </div>
                                     <Table responsive bordered>
                                         <thead>
                                             <tr>
@@ -163,7 +187,7 @@ class Answers extends AnswerBase {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {answers && answers.slice((page - 1) * 10, page * 10).map((answer, index) => (
+                                            {list && list.slice((page - 1) * 10, page * 10).map((answer, index) => (
                                                 <tr key={index}>
                                                     <td>{moment(answer.updated_at).format('llll')}</td>
                                                     <td>{answer.activity_type}</td>
@@ -188,7 +212,7 @@ class Answers extends AnswerBase {
                                             first
                                             last
                                             boundaryLinks
-                                            items={Math.ceil(answers.length / 10)}
+                                            items={Math.ceil(list.length / 10)}
                                             maxButtons={5}
                                             activePage={page}
                                             onSelect={this.selectPage}/>

@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import {BarChart} from 'recharts'
-import {Row, Col, Panel, Popover, Modal, Button, Table, Glyphicon} from 'react-bootstrap'
+import {Modal, Button, Table, Glyphicon} from 'react-bootstrap'
 import moment from 'moment'
 
-import {base, storageRef} from '../../config/constants'
+import { storageRef} from '../../config/constants'
 import './Answers.css'
 
 function currentTime() {
@@ -74,7 +73,7 @@ export default class AnswerBase extends Component {
     }
 
     if(question.type === 'image_sel')
-      return (<tr key={idx} ><td>{idx+1}</td><td>{question.title}</td><td> <img key={idx} src={question.images[answer].image_url} height="50px" /></td></tr>)
+      return (<tr key={idx} ><td>{idx+1}</td><td>{question.title}</td><td> <img key={idx} src={question.images[answer].image_url} alt={answer} height="50px" /></td></tr>)
     else
       return (
         <tr key={idx}>
@@ -95,7 +94,9 @@ export default class AnswerBase extends Component {
           case 'multi_sel':
             return answer[rowIdx][colIdx] && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
           case 'image_sel':
-            return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] == colIdx ? "" : "unselected-image" } height="50px" />
+            return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] == colIdx ? "" : "unselected-image" } height="50px" alt={answer[rowIdx]}/>
+          default:
+            break
     }
   }
 

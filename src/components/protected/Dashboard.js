@@ -1,13 +1,11 @@
-import React, { Component } from 'react'
-import {BarChart} from 'recharts'
-import {Row, Col, Panel, Popover, Modal, Button, Table, Glyphicon} from 'react-bootstrap'
+import React from 'react'
+import {Row, Col, Panel, Popover} from 'react-bootstrap'
 import moment from 'moment'
 
-import {base, storageRef} from '../../config/constants'
+import {base} from '../../config/constants'
 import ActivityChart from '../chart/ActivityChart'
 import AnswerBase from './AnswerBase'
 import './Dashboard.css'
-const colors = ['#000000','#0000ff','#ff0000']
 
 const getActivityChartData = (users, answers) => {
   let dict = {}
@@ -25,7 +23,7 @@ const getActivityChartData = (users, answers) => {
   let result = []
   Object.keys(dict).forEach(key => {
     console.log(users[key])
-    result.push({name: users[key] && users[key].name || "Unknown", data:dict[key]})
+    result.push({name: (users[key] && users[key].name) || "Unknown", data:dict[key]})
   })
   return {start, result}
 }
@@ -97,11 +95,7 @@ export default class Dashboard extends AnswerBase {
   }
 
   render () {
-    const {surveys, answers, users, hover, data} = this.state
-    // let data = [
-    //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
-    //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
-    // ]
+    const {surveys, answers, users, hover} = this.state
     
     return (
       <div>

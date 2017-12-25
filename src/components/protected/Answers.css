@@ -22,6 +22,6 @@
     text-transform:capitalize;
 }
 
-.unselected-image{
-    opacity: 0.5;
+.selected-image{
+    border: 3.0px solid blue;
 }
