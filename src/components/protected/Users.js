@@ -4,19 +4,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import {BarChart} from 'recharts'
 import {Row, Col, Panel, Table, Pagination, Button} from 'react-bootstrap'
-
-import {base, storageRef} from '../../config/constants'
-
+import { getUsers } from "../../actions/api"
 class Users extends Component {
     state = { page:1, users: []}
     componentWillMount() {
-        base.bindToState("users", {
-        context: this,
-        state: 'users',
-        keepKeys: true,
-        defaultValue: [],
-        asArray: true
-        });
+        
     }
     selectPage = (page) => {
         this.setState({page})
@@ -74,7 +66,15 @@ class Users extends Component {
         )
     }
 }
+const mapDispatchToProps = {
+    getUsers
+}
+  
+const mapStateToProps = (state) => ({
+    users: state.entities.users
+})
 
 export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
     withRouter
 )(Users)

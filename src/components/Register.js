@@ -1,5 +1,12 @@
 import React, { Component } from 'react'
-import { auth } from '../helpers/auth'
+import { compose } from "redux"
+import { connect } from "react-redux"
+import { Field, reduxForm } from "redux-form"
+import { withRouter } from "react-router"
+
+import { signup } from "../actions/api"
+import {InputField} from './forms/FormItems'
+import { isValidEmail, isRequired } from "../helpers"
 
 function setErrorMsg(error) {
   return {
@@ -7,26 +14,24 @@ function setErrorMsg(error) {
   }
 }
 
-export default class Register extends Component {
+class Register extends Component {
   state = { registerError: null }
-  handleSubmit = (e) => {
-    e.preventDefault()
-    auth(this.email.value, this.pw.value)
-      .catch(e => this.setState(setErrorMsg(e)))
+  submit = (values) => {
+    const {history, signup} = this.props
+    signup(values)
+    .then(res => {
+      history.push('/users')
+    })
+    .catch(e => this.setState(setErrorMsg(e)))
   }
   render () {
+    const {handleSubmit} = this.props
     return (
       <div className="col-sm-6 col-sm-offset-3">
         <h1>Register</h1>
-        <form onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label>Email</label>
-            <input className="form-control" ref={(email) => this.email = email} placeholder="Email"/>
-          </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" className="form-control" placeholder="Password" ref={(pw) => this.pw = pw} />
-          </div>
+        <form onSubmit={handleSubmit(this.submit)}>
+        <Field name="email" type="text" component={InputField} label="Email" placeholder="Email" validate={isRequired} />
+        <Field name="password" type="password" component={InputField} label="Password" placeholder="Email" validate={isRequired} />
           {
             this.state.registerError &&
             <div className="alert alert-danger" role="alert">
@@ -41,3 +46,15 @@ export default class Register extends Component {
     )
   }
 }
+
+const mapDispatchToProps = {
+  signup
+}
+
+export default compose(
+  reduxForm({
+    form: "signup-form"
+  }),
+  withRouter,
+  connect(null, mapDispatchToProps)
+)(Register)

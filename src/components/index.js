@@ -11,102 +11,31 @@ import Images from './protected/Images'
 import Users from './protected/Users'
 import Answers from './protected/Answers'
 import { logout } from '../helpers/auth'
-import { firebaseAuth } from '../config/constants'
-
-function PrivateRoute ({component: Component, authed, ...rest}) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === true
-        ? <Component {...props} />
-        : <Redirect to={{pathname: '/login', state: {from: props.location}}} />}
-    />
-  )
-}
-
-function PublicRoute ({component: Component, authed, ...rest}) {
-  return (
-    <Route
-      {...rest}
-      render={(props) => authed === false
-        ? <Component {...props} />
-        : <Redirect to='/dashboard' />}
-    />
-  )
-}
+import AuthRoute from './authRoute'
+import Header from './Header'
 
 export default class App extends Component {
-  state = {
-    authed: false,
-    loading: true,
-  }
   componentDidMount () {
-    this.removeListener = firebaseAuth().onAuthStateChanged((user) => {
-      if (user) {
-        this.setState({
-          authed: true,
-          loading: false,
-        })
-      } else {
-        this.setState({
-          authed: false,
-          loading: false
-        })
-      }
-    })
   }
   componentWillUnmount () {
-    this.removeListener()
+    
   }
   render() {
-    return this.state.loading === true ? <h1>Loading</h1> : (
+    return (
       <Provider store={this.props.store} >
       <BrowserRouter>
         <div>
-          <nav className="navbar navbar-default navbar-static-top">
-            <div className="container">
-              <div className="navbar-header">
-                <Link to="/" className="navbar-brand">Child Mind Institue</Link>
-              </div>
-              <ul className="nav navbar-nav pull-right">
-                <li>
-                  <Link to="/" className="navbar-brand">Home</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
-                </li>
-                <li>
-                  <Link to="/users" className="navbar-brand">Users</Link>
-                </li>
-                <li>
-                  <Link to="/images" className="navbar-brand">Images</Link>
-                </li>
-                <li>
-                  {this.state.authed
-                    ? <button
-                        style={{border: 'none', background: 'transparent'}}
-                        onClick={() => {
-                          logout()
-                        }}
-                        className="navbar-brand">Logout</button>
-                    : <span>
-                        <Link to="/login" className="navbar-brand">Login</Link>
-                        <Link to="/register" className="navbar-brand">Register</Link>
-                      </span>}
-                </li>
-              </ul>
-            </div>
-          </nav>
+          <Header />
           <div className="container">
             <div className="row">
               <Switch>
                 <Route path='/' exact component={Home} />
-                <PublicRoute authed={this.state.authed} path='/login' component={Login} />
-                <PublicRoute authed={this.state.authed} path='/register' component={Register} />
-                <PrivateRoute authed={this.state.authed} path='/dashboard' component={Dashboard} />
-                <PrivateRoute authed={this.state.authed} path='/images' component={Images} />
-                <PrivateRoute authed={this.state.authed} path='/users/:id/answers' component={Answers} />
-                <PrivateRoute authed={this.state.authed} path='/users' component={Users} />
+                <Route path='/login' component={Login} />
+                <Route path='/register' component={Register} />
+                <AuthRoute path='/dashboard' component={Dashboard} />
+                <AuthRoute path='/images' component={Images} />
+                <AuthRoute path='/users/:id/answers' component={Answers} />
+                <AuthRoute path='/users' component={Users} />
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
             </div>
