@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import { submit } from 'redux-form'
 import {Table, Row, Col, Button, Panel, Modal, Clearfix} from 'react-bootstrap'
-import {base, storageRef} from '../../config/constants'
+
 import AddImage from '../forms/AddImage'
 import AddFolder from '../forms/AddFolder'
 import './Images.css'
@@ -15,7 +15,7 @@ const deleteFilesFrom = (item) => {
         })
     }
     if(item.path) {
-        arr.push(storageRef.child(item.path).delete())
+        //arr.push(storageRef.child(item.path).delete())
     }
     return arr
 }
@@ -28,14 +28,14 @@ class Images extends Component {
     }
 
     rebind(path) {
-        if(this.ref)
-            base.removeBinding(this.ref);
-        this.ref = base.syncState(path, {
-            context: this,
-            state: 'images',
-            defaultValue: [],
-            asArray: true
-        });
+        // if(this.ref)
+        //     base.removeBinding(this.ref);
+        // this.ref = base.syncState(path, {
+        //     context: this,
+        //     state: 'images',
+        //     defaultValue: [],
+        //     asArray: true
+        // });
     }
 
     imageSelect(image) {

@@ -7,9 +7,8 @@ export default store => next => action => {
     const { method, type, body, isMultipartUpload } = action;
     const state = store.getState();
     let accessToken;
-    if (localStorage.getItem('auth')) {
-        let auth = JSON.parse(localStorage.getItem('auth'));
-        accessToken = auth.access_token;
+    if (state.entities.auth) {
+        accessToken = state.entities.auth.access_token;
     }
 
     if (!path || !method || !type) {

@@ -17,66 +17,52 @@ import moment from 'moment'
 import './Answers.css'
 import AnswerBase from './AnswerBase'
 import ActivityChart from '../chart/ActivityChart'
-import {base} from '../../config/constants'
 import { DateRange } from 'react-date-range'
+import { getAnswers, getAnsweredActs } from '../../actions/api';
+const ANSWERS_PER_PAGE = 20
 
-const getActivityChartData = (answers) => {
-    let dict = {}
+const getActivityChartData = (acts) => {
     let start = new Date()
-    answers.forEach(answer => {
-        let key = answer.uuid
-        if (!dict[key]) 
-            dict[key] = []
-        let date = new Date(answer.updated_at)
-        if (start > date) 
-            start = date
-        if (answer.updated_at) 
-            dict[key].push({
-                ...answer,
-                date: date
-            })
+    let result = acts.map(act => {
+        act.answers.forEach(element => {
+            let date = new Date(act.updatedAt)
+            if(start>date) {
+                start = date
+            }
+        });
+        return {name: act.title, data: act.answers}
     })
-    let result = []
-    Object
-        .keys(dict)
-        .forEach(key => {
-            result.push({name: dict[key][0].title,
-                data: dict[key]
-            })
-        })
     return {start, result}
 }
+
+const mapDispatchToProps = { getAnswers, getAnsweredActs }
+
+const mapStateToProps = (state, ownProps) => ({
+    userId: ownProps.match.params.id,
+    users: state.entities.users,
+    answers: state.entities.answers,
+    answered_acts: state.entities.answered_acts,
+    paging: state.entities.paging
+})
 
 class Answers extends AnswerBase {
     state = {
         page: 1
     }
     componentWillMount() {
-        const {userId} = this.props
-
-        base.listenTo("answers", {
-            context: this,
-            state: 'answers',
-            keepKeys: true,
-            asArray: true,
-            queries: {
-                orderByChild: 'participant',
-                equalTo: userId
-            },
-            then: answers => {
-                this.setState({answers})
-                this.onData()
-            }
-        });
-
-        base.bindToState(`users/${userId}`,{
-            context: this,
-            state: 'user',
+        const {userId, users, getAnswers, getAnsweredActs} = this.props
+        let user = users[userId]
+        getAnsweredActs(userId).then( res => {
+            this.onData()
         })
+        getAnswers(userId, 0 , ANSWERS_PER_PAGE)
     }
 
     selectPage = (page) => {
+        const {userId, users, getAnswers, getAnsweredActs} = this.props
+        const {range} = this.state
         this.setState({page})
+        getAnswers(userId, page*ANSWERS_PER_PAGE , ANSWERS_PER_PAGE, range.startDate, range.endDate)
     }
     open() {
         this.setState({showModal: true})
@@ -87,8 +73,8 @@ class Answers extends AnswerBase {
     }
 
     onData = () => {
-        const {answers} = this.state
-        let data = answers && getActivityChartData(answers)
+        const {answered_acts} = this.props
+        let data = answered_acts && getActivityChartData(answered_acts)
         this.setState({data})
     }
 
@@ -98,6 +84,7 @@ class Answers extends AnswerBase {
     }
 
     onHover = (answer, event) => {
+        const {answered_acts} = this.props
         if (this.state.hover) 
             return
         if (this.outTimerId) 
@@ -105,7 +92,10 @@ class Answers extends AnswerBase {
         this.outTimerId = setTimeout(() => this.setState({hover: false}), 2000)
         this.cx = event.clientX
         this.cy = event.clientY
-        this.setState({hover: true, answer})
+        let act = answered_acts.find(obj => {
+            return obj.id == answer.act_id
+        })
+        this.setState({hover: true, answer:{...answer, type: act.type} })
     }
 
     onOut = (data) => {
@@ -122,8 +112,8 @@ class Answers extends AnswerBase {
                 positionTop={this.cy}
                 style={{width:'280px'}}
                 onClick={() => this.onSelect(answer)}
-                title={moment(answer.updated_at).format('llll')}>
-                <strong className="capital-text">{answer.activity_type}</strong> activity. Check by clicking it
+                title={moment(answer.updatedAt).format('llll')}>
+                <strong className="capital-text">{answer.type}</strong> activity. Check by clicking it
             </Popover>
         )
     }
@@ -137,13 +127,8 @@ class Answers extends AnswerBase {
     }
 
     render() {
-        const {answers, page, data, showModal, hover, user, range, showRange} = this.state
-        let list
-        if(answers) list = answers
-        if(range) {
-            console.log(range)
-            list = list.filter(answer => answer.updated_at>range.startDate.valueOf() && answer.updated_at<range.endDate.valueOf())
-        }
+        const {page, data, showModal, hover, user, range, showRange} = this.state
+        const {answers, paging} = this.props
         return (
             <div>
                 <Link to='/users'>
@@ -187,11 +172,11 @@ class Answers extends AnswerBase {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {list && list.slice((page - 1) * 10, page * 10).map((answer, index) => (
+                                            {answers && answers.map((answer, index) => (
                                                 <tr key={index}>
-                                                    <td>{moment(answer.updated_at).format('llll')}</td>
-                                                    <td>{answer.activity_type}</td>
-                                                    <td>{answer.title}</td>
+                                                    <td>{moment(answer.createdAt).format('llll')}</td>
+                                                    <td>{answer.act.type}</td>
+                                                    <td>{answer.act.title}</td>
                                                     <td>
                                                         <Button bsStyle="info" onClick={() => this.downloadAnswer(answer)}>JSON</Button>
                                                         {' '}
@@ -212,7 +197,7 @@ class Answers extends AnswerBase {
                                             first
                                             last
                                             boundaryLinks
-                                            items={Math.ceil(list.length / 10)}
+                                            items={Math.ceil(paging.count / 10)}
                                             maxButtons={5}
                                             activePage={page}
                                             onSelect={this.selectPage}/>
@@ -236,7 +221,5 @@ class Answers extends AnswerBase {
         )
     }
 }
-const mapDispatchToProps = {}
 
-const mapStateToProps = (state, ownProps) => ({userId: ownProps.match.params.id})
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(Answers)

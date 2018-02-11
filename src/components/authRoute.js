@@ -4,7 +4,8 @@ import { connect } from "react-redux"
 import { Route, Redirect } from "react-router-dom"
 
 export const pathsByRole = {
-  user: ["/answers"],
+  clinician: ["/users", "/answers"],
+  patient: ["/answers"],
   viewer: ["/answers", "/dashboard"]
 }
 

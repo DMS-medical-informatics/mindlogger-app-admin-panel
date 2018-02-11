@@ -13,9 +13,6 @@ export const DELETE_USER = 'PUT_USER';
 export const GET_USERS = 'GET_USERS';
 export const GET_REGULAR_USERS = 'GET_REGULAR_USERS';
 export const UPDATE_SELF = 'UPDATE_SELF';
-// Meal management
-export const GET_MEAL = 'GET_MEAL';
-export const POST_MEAL = 'POST_MEAL';
-export const PUT_MEAL = 'PUT_MEAL';
-export const DELETE_MEAL = 'PUT_MEAL';
-export const GET_MEALS = 'GET_MEALS';
+// COMMON API
+export const GET_LIST = 'GET_LIST';
+export const PUT_ACTION = 'PUT_ACTION';

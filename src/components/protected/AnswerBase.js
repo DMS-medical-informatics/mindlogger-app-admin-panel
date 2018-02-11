@@ -2,30 +2,33 @@ import React, { Component } from 'react'
 import {Modal, Button, Table, Glyphicon} from 'react-bootstrap'
 import moment from 'moment'
 
-import { storageRef} from '../../config/constants'
 import './Answers.css'
 
 function currentTime() {
   return (new Date()).getTime()
 }
 
+function getTimestamp(str) {
+  return (new Date(str)).getTime()
+}
+
 export default class AnswerBase extends Component {
 
-  downloadAnswer = (answer) => {
-    const path = `answers/${answer.activity_type}_${answer.title}_${moment(answer.updated_at).format('M-D-YYYY')}.json`
-    var ref = storageRef.child(path)
-    let uploadTask
-    switch(answer.activity_type) {
-        default:
-            uploadTask = ref.putString(JSON.stringify(answer,null, 2))
-            break
-    }
-    if(!uploadTask) return
-    uploadTask.then(function(snapshot) {
-        var downloadUrl = snapshot.downloadURL;
-        window.location.href = downloadUrl;
-    });
-  }
+  // downloadAnswer = (answer) => {
+  //   const path = `answers/${answer.activity_type}_${answer.title}_${moment(answer.updated_at).format('M-D-YYYY')}.json`
+  //   var ref = storageRef.child(path)
+  //   let uploadTask
+  //   switch(answer.activity_type) {
+  //       default:
+  //           uploadTask = ref.putString(JSON.stringify(answer,null, 2))
+  //           break
+  //   }
+  //   if(!uploadTask) return
+  //   uploadTask.then(function(snapshot) {
+  //       var downloadUrl = snapshot.downloadURL;
+  //       window.location.href = downloadUrl;
+  //   });
+  // }
 
   downloadAudioFile = (answer) => {
       window.location.href = answer.output_url
@@ -100,13 +103,15 @@ export default class AnswerBase extends Component {
     }
   }
 
-  playImage() {
+  playImage(answer) {
+    let {answer_data} = answer
+    this.setState({answer_data})
     if(this.intervalId)
       clearInterval(this.intervalId)
     this.startTime = currentTime()
     this.intervalId = setInterval(() => {
       const time = currentTime() - this.startTime
-      if(this.state.answer.updated_at - this.state.answer.start_time<time) {
+      if(getTimestamp(this.state.answer.updatedAt) - this.state.answer_data.start_time<time) {
         clearInterval(this.intervalId)
         this.setState({time: undefined})
       } else {
@@ -115,17 +120,17 @@ export default class AnswerBase extends Component {
     },100)
   }
 
-  renderActivity(data) {
-    if(data.activity_type === 'survey') {
-      const {questions} = data
-      if(data.mode==='basic') {
+  renderActivity({act,act_data, answer_data}) {
+    if(act.type === 'survey') {
+      const {questions} = act_data
+      if(act_data.mode==='basic') {
         return (
           <Table striped bordered condensed hover>
             <thead>
             <tr><th></th><th>Question</th><th>Answer</th></tr>
             </thead>
             <tbody>
-            {questions.map((question,idx) => data.answers && this.renderSurveyRow(idx, question, data.answers[idx].result))}
+            {questions.map((question,idx) => answer_data.answers && this.renderSurveyRow(idx, question, answer_data.answers[idx].result))}
             </tbody>
           </Table>)
       } else {
@@ -143,28 +148,28 @@ export default class AnswerBase extends Component {
           {question.rows.map((row, rowIdx) => (
             <tr key={rowIdx}>
                 <td>{row.text}</td>
-                {question.cols.map( (col, colIdx) => <td key={colIdx}>{data.answers && this.renderTableSurveyCell(question, rowIdx, colIdx, data.answers[idx].result)}</td> )}
+                {question.cols.map( (col, colIdx) => <td key={colIdx}>{answer_data.answers && this.renderTableSurveyCell(question, rowIdx, colIdx, answer_data.answers[idx].result)}</td> )}
             </tr>))}
           </tbody>
           </Table>
           </div>))
       }
       
-    } else if(data.activity_type === 'drawing') {
+    } else if(act.type === 'drawing') {
       return (
         <div className="drawboard-container">
-          <img src={data.image_url} className="drawboard-image" />
+          <img src={answer_data.image_url} className="drawboard-image" />
           <div className="drawboard">
               <svg width="300" height="300">
-              {data.lines.map(this.renderLine)}
+              {answer_data.lines.map(this.renderLine)}
               </svg>
           </div>
         </div>)
-    } else if (data.activity_type === 'voice') {
+    } else if (act.type === 'voice') {
       return (
         <div>
         <audio controls="controls">
-        <source src={data.output_url} type="audio/mp4" />
+        <source src={answer_data.output_url} type="audio/mp4" />
         </audio>
         </div>
       )
@@ -181,15 +186,15 @@ export default class AnswerBase extends Component {
             <Modal.Body>
             <div className="activity-info">
               <h4>Taken at : {moment(answer.updated_at).format('llll')}</h4>
-              <h4>Activity Type: {answer.activity_type}</h4>
-              {users && (<h4>Patient: {users[answer.participant] && users[answer.participant].name}</h4>)}
+              <h4>Activity Type: {answer.act.type}</h4>
+              <h4>Patient: {answer.user && answer.user.first_name}</h4>
             </div>
               {this.renderActivity(answer)}
             <div>
               <Button bsStyle="primary" onClick={() => this.downloadAnswer(answer)}><Glyphicon glyph="download" />JSON</Button>
               {' '}
-              {answer.activity_type === 'voice' && <Button bsStyle="warning" onClick={()=> this.downloadAudioFile(answer)}><Glyphicon glyph="download-alt" />Download File</Button>}
-              {answer.activity_type === 'drawing' && <Button bsStyle="info" onClick={()=> this.playImage()}><Glyphicon glyph="play" />Play</Button>}
+              {answer.act.type === 'voice' && <Button bsStyle="warning" onClick={()=> this.downloadAudioFile(answer)}><Glyphicon glyph="download-alt" />Download File</Button>}
+              {answer.act.type === 'drawing' && <Button bsStyle="info" onClick={()=> this.playImage(answer)}><Glyphicon glyph="play" />Play</Button>}
             </div>
             </Modal.Body>
             <Modal.Footer>

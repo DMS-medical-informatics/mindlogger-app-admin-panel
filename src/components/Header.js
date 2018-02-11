@@ -1,12 +1,12 @@
 
 import React, { Component } from 'react'
-import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
-import {BarChart} from 'recharts'
-import {Row, Col, Panel, Table, Pagination, Button} from 'react-bootstrap'
+import {Navbar, NavItem, Button, NavDropdown, Nav, MenuItem} from 'react-bootstrap'
+import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
+
 import {signout} from '../actions/api'
+
 class Header extends Component {
     state = { page:1, users: []}
     componentWillMount() {
@@ -21,49 +21,51 @@ class Header extends Component {
         console.log(user)
         history.push(`/users/${user.key}/answers`)
     }
+    onSignout = () => {
+      let {signout} = this.props
+      const {history} = this.props
+      signout().then(res => {
+        history.push('/')
+      })
+    }
     render () {
-        let authed = this.props.auth.access_token ? true : false
-        let {signout} = this.props
-        // let data = [
-        //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
-        //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
-        // ]
-        return (
-            <nav className="navbar navbar-default navbar-static-top">
-            <div className="container">
-              <div className="navbar-header">
-                <Link to="/" className="navbar-brand">Child Mind Institue</Link>
-              </div>
-              <ul className="nav navbar-nav pull-right">
-                <li>
-                  <Link to="/" className="navbar-brand">Home</Link>
-                </li>
-                <li>
-                  <Link to="/dashboard" className="navbar-brand">Dashboard</Link>
-                </li>
-                <li>
-                  <Link to="/users" className="navbar-brand">Users</Link>
-                </li>
-                <li>
-                  <Link to="/images" className="navbar-brand">Images</Link>
-                </li>
-                <li>
-                  {authed
-                    ? <button
-                        style={{border: 'none', background: 'transparent'}}
-                        onClick={() => {
-                          signout()
-                        }}
-                        className="navbar-brand">Logout</button>
-                    : <span>
-                        <Link to="/login" className="navbar-brand">Login</Link>
-                        <Link to="/register" className="navbar-brand">Register</Link>
-                      </span>}
-                </li>
-              </ul>
-            </div>
-            </nav>
-        )
+      let {auth} = this.props
+      let authed = auth && auth.access_token ? true : false
+      
+      // let data = [
+      //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
+      //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
+      // ]
+      return (
+          <Navbar collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">Child Mind Institue</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav>
+            </Nav>
+            <Nav pullRight>
+              <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
+              <LinkContainer to="/users"><NavItem>Users</NavItem></LinkContainer>
+              {authed &&
+              (<NavDropdown key={1} id="dropdownId" title={`Hi, ${auth.first_name}`}>
+                <LinkContainer eventKey="1" to="/"><NavItem>Profile</NavItem></LinkContainer>
+                <NavItem eventKey="2" onClick={this.onSignout}>Logout</NavItem>
+              </NavDropdown>)}
+              {!authed && (<LinkContainer to="/login"><NavItem>
+                Login
+              </NavItem></LinkContainer>)}
+              {!authed && (<LinkContainer to="/register"><NavItem>
+                Register
+              </NavItem></LinkContainer>)}
+
+            </Nav>
+          </Navbar.Collapse>
+          </Navbar>
+      )
     }
 }
 const mapDispatchToProps = {

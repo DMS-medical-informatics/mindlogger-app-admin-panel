@@ -3,12 +3,15 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 import {BarChart} from 'recharts'
-import {Row, Col, Panel, Table, Pagination, Button} from 'react-bootstrap'
-import { getUsers } from "../../actions/api"
+import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import { getUsers, inviteUser } from "../../actions/api"
+import AddUser from '../forms/AddUser';
 class Users extends Component {
-    state = { page:1, users: []}
+    
     componentWillMount() {
-        
+        this.props.getUsers(0, 10)
+        this.setState({page:1})
     }
     selectPage = (page) => {
         this.setState({page})
@@ -16,12 +19,36 @@ class Users extends Component {
 
     viewAnswers = (user) => {
         const {history} = this.props
-        console.log(user)
-        history.push(`/users/${user.key}/answers`)
+        history.push(`/users/${user.id}/answers`)
     }
+
+    onAddUser = (body) => {
+        inviteUser(body)
+    }
+
+    close = (e) => {
+        this.setState({form: ''})
+    }
+
+    renderInviteUserModal = () => {
+        return (<Modal show={this.state.form == 'user'} onHide={this.close}>
+        <Modal.Header closeButton>
+          <Modal.Title>Invite User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <AddUser onSubmit={this.onAddUser} />
+        </Modal.Body>
+        <Modal.Footer>
+            <Button bsStyle="primary" onClick={() => this.props.submitForm('add-folder-form')}>Submit</Button>
+            <Button onClick={this.close}>Close</Button>
+        </Modal.Footer>
+      </Modal>)
+    }
+    
     render () {
-        const {users, page} = this.state
-        const total_pages = users.length/10+1
+        const {users, total_count} = this.props
+        const total_pages = total_count/10+1
+        const {page} = this.state
         
         // let data = [
         //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
@@ -34,6 +61,7 @@ class Users extends Component {
             <Row>
             <Col xs={12}>
                 <Panel header="Users">
+                    { users &&
                     <Table responsive bordered>
                         <thead>
                         <tr>
@@ -43,23 +71,31 @@ class Users extends Component {
                         </tr>
                         </thead>
                         <tbody>
-                        {users && users.slice((page-1)*10,page*10).map((user, index) => (
+                        {users.map((user, index) => (
                             <tr key={index}>
-                            <td>{user.name}</td>
+                            <td>{user.first_name} {user.last_name}</td>
                             <td>{user.role}</td>
                             <td>
+                                <LinkContainer to={`/users/${user.id}/setup`}><Button bsStyle="info">Activities</Button></LinkContainer>
+                                {" "}
                                 <Button bsStyle="info" onClick={() => this.viewAnswers(user)}>Answers</Button>
                             </td>
                             </tr>
                         ))}
                         </tbody>
-                    </Table>
-                    <div>
+                    </Table> }
+                    {users && <div>
                         <Pagination prev next first last boundaryLinks
                         items={total_pages} maxButtons={5} activePage={page}
                         onSelect={this.selectPage} />
-                    </div>
+                    </div>}
+                    <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>
                 </Panel>
+            </Col>
+            </Row>
+            <Row>
+            <Col xs={10} xsOffset={1}>
+            {this.renderInviteUserModal()}
             </Col>
             </Row>
         </div>
@@ -67,11 +103,12 @@ class Users extends Component {
     }
 }
 const mapDispatchToProps = {
-    getUsers
+    getUsers, inviteUser
 }
   
 const mapStateToProps = (state) => ({
-    users: state.entities.users
+    users: state.entities.users,
+    total_count: state.entities.paging && state.entities.paging.total || 0,
 })
 
 export default compose(
