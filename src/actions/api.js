@@ -103,6 +103,26 @@ export const cancelAct = (userId, actId) => ({
   path: `/acts/${actId}/assign/${actId}?is_delete=true`
 })
 
+export const addAct = (body) => ({
+  type: types.ADD_ACT,
+  method: 'POST',
+  path: '/acts',
+  body
+})
+
+export const updateAct = ({id, ...body}) => ({
+  type: types.UPDATE_ACT,
+  method: 'PUT',
+  path: `/acts/${id}`,
+  body
+})
+
+export const deleteAct = (act) => ({
+  type: types.DELETE_ACT,
+  method: 'DELETE',
+  path: `/acts/${act.id}`
+})
+
 /*------ answers ----- */
 
 export const getAnswers = (userId, offset, limit, start_date, end_date) => ({

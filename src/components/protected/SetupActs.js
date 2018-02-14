@@ -44,7 +44,6 @@ class SetupActs extends Component {
                     <Button bsStyle="danger" onClick={() => this.onDeleteAct(act)}>Delete</Button> :
                     <Button bsStyle="primary" onClick={() => this.onAddAct(act)}>Add</Button>
                     }
-                    
                 </td>
             </tr>
         )
@@ -75,7 +74,7 @@ class SetupActs extends Component {
                 <Row>
                 <Col xs={12}>
                     <Panel>
-                <Tabs activeKey={this.state.key} onSelect={this.handleTabSelect}>
+                <Tabs activeKey={this.state.key} id="act-tabs" onSelect={this.handleTabSelect}>
                 <Tab eventKey={1} title="Assigned Act">
                     {this.renderAssignedActs()}
                 </Tab>

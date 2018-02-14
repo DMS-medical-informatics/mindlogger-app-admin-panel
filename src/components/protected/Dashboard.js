@@ -2,7 +2,6 @@ import React from 'react'
 import {Row, Col, Panel, Popover} from 'react-bootstrap'
 import moment from 'moment'
 
-import {base} from '../../config/constants'
 import ActivityChart from '../chart/ActivityChart'
 import AnswerBase from './AnswerBase'
 import './Dashboard.css'
@@ -30,29 +29,29 @@ const getActivityChartData = (users, answers) => {
 export default class Dashboard extends AnswerBase {
   state = {}
   componentWillMount() {
-    base.bindToState("surveys", {
-      context: this,
-      state: 'surveys',
-      defaultValue: [],
-      asArray: true
-    })
-    base.listenTo("users", {
-      context: this,
-      defaultValue: [],
-      then: users => {
-        this.setState({users})
-        this.onData()
-      }}
-    );
-    base.listenTo("answers", {
-      context: this,
-      defaultValue: [],
-      asArray: true,
-      then: answers => {
-        this.setState({answers})
-        this.onData()
-      }
-    });
+    // base.bindToState("surveys", {
+    //   context: this,
+    //   state: 'surveys',
+    //   defaultValue: [],
+    //   asArray: true
+    // })
+    // base.listenTo("users", {
+    //   context: this,
+    //   defaultValue: [],
+    //   then: users => {
+    //     this.setState({users})
+    //     this.onData()
+    //   }}
+    // );
+    // base.listenTo("answers", {
+    //   context: this,
+    //   defaultValue: [],
+    //   asArray: true,
+    //   then: answers => {
+    //     this.setState({answers})
+    //     this.onData()
+    //   }
+    // });
   }
 
   onData = () => {

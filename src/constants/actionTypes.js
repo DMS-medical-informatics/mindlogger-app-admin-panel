@@ -16,3 +16,7 @@ export const UPDATE_SELF = 'UPDATE_SELF';
 // COMMON API
 export const GET_LIST = 'GET_LIST';
 export const PUT_ACTION = 'PUT_ACTION';
+// ACT
+export const ADD_ACT = 'ADD_ACT';
+export const UPDATE_ACT = 'UPDATE_ACT';
+export const DELETE_ACT = 'DELETE_ACT';

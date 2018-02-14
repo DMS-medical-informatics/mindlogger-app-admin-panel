@@ -13,6 +13,8 @@ import Answers from './protected/Answers'
 import { logout } from '../helpers/auth'
 import AuthRoute from './authRoute'
 import Header from './Header'
+import SetupActs from './protected/SetupActs';
+import UploadAct from './protected/UploadAct';
 
 export default class App extends Component {
   componentDidMount () {
@@ -35,7 +37,10 @@ export default class App extends Component {
                 <AuthRoute path='/dashboard' component={Dashboard} />
                 <AuthRoute path='/images' component={Images} />
                 <AuthRoute path='/users/:id/answers' component={Answers} />
+                <AuthRoute path='/users/:id/setup' component={SetupActs} />
                 <AuthRoute path='/users' component={Users} />
+                <AuthRoute path='/upload_acts' component={UploadAct} />
+                
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
             </div>

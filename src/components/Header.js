@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import {Navbar, NavItem, Button, NavDropdown, Nav, MenuItem} from 'react-bootstrap'
 import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
 import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
+import {compose} from 'redux'
+import {withRouter} from 'react-router'
 
 import {signout} from '../actions/api'
 
@@ -50,8 +52,9 @@ class Header extends Component {
             <Nav pullRight>
               <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to="/users"><NavItem>Users</NavItem></LinkContainer>
+              <LinkContainer to="/upload_acts"><NavItem>Upload</NavItem></LinkContainer>
               {authed &&
-              (<NavDropdown key={1} id="dropdownId" title={`Hi, ${auth.first_name}`}>
+              (<NavDropdown id="dropdownId" title={`Hi, ${auth.first_name}`}>
                 <LinkContainer eventKey="1" to="/"><NavItem>Profile</NavItem></LinkContainer>
                 <NavItem eventKey="2" onClick={this.onSignout}>Logout</NavItem>
               </NavDropdown>)}
@@ -76,4 +79,4 @@ const mapStateToProps = (state) => ({
     auth: state.entities.auth
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
