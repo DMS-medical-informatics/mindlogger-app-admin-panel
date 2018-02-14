@@ -7,7 +7,6 @@ import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store';
 const store = configureStore(loadState())
 store.subscribe(() => {
-  console.log(store.getState())
   saveState({
     entities: store.getState().entities,
   });

@@ -52,11 +52,6 @@ export const makeRequest = (method, path, body, accessToken, isMultipartUpload) 
         })
         .then(response => {
             const status = response.status;
-            switch (status) {
-                case 401:
-                    localStorage.removeItem('auth');
-                    break;
-            }
             return response.json();
         })
         .then(json => {

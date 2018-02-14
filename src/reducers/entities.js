@@ -10,6 +10,9 @@ const mergeEntities = (state, action) => {
 }
 
 const entities = (state = {}, action) => {
+    if(action.status === 'ERRORED' && action.error.error && action.error.error.status == 401) {
+        return {}
+    }
     switch (action.type) {
         case types.UPDATE_SELF:
             let auth = {...state.auth, ...action.data}

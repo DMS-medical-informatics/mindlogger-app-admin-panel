@@ -100,7 +100,7 @@ export const assignAct = (userId, actId) => ({
 export const cancelAct = (userId, actId) => ({
   type: types.PUT_ACTION,
   method: 'PUT',
-  path: `/acts/${actId}/assign/${actId}?is_delete=true`
+  path: `/users/${userId}/assign/${actId}?is_delete=true`
 })
 
 export const addAct = (body) => ({

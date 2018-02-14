@@ -21,7 +21,7 @@ class SetupActs extends Component {
             console.log(nextProps)
             let actDict = {}
             nextProps.assignedActs.forEach(obj => {
-                actDict[obj.act_id] = true
+                actDict[obj.id] = true
             })
             this.setState({actDict})
         }
@@ -90,7 +90,11 @@ class SetupActs extends Component {
     }
 
     handleTabSelect = (key) => {
+        const {getAssignedActs, userId} = this.props
         this.setState({key})
+        if (key == 1) {
+            getAssignedActs(userId)
+        }
     }
 
     renderAssignedActs() {
@@ -107,7 +111,7 @@ class SetupActs extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {assignedActs.map((obj, index) => this.renderRow(obj.Act, index))}
+                    {assignedActs.map(this.renderRow)}
                     </tbody>
                 </Table> }
         </div>
