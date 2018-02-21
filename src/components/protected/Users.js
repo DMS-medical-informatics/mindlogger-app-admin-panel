@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { submit } from 'redux-form'
 import { withRouter } from 'react-router'
 import {BarChart} from 'recharts'
 import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
+
 import { getUsers, inviteUser } from "../../actions/api"
 import AddUser from '../forms/AddUser';
 class Users extends Component {
@@ -15,6 +17,7 @@ class Users extends Component {
     }
     selectPage = (page) => {
         this.setState({page})
+        this.props.getUsers((page-1)*10, 10)
     }
 
     viewAnswers = (user) => {
@@ -23,7 +26,10 @@ class Users extends Component {
     }
 
     onAddUser = (body) => {
-        inviteUser(body)
+        return this.props.inviteUser(body).then( res => {
+            this.close()
+            return this.props.getUsers(0, 10)
+        })
     }
 
     close = (e) => {
@@ -39,14 +45,14 @@ class Users extends Component {
           <AddUser onSubmit={this.onAddUser} />
         </Modal.Body>
         <Modal.Footer>
-            <Button bsStyle="primary" onClick={() => this.props.submitForm('add-folder-form')}>Submit</Button>
+            <Button bsStyle="primary" onClick={() => this.props.submit('add-user-form')}>Submit</Button>
             <Button onClick={this.close}>Close</Button>
         </Modal.Footer>
       </Modal>)
     }
     
     render () {
-        const {users, total_count} = this.props
+        const {users, total_count, user} = this.props
         const total_pages = total_count/10+1
         const {page} = this.state
         
@@ -89,7 +95,7 @@ class Users extends Component {
                         items={total_pages} maxButtons={5} activePage={page}
                         onSelect={this.selectPage} />
                     </div>}
-                    <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>
+                    {user.role.includes('admin') && <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>}
                 </Panel>
             </Col>
             </Row>
@@ -103,12 +109,13 @@ class Users extends Component {
     }
 }
 const mapDispatchToProps = {
-    getUsers, inviteUser
+    getUsers, inviteUser, submit
 }
   
 const mapStateToProps = (state) => ({
     users: state.entities.users,
     total_count: state.entities.paging && state.entities.paging.total || 0,
+    user: state.entities.auth || {},
 })
 
 export default compose(

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Modal, Button, Table, Glyphicon} from 'react-bootstrap'
 import moment from 'moment'
+import FileSaver from 'file-saver'
 
 import './Answers.css'
 
@@ -29,6 +30,11 @@ export default class AnswerBase extends Component {
   //       window.location.href = downloadUrl;
   //   });
   // }
+
+  downloadAnswer = (answer) => {
+    var blob = new Blob([JSON.stringify(answer, null, 2)],{type: "text/plain;charset=utf-8"})
+    FileSaver.saveAs(blob, `${answer.act.title}_${answer.act.type}_${moment(answer.updated_at).format('M-D-YYYY_HH')}.json`)
+  }
 
   downloadAudioFile = (answer) => {
       window.location.href = answer.output_url

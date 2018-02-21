@@ -5,8 +5,8 @@ import { Route, Redirect } from "react-router-dom"
 
 export const pathsByRole = {
   clinician: ["/users", "/answers"],
-  patient: ["/answers"],
-  viewer: ["/answers", "/dashboard"]
+  patient: ["/profile"],
+  viewer: ["/dashboard", "/users"]
 }
 
 class AuthRoute extends React.Component {
@@ -18,11 +18,13 @@ class AuthRoute extends React.Component {
     let role = user.role || 'user'
     let redirectPath
     
-    if(role) {
-      if(!role.includes('admin')) {
-        let paths = pathsByRole[role]
-        redirectPath = (paths && paths.some(item => props.location.pathname.startsWith(item))) ? false : '/'
-      }
+    if (role.includes('admin')) {
+
+    } else if (role == 'clinician') {
+
+    } else if (role == 'patient' || role == 'viewer') {
+      let paths = pathsByRole[role]
+      redirectPath = (paths && paths.some(item => props.location.pathname.startsWith(item))) ? false : '/'
     } else {
       redirectPath = '/login'
     }

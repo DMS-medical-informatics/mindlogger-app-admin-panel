@@ -32,6 +32,7 @@ class AddUser extends Component {
                 <Field name="first_name" type="text" component={InputField} label="First Name" placeholder="" validate={isRequired} />
                 <Field name="last_name" type="text" component={InputField} label="Last Name" placeholder="" validate={isRequired} />
                 <Field name="email" type="email" component={InputField} label="Email" placeholder="" validate={isRequired} />
+                <Field name="password" type="password" component={InputField} label="Password" placeholder="" validate={isRequired} />
                 <Field name="role" componentClass="select" component={InputField} options={roleOptions} label="Role" placeholder="" validate={isRequired} />
             </form>
         )
