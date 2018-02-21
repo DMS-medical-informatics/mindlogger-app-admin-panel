@@ -17,8 +17,10 @@ import moment from 'moment'
 import './Answers.css'
 import AnswerBase from './AnswerBase'
 import ActivityChart from '../chart/ActivityChart'
-import { DateRange } from 'react-date-range'
+import DatePicker from 'react-datepicker'
 import { getAnswers, getAnsweredActs } from '../../actions/api';
+import 'react-datepicker/dist/react-datepicker.css'
+
 const ANSWERS_PER_PAGE = 20
 
 const getActivityChartData = (acts) => {
@@ -47,7 +49,8 @@ const mapStateToProps = (state, ownProps) => ({
 
 class Answers extends AnswerBase {
     state = {
-        page: 1
+        page: 1,
+        endDate: moment()
     }
     componentWillMount() {
         const {userId, users, getAnswers, getAnsweredActs} = this.props
@@ -59,10 +62,16 @@ class Answers extends AnswerBase {
     }
 
     selectPage = (page) => {
-        const {userId, users, getAnswers, getAnsweredActs} = this.props
-        const {range} = this.state
         this.setState({page})
-        getAnswers(userId, page*ANSWERS_PER_PAGE , ANSWERS_PER_PAGE, range.startDate, range.endDate)
+        this.getAnswers(page, this.state.startDate, this.state.endDate)
+    }
+
+    getAnswers = (page, startDate, endDate) => {
+        const {userId, users, getAnswers, getAnsweredActs} = this.props
+        if(startDate && endDate)
+            getAnswers(userId, (page-1)*ANSWERS_PER_PAGE , ANSWERS_PER_PAGE, moment(startDate).format(), moment(endDate).format())
+        else
+            getAnswers(userId, (page-1)*ANSWERS_PER_PAGE , ANSWERS_PER_PAGE)
     }
     open() {
         this.setState({showModal: true})
@@ -118,8 +127,14 @@ class Answers extends AnswerBase {
         )
     }
 
-    handleSelect = (range) => {
-        this.setState({range})
+    handleChangeStart = (date) => {
+        this.setState({startDate: date})
+        this.getAnswers(this.state.page, date, this.state.endDate)
+    }
+
+    handleChangeEnd = (date) => {
+        this.setState({endDate: date})
+        this.getAnswers(this.state.page, this.state.startDate, date)
     }
 
     showRange = () => {
@@ -127,7 +142,7 @@ class Answers extends AnswerBase {
     }
 
     render() {
-        const {page, data, showModal, hover, user, range, showRange} = this.state
+        const {page, data, showModal, hover, user, startDate, endDate} = this.state
         const {answers, paging} = this.props
         return (
             <div>
@@ -153,14 +168,22 @@ class Answers extends AnswerBase {
                             ? (
                                 <Panel header={`Total ${answers.length} Answers`}>
                                     <div>
-                                    {range && (<p>Range: {range.startDate.format("MM/DD/YYYY")} - {range.endDate.format("MM/DD/YYYY")}</p>)}
+                                    {/* {range && (<p>Range: {range.startDate.format("MM/DD/YYYY")} - {range.endDate.format("MM/DD/YYYY")}</p>)} */}
                                     {data && 
-                                    <DateRange
-                                        startDate = {moment(data.start)}
-                                        endDate = {moment()}
-                                        onInit={this.handleSelect}
-                                        onChange={this.handleSelect}
-                                    />}
+                                    <Row>
+                                        <Col xs={1} style={{textAlign:'right'}}>
+                                        Start Date
+                                        </Col>
+                                        <Col xs={2}>
+                                        <DatePicker selected={startDate} selectsStart startDate={startDate} endDate={endDate} onChange={this.handleChangeStart}/>
+                                        </Col>
+                                        <Col xs={1} style={{textAlign:'right'}}>
+                                        End Date
+                                        </Col>
+                                        <Col xs={2}>
+                                        <DatePicker selected={endDate} selectsEnd startDate={startDate} endDate={endDate} onChange={this.handleChangeEnd}/>
+                                        </Col>
+                                    </Row>}
                                     </div>
                                     <Table responsive bordered>
                                         <thead>

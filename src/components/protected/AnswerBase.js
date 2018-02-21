@@ -4,13 +4,10 @@ import moment from 'moment'
 import FileSaver from 'file-saver'
 
 import './Answers.css'
+import { getTimestamp } from '../../helpers';
 
 function currentTime() {
   return (new Date()).getTime()
-}
-
-function getTimestamp(str) {
-  return (new Date(str)).getTime()
 }
 
 export default class AnswerBase extends Component {
