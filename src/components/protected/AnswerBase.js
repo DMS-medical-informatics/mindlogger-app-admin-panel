@@ -58,11 +58,12 @@ export default class AnswerBase extends Component {
   close = () => {
     this.setState({showModal:false})
   }
-  renderSurveyRow = (idx, question, answer) => {
-    if(answer === undefined) {
+  renderSurveyRow = (idx, question, data) => {
+    if(data === undefined || data == null || data.result === undefined) {
       return (<tr key={idx}><td>{idx+1}</td><td></td><td></td></tr>)
     }
-    let answerText = answer
+    let answer = data.result
+    let answerText
     switch(question.type) {
       case 'bool':
         answerText = answer ? "True":"False"
@@ -89,7 +90,11 @@ export default class AnswerBase extends Component {
       );
   }
 
-  renderTableSurveyCell(question, rowIdx, colIdx, answer) {
+  renderTableSurveyCell(question, rowIdx, colIdx, data) {
+    if (data == null || data === undefined || data.answer === undefined) {
+      return <div></div>
+    }
+    let answer = data.result
     switch(question.type) {
           case 'text':
             return answer[rowIdx][colIdx]
@@ -133,7 +138,7 @@ export default class AnswerBase extends Component {
             <tr><th></th><th>Question</th><th>Answer</th></tr>
             </thead>
             <tbody>
-            {questions.map((question,idx) => answer_data.answers && this.renderSurveyRow(idx, question, answer_data.answers[idx].result))}
+            {questions.map((question,idx) => answer_data.answers && this.renderSurveyRow(idx, question, answer_data.answers[idx] && answer_data.answers[idx]))}
             </tbody>
           </Table>)
       } else {
@@ -151,7 +156,7 @@ export default class AnswerBase extends Component {
           {question.rows.map((row, rowIdx) => (
             <tr key={rowIdx}>
                 <td>{row.text}</td>
-                {question.cols.map( (col, colIdx) => <td key={colIdx}>{answer_data.answers && this.renderTableSurveyCell(question, rowIdx, colIdx, answer_data.answers[idx].result)}</td> )}
+                {question.cols.map( (col, colIdx) => <td key={colIdx}>{answer_data.answers && this.renderTableSurveyCell(question, rowIdx, colIdx, answer_data.answers[idx])}</td> )}
             </tr>))}
           </tbody>
           </Table>
