@@ -91,7 +91,7 @@ export default class AnswerBase extends Component {
   }
 
   renderTableSurveyCell(question, rowIdx, colIdx, data) {
-    if (data == null || data === undefined || data.answer === undefined) {
+    if (data == null || data === undefined || data.result === undefined) {
       return <div></div>
     }
     let answer = data.result
@@ -117,9 +117,12 @@ export default class AnswerBase extends Component {
     if(this.intervalId)
       clearInterval(this.intervalId)
     this.startTime = currentTime()
+    const {lines} = answer_data
+    const {points} = lines[lines.length-1]
+    this.endTime = points[points.length-1].time
     this.intervalId = setInterval(() => {
       const time = currentTime() - this.startTime
-      if(getTimestamp(this.state.answer.updatedAt) - this.state.answer_data.start_time<time) {
+      if(this.endTime<time) {
         clearInterval(this.intervalId)
         this.setState({time: undefined})
       } else {
@@ -166,7 +169,7 @@ export default class AnswerBase extends Component {
     } else if(act.type === 'drawing') {
       return (
         <div className="drawboard-container">
-          <img src={answer_data.image_url} className="drawboard-image" />
+          <img src={act_data.image_url} className="drawboard-image" />
           <div className="drawboard">
               <svg width="300" height="300">
               {answer_data.lines.map(this.renderLine)}
