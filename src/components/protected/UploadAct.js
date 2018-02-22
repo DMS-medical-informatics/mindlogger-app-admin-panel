@@ -8,7 +8,7 @@ import {Row, Panel, Table, Button} from 'react-bootstrap'
 import Papa from 'papaparse';
 import { addAct, getActs, deleteAct } from '../../actions/api';
 
-const mapDispatchToProps = { addAct, getActs }
+const mapDispatchToProps = { addAct, getActs, deleteAct }
 
 const mapStateToProps = (state, ownProps) => ({
     acts: state.entities.acts,

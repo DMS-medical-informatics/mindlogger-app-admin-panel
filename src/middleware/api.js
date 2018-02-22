@@ -52,7 +52,12 @@ export const makeRequest = (method, path, body, accessToken, isMultipartUpload) 
         })
         .then(response => {
             const status = response.status;
-            return response.json();
+            try {
+                return response.json();
+            } catch (error) {
+                return {};
+            }
+            
         })
         .then(json => {
             return json.success ? Promise.resolve(json) : Promise.reject(json);

@@ -207,7 +207,7 @@ class Answers extends AnswerBase {
                                                     <td>
                                                         <Button bsStyle="info" onClick={() => this.downloadAnswer(answer)}>JSON</Button>
                                                         {' '}
-                                                        {answer.activity_type === 'voice' && <Button bsStyle="warning" onClick={() => this.downloadAudioFile(answer)}>Download File</Button>}
+                                                        {answer.act.type === 'voice' && <Button bsStyle="warning" onClick={() => this.downloadAudioFile(answer)}>Download File</Button>}
                                                         {' '}
                                                         {<Button onClick = {
                                                             () => this.viewDetail(answer)
