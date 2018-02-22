@@ -88,7 +88,11 @@ class Answers extends AnswerBase {
     }
 
     onSelect = (answer) => {
-        this.setState({answer})
+        const {answered_acts} = this.props
+        let act = answered_acts.find(obj => {
+            return obj.id == answer.act_id
+        })
+        this.setState({answer:{...answer, act:{type:act.type}}})
         this.open()
     }
 

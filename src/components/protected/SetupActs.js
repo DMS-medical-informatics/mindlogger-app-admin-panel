@@ -6,13 +6,13 @@ import {BarChart} from 'recharts'
 import {Row, Col, Panel, Table, Pagination, Button, Tabs, Tab} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { getAssignedActs, searchActs, assignAct, cancelAct } from "../../actions/api"
-
+const ACTS_PER_PAGE=10
 class SetupActs extends Component {
     
     componentWillMount() {
         const {searchActs, getAssignedActs, userId} = this.props
         this.setState({actDict: {}, page:1, key:1})
-        searchActs('', 0, 10)
+        searchActs('', 0, ACTS_PER_PAGE)
         getAssignedActs(userId)
     }
 
@@ -29,6 +29,7 @@ class SetupActs extends Component {
 
     selectPage = (page) => {
         this.setState({page})
+        this.props.searchActs('', (page-1)*ACTS_PER_PAGE, ACTS_PER_PAGE)
     }
 
     renderRow = (act, index) => {
@@ -119,7 +120,7 @@ class SetupActs extends Component {
     }
     renderSetup () {
         const {acts, total_count} = this.props
-        const total_pages = total_count/10+1
+        const total_pages = Math.ceil(total_count/10)
         const {page} = this.state
         
         // let data = [
@@ -141,7 +142,7 @@ class SetupActs extends Component {
                     {acts.map(this.renderRow)}
                     </tbody>
                 </Table> }
-                {acts && <div>
+                {acts && total_pages>1 && <div>
                     <Pagination prev next first last boundaryLinks
                     items={total_pages} maxButtons={5} activePage={page}
                     onSelect={this.selectPage} />
