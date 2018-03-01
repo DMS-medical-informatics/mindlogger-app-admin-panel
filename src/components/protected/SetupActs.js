@@ -10,10 +10,12 @@ const ACTS_PER_PAGE=10
 class SetupActs extends Component {
     
     componentWillMount() {
-        const {searchActs, getAssignedActs, userId} = this.props
+        const {searchActs, getAssignedActs, users, userId} = this.props
         this.setState({actDict: {}, page:1, key:1})
         searchActs('', 0, ACTS_PER_PAGE)
         getAssignedActs(userId)
+        let user = users.find( obj => obj.id == userId)
+        this.setState({user})
     }
 
     componentWillReceiveProps(nextProps) {
@@ -69,14 +71,15 @@ class SetupActs extends Component {
     }
 
     render() {
+        const {user} = this.state
         return (
             <div>
-                <h2 className="text-center">Setup Acts</h2>
+                <h2 className="text-center">Activities {user && `for ${user.first_name} ${user.last_name}`}</h2>
                 <Row>
                 <Col xs={12}>
                     <Panel>
                 <Tabs activeKey={this.state.key} id="act-tabs" onSelect={this.handleTabSelect}>
-                <Tab eventKey={1} title="Assigned Act">
+                <Tab eventKey={1} title="Assigned Activities">
                     {this.renderAssignedActs()}
                 </Tab>
                 <Tab eventKey={2} title="Setup">

@@ -54,11 +54,13 @@ class Answers extends AnswerBase {
     }
     componentWillMount() {
         const {userId, users, getAnswers, getAnsweredActs} = this.props
-        let user = users[userId]
         getAnsweredActs(userId).then( res => {
             this.onData()
         })
         getAnswers(userId, 0 , ANSWERS_PER_PAGE)
+        let user = users.find( obj => obj.id == userId)
+        this.setState({user})
+        console.log(user)
     }
 
     selectPage = (page) => {
@@ -153,7 +155,7 @@ class Answers extends AnswerBase {
                 <Link to='/users'>
                     <Button>Back</Button>
                 </Link>
-                <h2 className="text-center">{user && user.name}</h2>
+                <h2 className="text-center">{user && (user.first_name+" "+user.last_name)}</h2>
                 <Row>
                     <Col xs={12}>
                         <Panel header={`Activity map`}>

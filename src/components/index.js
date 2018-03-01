@@ -14,7 +14,8 @@ import { logout } from '../helpers/auth'
 import AuthRoute from './authRoute'
 import Header from './Header'
 import SetupActs from './protected/SetupActs';
-import UploadAct from './protected/UploadAct';
+import Acts from './protected/Acts';
+import EditSurvey from './modules/survey/EditSurvey';
 
 export default class App extends Component {
   componentDidMount () {
@@ -39,7 +40,8 @@ export default class App extends Component {
                 <AuthRoute path='/users/:id/answers' component={Answers} />
                 <AuthRoute path='/users/:id/setup' component={SetupActs} />
                 <AuthRoute path='/users' component={Users} />
-                <AuthRoute path='/upload_acts' component={UploadAct} />
+                <AuthRoute path='/acts' component={Acts} />
+                <AuthRoute path='/surveys/:id' component={EditSurvey} />
                 
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>

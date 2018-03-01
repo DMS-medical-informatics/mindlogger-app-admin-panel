@@ -49,23 +49,28 @@ class Header extends Component {
           <Navbar.Collapse>
             <Nav>
             </Nav>
+            {authed &&
             <Nav pullRight>
               <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to="/users"><NavItem>Users</NavItem></LinkContainer>
-              <LinkContainer to="/upload_acts"><NavItem>Upload</NavItem></LinkContainer>
-              {authed &&
-              (<NavDropdown id="dropdownId" title={`Hi, ${auth.first_name}`}>
+              <LinkContainer to="/acts"><NavItem>Activities</NavItem></LinkContainer>
+              
+              <NavDropdown id="dropdownId" title={`Hi, ${auth.first_name}`}>
                 <LinkContainer eventKey="1" to="/"><NavItem>Profile</NavItem></LinkContainer>
                 <NavItem eventKey="2" onClick={this.onSignout}>Logout</NavItem>
-              </NavDropdown>)}
-              {!authed && (<LinkContainer to="/login"><NavItem>
-                Login
-              </NavItem></LinkContainer>)}
-              {!authed && (<LinkContainer to="/register"><NavItem>
-                Register
-              </NavItem></LinkContainer>)}
-
+              </NavDropdown>
             </Nav>
+            }
+            {!authed && (
+            <Nav pullRight>
+              <LinkContainer to="/login"><NavItem>
+                Login
+              </NavItem></LinkContainer>
+              <LinkContainer to="/register"><NavItem>
+                Register
+              </NavItem>
+              </LinkContainer>
+              </Nav>)}
           </Navbar.Collapse>
           </Navbar>
       )
