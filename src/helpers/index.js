@@ -10,3 +10,23 @@ export const isPositiveInteger = (value) => (value <= 0 || !(parseInt(value) == 
 export const getTimestamp = (str) => {
   return (new Date(str)).getTime()
 }
+
+export const prepareAct = (data) => {
+  return new Promise((resolve, reject) => {
+      if(data.audio_path) {
+          var filename = data.audio_path.replace(/^.*[\\\/]/, '')
+          uploadFileS3(data.audio_path, 'audios/', filename).then(url => {
+              data.audio_url = url
+              resolve(data);
+          }).catch(err => {
+              reject(err);
+          })
+      } else {
+          resolve(data);
+      }
+  })
+}
+
+export const uploadFileS3 = () => {
+  
+}
