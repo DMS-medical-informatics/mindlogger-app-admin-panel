@@ -1,18 +1,21 @@
 import React,{Component} from 'react'
 import {compose} from 'redux'
 import {connect} from 'react-redux'
+import { submit } from 'redux-form';
 import {withRouter} from 'react-router'
 import Dropzone from 'react-dropzone'
 import firebase from 'firebase'
 import {Row, Panel, Table, Button, Modal} from 'react-bootstrap'
 import Papa from 'papaparse';
+
 import { addAct, getActs, deleteAct, updateAct } from '../../actions/api';
 import { convertToActivity } from '../../helpers/survey';
 import { LinkContainer } from 'react-router-bootstrap';
 import AddSurvey from '../forms/AddSurvey';
 import { prepareAct } from '../../helpers/index';
 
-const mapDispatchToProps = { addAct, getActs, deleteAct }
+
+const mapDispatchToProps = { addAct, getActs, deleteAct, submit }
 
 const mapStateToProps = (state, ownProps) => ({
     acts: state.entities.acts,

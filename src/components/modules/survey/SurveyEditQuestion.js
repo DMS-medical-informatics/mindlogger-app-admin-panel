@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import { Field, reduxForm, FieldArray, formValueSelector, submit } from 'redux-form'
 import {FormGroup, FormControl, Button, Row, Col, Glyphicon, Image} from 'react-bootstrap'
 
-import { InputField } from '../../forms/FormItems';
+import { InputField, InputFieldWithButton } from '../../forms/FormItems';
 import {isRequired} from '../../forms/validation';
 import '../../forms/form.css';
 
@@ -22,7 +22,7 @@ class SurveyEditQuestionForm extends Component {
       return (<div>
           <Row>
           {fields.map((member,index) => (
-            <Col md={4} key={index}><Field placeholder={`Choice ${index+1}`} name={`${member}.text`} type="text" component={InputField}/><Button onClick={() => fields.remove(index) } bsStyle="danger" className="control-button"><Glyphicon glyph="trash"/></Button></Col>
+            <Col md={4} key={index}><Field placeholder={`Choice ${index+1}`} name={`${member}.text`} type="text" component={InputFieldWithButton} onAction={() => fields.remove(index)} actionIcon={"trash"}/></Col>
           ))}
           
           <Col md={4}><Button onClick={()=> fields.push({text:'', value:fields.length})}>Add choice</Button></Col>
@@ -123,44 +123,13 @@ class SurveyBasicEditQuestion extends Component {
         };
     }
 
-    updateQuestion = (body) => {
-        
-        this.isNext = false
-    }
-
-    updateAndNext() {
-        this.isNext=true
-        this.props.submit('survey-edit-question')
-    }
-    updateAndDone() {
-		this.isNext=false
-        this.props.submit('survey-edit-question')
-    }
-    deleteQuestion() {
-        let {actIndex, questionIndex, acts, updateActivity} = this.props
-        const act = acts[actIndex]
-        if(actIndex < 0) {
-        	actIndex = acts.length + actIndex
-        }
-        const survey = act.act_data
-        let questions = survey.questions || []
-        if(questions.length>questionIndex) {
-            questions.splice(questionIndex,1)
-			updateActivity(actIndex, act)
-        }
-        survey.questions = questions
-        questionIndex = questionIndex - 1
-        if(questionIndex<0) questionIndex = 0
-        //Actions.replace("survey_basic_edit_question",{actIndex, questionIndex})
-    }
-
     componentWillMount() {
         let {act} = this.props
         this.setState({act})
     }
 
     render() {
-        let {questionIndex, act} = this.props
+        let {questionIndex, act, onUpdate} = this.props
         const survey = act.act_data
         let question = {
             type: "text",
@@ -176,7 +145,7 @@ class SurveyBasicEditQuestion extends Component {
         return (
         <div>
             <h3>{`Question ${questionIndex+1}`}</h3>
-            <SurveyEditQuestionValueForm onSubmit={this.updateQuestion} initialValues={question}/>
+            <SurveyEditQuestionValueForm onSubmit={onUpdate} initialValues={question}/>
             
         </div>
         );
