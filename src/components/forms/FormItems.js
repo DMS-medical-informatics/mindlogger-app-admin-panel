@@ -13,7 +13,7 @@ export const InputField = ({
   meta: { touched, error, warning }
 }) => (
   <FormGroup validationState={touched && error ? 'error' : null}>
-    <ControlLabel>{label}</ControlLabel>
+    {label && (<ControlLabel>{label}</ControlLabel>) }
     <FormControl readOnly={readOnly} {...input} placeholder={placeholder} type={type} componentClass={componentClass} required={required}>
       {componentClass === 'select' && options ? options.map((item, index) => (
         <option key={index} value={item.value}>{item.label}</option>
