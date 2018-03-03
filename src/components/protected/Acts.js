@@ -11,7 +11,9 @@ import Papa from 'papaparse';
 import { addAct, getActs, deleteAct, updateAct } from '../../actions/api';
 import { convertToActivity } from '../../helpers/survey';
 import { LinkContainer } from 'react-router-bootstrap';
-import AddSurvey from '../forms/AddSurvey';
+import SurveyForm from '../forms/SurveyForm';
+import VoiceForm from '../forms/VoiceForm';
+import DrawingForm from '../forms/DrawingForm';
 import { prepareAct } from '../../helpers/index';
 
 
@@ -32,22 +34,39 @@ class Acts extends Component {
         this.setState({name:event.target.value})
     }
 
-    onAddSurvey = ({title,...body}) => {
-        const {addAct, history} = this.props
-        let data = {...body, questions: []}
-        return prepareAct(data).then( act_data => {
-            let params = { act_data, type:'survey', title}
-            return addAct(params)
-        }).then( res => {
-            history.push(`surveys/${res.act.id}`)
+    onAddAct = ({title, image, ...body}) => {
+        let type = this.state.form
+        const {addAct, history, getActs} = this.props
+        let act_data = {...body}
+
+        if (type == 'survey') {
+            act_data.questions = []
+        }
+
+        let formData = new FormData()
+        formData.set("type", type)
+        if (image) {
+            if(image.preview)
+                formData.set("image", image)
+            else
+                act_data.image_url = image.path
+        }
+        formData.set("act_data", JSON.stringify(act_data))
+        formData.set("title", title)
+        return addAct(formData).then( res => {
+            if (type == 'survey')
+                history.push(`surveys/${res.act.id}`)
+            else
+                this.close()
+            return getActs();
         }).catch(err => {
             console.log(err)
         //Toast.show({text: 'Error! '+err.message, type: 'danger', buttonText: 'OK' })
         })
     }
 
-    onEditSurvey = ({title, ...body}) => {
-        const {updateAct, history, getActs} = this.props
+    onEditAct = ({title, ...body}) => {
+        const {updateAct, getActs} = this.props
         const {act} = this.state
         return updateAct({id:act.id, act_data:body, title}).then(res => {
             this.close();
@@ -65,18 +84,52 @@ class Acts extends Component {
         const {act} = this.state;
         let survey = act ? {title: act.title, ...act.act_data} : {mode:'basic', accordion:false};
         return (<Modal show={this.state.form == 'survey'} onHide={this.close}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add survey</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <AddSurvey initialValues={survey} onSubmit={act && act.id ? this.onEditSurvey : this.onAddSurvey}/>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button bsStyle="primary" onClick={() => this.props.submit('add-survey-form')}>{act && act.id ? 'Update' : 'Create'}</Button>
-            {act && act.id && <Button onClick={() => this.props.history.push('/surveys/'+act.id)}>Edit questions</Button>}
-            <Button onClick={this.close}>Close</Button>
-        </Modal.Footer>
-      </Modal>)
+            <Modal.Header closeButton>
+            <Modal.Title>{ act && act.id ? "Edit Survey" : "Add Survey"}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <SurveyForm initialValues={survey} onSubmit={act && act.id ? this.onEditAct : this.onAddAct}/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button bsStyle="primary" onClick={() => this.props.submit('add-survey-form')}>{act && act.id ? 'Update' : 'Create'}</Button>
+                {act && act.id && <Button onClick={() => this.props.history.push('/surveys/'+act.id)}>Edit questions</Button>}
+                <Button onClick={this.close}>Close</Button>
+            </Modal.Footer>
+        </Modal>)
+    }
+
+    renderAddVoiceModal = () => {
+        const {act} = this.state;
+        let voice = act ? {title: act.title, ...act.act_data} : {};
+        return (<Modal show={this.state.form == 'voice'} onHide={this.close}>
+            <Modal.Header closeButton>
+            <Modal.Title>{act && act.id ? "Edit Voice" : "Add Voice"}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <VoiceForm initialValues={voice} onSubmit={act && act.id ? this.onEditAct : this.onAddAct}/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button bsStyle="primary" onClick={() => this.props.submit('add-voice-form')}>{act && act.id ? 'Update' : 'Create'}</Button>
+                <Button onClick={this.close}>Close</Button>
+            </Modal.Footer>
+        </Modal>)
+    }
+
+    renderAddDrawingModal = () => {
+        const {act} = this.state;
+        let drawing = act ? {title: act.title, ...act.act_data} : {};
+        return (<Modal show={this.state.form == 'drawing'} onHide={this.close}>
+            <Modal.Header closeButton>
+            <Modal.Title>{act && act.id ? "Edit Drawing" : "Add Drawing"}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <DrawingForm initialValues={drawing} onSubmit={act && act.id ? this.onEditAct : this.onAddAct}/>
+            </Modal.Body>
+            <Modal.Footer>
+                <Button bsStyle="primary" onClick={() => this.props.submit('add-drawing-form')}>{act && act.id ? 'Update' : 'Create'}</Button>
+                <Button onClick={this.close}>Close</Button>
+            </Modal.Footer>
+        </Modal>)
     }
 
     onResult = (results, file) => {
@@ -171,8 +224,12 @@ class Acts extends Component {
                     </tbody>
                 </Table> 
                 <Button onClick={() => this.setState({form:'survey'})}>Add new survey</Button>
+                <Button onClick={() => this.setState({form:'voice'})}>Add new voice</Button>
+                <Button onClick={() => this.setState({form:'drawing'})}>Add new drawing</Button>
                 </Panel>}
                 {this.renderAddSurveyModal()}
+                {this.renderAddVoiceModal()}
+                {this.renderAddDrawingModal()}
             </div>
         )
     }

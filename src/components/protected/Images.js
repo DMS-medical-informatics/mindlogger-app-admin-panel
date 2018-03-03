@@ -1,41 +1,19 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import { submit } from 'redux-form'
-import {Table, Row, Col, Button, Panel, Modal, Clearfix} from 'react-bootstrap'
+import {Table, Row, Col, Button, Panel, Modal, Clearfix, Image, Glyphicon} from 'react-bootstrap'
 
 import AddImage from '../forms/AddImage'
 import AddFolder from '../forms/AddFolder'
 import './Images.css'
-
-const deleteFilesFrom = (item) => {
-    let arr = []
-    if(item.images && item.images.length>0) {
-        item.images.forEach( m => {
-            arr.concat(deleteFilesFrom(m))
-        })
-    }
-    if(item.path) {
-        //arr.push(storageRef.child(item.path).delete())
-    }
-    return arr
-}
+import { getFiles, postFile, deleteFile } from '../../actions/api';
+import { S3_IMAGE_BUCKET } from '../../constants/index';
 
 class Images extends Component {
     componentWillMount() {
-        let path = 'images'
+        let path = 'images/'
         this.setState({path})
-        this.rebind(path)
-    }
-
-    rebind(path) {
-        // if(this.ref)
-        //     base.removeBinding(this.ref);
-        // this.ref = base.syncState(path, {
-        //     context: this,
-        //     state: 'images',
-        //     defaultValue: [],
-        //     asArray: true
-        // });
+        this.props.getFiles('')
     }
 
     imageSelect(image) {
@@ -44,9 +22,8 @@ class Images extends Component {
     folderSelect(item) {
         let {path} = this.state
         console.log(item)
-        path = path + "/" + item.key + "/images"
+        path = item.key
         this.setState({path})
-        this.rebind(path)
     }
 
     toggleFolderForm = () => {
@@ -63,9 +40,9 @@ class Images extends Component {
         let arr = path.split("/")
         if(arr.length>2) {
             arr.splice(-2,2)
+            arr.push('')
             path = arr.join("/")
             this.setState({path})
-            this.rebind(path)
         }
     }
 
@@ -73,29 +50,46 @@ class Images extends Component {
         this.setState({form: null})
     }
 
-    onAddItem = (values) => {
-        this.setState({
-            images: this.state.images.concat([values]) //updates Firebase and the local state
-        });
+    onAddItem = ({name, ...values}) => {
+        const {postFile, getFiles} = this.props
+        let formData = new FormData();
+        formData.append('path', this.state.path)
+        formData.append('filename', name)
+        formData.append('file', values.file);
+        console.log(values.file)
+        this.setState({loading:true})
+        postFile(formData).then( res => {
+            this.setState({loading:false})
+            return getFiles('')
+        }).catch(err => {
+            console.log(err)
+            this.setState({loading:false})
+        })
         this.close()
     }
     onAddFolder = (values) => {
         this.onAddItem({...values, is_folder: true})
     }
 
-    removeItem = (idx) => {
-        const images = this.state.images
-        const image = this.state.images[idx]
-        let arr = deleteFilesFrom(image)
-        Promise.all(arr).then( res => {
-            console.log("Delete success")
-            images.splice(idx,1)
-            this.setState({
-                images  //updates Firebase and the local state
-            });
+    removeItem = (item) => {
+        const {deleteFile, getFiles} = this.props
+        deleteFile(item.key).then(res => {
+            return getFiles('')
         }).catch(err => {
             console.log(err)
-        })
+        });
+        // const images = this.state.images
+        // const image = this.state.images[idx]
+        // let arr = deleteFilesFrom(image)
+        // Promise.all(arr).then( res => {
+        //     console.log("Delete success")
+        //     images.splice(idx,1)
+        //     this.setState({
+        //         images  //updates Firebase and the local state
+        //     });
+        // }).catch(err => {
+        //     console.log(err)
+        // })
         
     }
 
@@ -152,8 +146,24 @@ class Images extends Component {
     }
 
     render () {
-        const {path} = this.state
-        const images = this.state.images || []
+        const {path, loading} = this.state
+        const {files} = this.props
+        let count = path.split("/").length
+        let list = []
+        files.forEach(file => {
+            let arr = file.split("/")
+            if (file != path && file.startsWith(path) && (arr.length - count <= 1)) {
+                let item = {key: file, path:`https://${S3_IMAGE_BUCKET}.s3.amazonaws.com/${file}`}
+                if (file.endsWith("/")) {
+                    item.is_folder = true
+                    item.name = arr[arr.length-2]
+                } else {
+                    item.name = arr[arr.length-1]
+                }
+                list.push(item)
+            }
+        })
+        
         return (
         <div>
             <h2 className="text-center">Images</h2>
@@ -181,17 +191,18 @@ class Images extends Component {
             </Col>
             </Row>
             <Row>
-                {images.map( (item, idx) => 
-                    item.is_folder ? (<div className="image-cell" key={idx}>
-                        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFfSURBVGhD7ZK9LkRRFEZPodGI+IufKJDcufS8A57Bo5BMLyq9MVHdhJGIQYgCCXM1k4lSotXRoPuOfWSX+4w7MsZO7JWsbvbJ+nLHGYZhGMZvgIpbwo7b8hWXFZF+X0XVjfG5DiiqTHG+U2n4g5oxFLMqRRZVzRj6GjUpsBNVjKEhza+gvT7vDwe9Pxr+kTgeecb5ZL1rnk3soj60wJnfQ0Navjbg/V3ifZ6qErcJcDq+zantQdb/KD2iSZyMrnFuHFxMvUjHmsTl9BPnxsHVzLt0rElqfOPcOLie/ZCONRkaOTeODemhhYb4m7lX6ViV1Mi5cdBIW+KxIkMj58axIT3UhmjThmjThmjThmjThmjThmjznw3J06Z0rMnQyLlxkJcOpGNNolHa59w4uJ9fkY41iTxZ5tz20KfboP8hpEf+0tBErnNmMWj1Ig3apAcyDYaW0MR5hmEYhtFFnPsEarLYUOTpRhkAAAAASUVORK5CYII=" onClick={() => this.folderSelect(item)}/>
-                        <span className="glyphicon glyphicon-remove remove" onClick={() => this.removeItem(idx) }></span>
+                {loading && <img src="//assets.okfn.org/images/icons/ajaxload-circle.gif" />}
+                {list.map( (item, idx) => 
+                    item.is_folder ? (<Col md={2} className="image-cell" key={idx}>
+                        <Image src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human-folder.svg" onClick={() => this.folderSelect(item)}/>
+                        <span className="glyphicon glyphicon-remove remove" onClick={() => this.removeItem(item) }></span>
                         <p>{item.name}</p>
-                    </div>) :
-                    (<div className="image-cell" key={idx}>
-                        <span className="glyphicon glyphicon-remove remove" onClick={() => this.removeItem(idx) }></span>
-                        <img src={item.image_url} onClick={() => this.imageSelect(item)}/>
+                    </Col>) :
+                    (<Col md={2} className="image-cell" key={idx}>
+                        <span className="glyphicon glyphicon-remove remove" onClick={() => this.removeItem(item) }></span>
+                        <Image src={item.path} onClick={() => this.imageSelect(item)}/>
                         <p>{item.name}</p>
-                    </div>)
+                    </Col>)
                     ) }
             </Row>
             <Clearfix/>
@@ -200,9 +211,12 @@ class Images extends Component {
         )
     }
 }
-
-const mapDispatchToProps = dispatch => ({
-    submitForm: name => dispatch(submit(name))
+const mapStateToProps = (state) => ({
+    files: state.entities.files || [],
 })
 
-export default connect(null, mapDispatchToProps)(Images);
+const mapDispatchToProps = {
+    submit, getFiles, postFile, deleteFile
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Images);

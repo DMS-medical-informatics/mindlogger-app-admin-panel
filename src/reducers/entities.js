@@ -37,6 +37,10 @@ const entities = (state = {}, action) => {
                     ...state,
                     auth: false
                 }
+            case types.POST_FILE:
+                return {
+                    ...state
+                }
             
             default:
               return {

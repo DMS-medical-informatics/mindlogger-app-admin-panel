@@ -14,15 +14,7 @@ const frequencyOptions = [
     {label:"one time",value:"1"},
 ]
 
-const accordionOptions = [
-    {label:"No", value: false},
-    {label:"Yes", value: true}
-]
-const modeOptions = [
-    {label:'Basic', value: 'basic'},
-    {label:'Table', value: 'table'}
-]
-class AddSurvey extends Component {
+class VoiceForm extends Component {
     componentWillMount() {
         this.setState({name: ''})
     }
@@ -36,8 +28,6 @@ class AddSurvey extends Component {
                 <Field name="title" type="text" label="Title" validate={isRequired} component={InputField} />
                 <Field name="instruction" type="text" label="Instruction" placeholder='' component={InputField} />
                 {/* <Field name="audio_path" type="text" stackedLabel label="Audio instruction" component={FormInputAudio} /> */}
-                <Field name="mode" label="Mode" componentClass="select" component={InputField} options={modeOptions}/>
-                <Field name="accordion" label="Accordion style survey?" componentClass="select" component={InputField} options={accordionOptions}/>
                 <Field name="frequency" componentClass="select" component={InputField} options={frequencyOptions} label="Frequency" placeholder="" validate={isRequired} />
             </form>
         )
@@ -46,6 +36,6 @@ class AddSurvey extends Component {
 
 export default reduxForm({
     // a unique name for the form
-    form: 'add-survey-form'
-})(AddSurvey)
+    form: 'add-voice-form'
+})(VoiceForm)
   

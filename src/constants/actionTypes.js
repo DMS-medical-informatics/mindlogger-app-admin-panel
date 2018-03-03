@@ -20,3 +20,6 @@ export const PUT_ACTION = 'PUT_ACTION';
 export const ADD_ACT = 'ADD_ACT';
 export const UPDATE_ACT = 'UPDATE_ACT';
 export const DELETE_ACT = 'DELETE_ACT';
+// FILE
+export const POST_FILE = 'POST_FILE';
+export const DELETE_FILE = 'DELETE_FILE';

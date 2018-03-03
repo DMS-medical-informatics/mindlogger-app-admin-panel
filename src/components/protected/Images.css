@@ -4,6 +4,7 @@
     float:left;
     width: 150px;
     height: 100px;
+    margin: 20px;
     text-align: center;
 }
 .image-cell img {

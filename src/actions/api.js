@@ -107,7 +107,8 @@ export const addAct = (body) => ({
   type: types.ADD_ACT,
   method: 'POST',
   path: '/acts',
-  body
+  isMultipartUpload: true,
+  body,
 })
 
 export const updateAct = ({id, ...body}) => ({
@@ -135,4 +136,26 @@ export const getAnsweredActs = (userId) => ({
   type: types.GET_LIST,
   method: 'GET',
   path: `/users/${userId}/answered_acts`
+})
+
+/*------- files ------- */
+
+export const getFiles = (path) => ({
+  type: types.GET_LIST,
+  method: 'GET',
+  path: `/files?${generateQuery({path})}`
+})
+
+export const postFile = (body) => ({
+  type: types.POST_FILE,
+  method: 'POST',
+  path: `/files`,
+  isMultipartUpload: true,
+  body,
+})
+
+export const deleteFile = (path) => ({
+  type: types.DELETE_FILE,
+  method: 'DELETE',
+  path: `/files?${generateQuery({path})}`,
 })
