@@ -76,7 +76,7 @@ class EditSurvey extends Component {
     }
 
     formName() {
-        return this.state.act.mode == 'basic' ? 'survey-edit-question' : 'survey-table-edit-question'
+        return this.state.survey.mode == 'basic' ? 'survey-edit-question' : 'survey-table-edit-question'
     }
     updateAndNext = () => {
         this.nextIndex = this.state.questionIndex+1;

@@ -65,7 +65,7 @@ class Acts extends Component {
         })
     }
 
-    onEditAct = ({title, ...body}) => {
+    onUpdateAct = ({title, ...body}) => {
         const {updateAct, getActs} = this.props
         const {act} = this.state
         return updateAct({id:act.id, act_data:body, title}).then(res => {
@@ -74,6 +74,10 @@ class Acts extends Component {
         }).catch( err => {
             console.log(err)
         })
+    }
+
+    onEditAct = (act) => {
+        this.setState({act, form: act.type})
     }
 
     close = () => {
@@ -88,7 +92,7 @@ class Acts extends Component {
             <Modal.Title>{ act && act.id ? "Edit Survey" : "Add Survey"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <SurveyForm initialValues={survey} onSubmit={act && act.id ? this.onEditAct : this.onAddAct}/>
+                <SurveyForm initialValues={survey} onSubmit={act && act.id ? this.onUpdateAct : this.onAddAct}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button bsStyle="primary" onClick={() => this.props.submit('add-survey-form')}>{act && act.id ? 'Update' : 'Create'}</Button>
@@ -106,7 +110,7 @@ class Acts extends Component {
             <Modal.Title>{act && act.id ? "Edit Voice" : "Add Voice"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <VoiceForm initialValues={voice} onSubmit={act && act.id ? this.onEditAct : this.onAddAct}/>
+                <VoiceForm initialValues={voice} onSubmit={act && act.id ? this.onUpdateAct : this.onAddAct}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button bsStyle="primary" onClick={() => this.props.submit('add-voice-form')}>{act && act.id ? 'Update' : 'Create'}</Button>
@@ -123,7 +127,7 @@ class Acts extends Component {
             <Modal.Title>{act && act.id ? "Edit Drawing" : "Add Drawing"}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <DrawingForm initialValues={drawing} onSubmit={act && act.id ? this.onEditAct : this.onAddAct}/>
+                <DrawingForm initialValues={drawing} onSubmit={act && act.id ? this.onUpdateAct : this.onAddAct}/>
             </Modal.Body>
             <Modal.Footer>
                 <Button bsStyle="primary" onClick={() => this.props.submit('add-drawing-form')}>{act && act.id ? 'Update' : 'Create'}</Button>
