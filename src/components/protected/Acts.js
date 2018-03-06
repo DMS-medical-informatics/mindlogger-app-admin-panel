@@ -5,7 +5,7 @@ import { submit } from 'redux-form';
 import {withRouter} from 'react-router'
 import Dropzone from 'react-dropzone'
 import firebase from 'firebase'
-import {Row, Panel, Table, Button, Modal} from 'react-bootstrap'
+import {Row, Panel, Table, Button, Modal, Pagination} from 'react-bootstrap'
 import Papa from 'papaparse';
 
 import { addAct, getActs, deleteAct, updateAct } from '../../actions/api';
@@ -16,19 +16,21 @@ import VoiceForm from '../forms/VoiceForm';
 import DrawingForm from '../forms/DrawingForm';
 import { prepareAct } from '../../helpers/index';
 
+const ITEMS_PER_PAGE = 10
 
 const mapDispatchToProps = { addAct, getActs, deleteAct, submit }
 
 const mapStateToProps = (state, ownProps) => ({
     acts: state.entities.acts,
     actType: ownProps.match.params.actType || 'survey',
+    total_count: state.entities.paging && state.entities.paging.total || 0,
 })
 
 class Acts extends Component {
     componentWillMount() {
         const {getActs} = this.props;
         this.setState({name: ''})
-        getActs()
+        getActs(0,ITEMS_PER_PAGE)
     }
     onChangeName = (event) => {
         this.setState({name:event.target.value})
@@ -58,7 +60,7 @@ class Acts extends Component {
                 history.push(`surveys/${res.act.id}`)
             else
                 this.close()
-            return getActs();
+            return this.refreshPage();
         }).catch(err => {
             console.log(err)
         //Toast.show({text: 'Error! '+err.message, type: 'danger', buttonText: 'OK' })
@@ -70,7 +72,7 @@ class Acts extends Component {
         const {act} = this.state
         return updateAct({id:act.id, act_data:body, title}).then(res => {
             this.close();
-            return getActs();
+            return this.refreshPage();
         }).catch( err => {
             console.log(err)
         })
@@ -181,6 +183,7 @@ class Acts extends Component {
             <tr key={index}>
                 <td>{act.title}</td>
                 <td>{act.type}</td>
+                <td>{act.author && `${act.author.first_name} ${act.author.last_name}`}</td>
                 <td>
                     <Button onClick={() => this.onEditAct(act)}>Edit</Button>
                     {" "}
@@ -199,18 +202,30 @@ class Acts extends Component {
     onDeleteAct(act) {
         const {deleteAct, getActs} = this.props
         deleteAct(act).then(res => {
-            return getActs();
+            return this.refreshPage();
         })
     }
 
+    refreshPage() {
+        return this.props.getActs((this.state.page-1)*ITEMS_PER_PAGE, ITEMS_PER_PAGE)
+    }
+
+    selectPage = (page) => {
+        this.setState({page})
+        this.props.getActs((page-1)*ITEMS_PER_PAGE, ITEMS_PER_PAGE)
+    }
+
     render () {
-        const {acts} = this.props
+        const {acts, total_count} = this.props
+        const total_pages = Math.ceil(total_count/10)
+        const {page} = this.state
         return (
             <div>
                 <Panel header="Upload new activities">
                 <center>
+                <Dropzone onDrop={this.onDrop} disabled={this.state.disabled}>
                 <h4>Drop file here</h4>
-                <Dropzone onDrop={this.onDrop} disabled={this.state.disabled}/>
+                </Dropzone>
                 </center>
                 </Panel>
                 { acts &&
@@ -220,13 +235,19 @@ class Acts extends Component {
                     <tr>
                         <th>Title</th>
                         <th>Type</th>
-                        <th></th>
+                        <th>Author</th>
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     {acts.map(this.renderRow)}
                     </tbody>
                 </Table> 
+                {acts && total_pages>1 && <div>
+                    <Pagination prev next first last boundaryLinks
+                    items={total_pages} maxButtons={5} activePage={page}
+                    onSelect={this.selectPage} />
+                </div>}
                 <Button onClick={() => this.setState({form:'survey'})}>Add new survey</Button>
                 <Button onClick={() => this.setState({form:'voice'})}>Add new voice</Button>
                 <Button onClick={() => this.setState({form:'drawing'})}>Add new drawing</Button>

@@ -73,10 +73,10 @@ export const inviteUser = (body) => ({
 
 /* ----- Acts ----- */
 
-export const getActs = () => ({
+export const getActs = (offset, limit) => ({
   type: types.GET_LIST,
   method: 'GET',
-  path: '/acts'
+  path: `/acts?offset=${offset}&limit=${limit}`
 })
 
 export const getAssignedActs = (userId) => ({

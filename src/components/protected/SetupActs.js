@@ -42,6 +42,7 @@ class SetupActs extends Component {
             <tr key={index}>
                 <td>{act.title}</td>
                 <td>{act.type}</td>
+                <td>{act.author && `${act.author.first_name} ${act.author.last_name}`}</td>
                 <td>
                     {actDict[act.id] ? 
                     <Button bsStyle="danger" onClick={() => this.onDeleteAct(act)}>Delete</Button> :
@@ -111,6 +112,7 @@ class SetupActs extends Component {
                     <tr>
                         <th>Title</th>
                         <th>Type</th>
+                        <th>Author</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -138,6 +140,7 @@ class SetupActs extends Component {
                     <tr>
                         <th>Title</th>
                         <th>Type</th>
+                        <th>Author</th>
                         <th></th>
                     </tr>
                     </thead>
