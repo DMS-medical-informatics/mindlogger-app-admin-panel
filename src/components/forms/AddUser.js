@@ -6,12 +6,12 @@ import {isRequired} from './validation'
 
 const roleOptions = [
     {
-        value: 'clinician',
-        label: 'Clinician'
+        value: 'admin',
+        label: 'Admin'
     },
     {
-        value: 'patient',
-        label: 'Patient'
+        value: 'user',
+        label: 'User'
     },
     {
         value: 'viewer',

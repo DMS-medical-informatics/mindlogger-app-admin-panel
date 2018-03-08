@@ -198,7 +198,7 @@ export default class AnswerBase extends Component {
             <div className="activity-info">
               <h4>Taken at : {moment(answer.updated_at).format('llll')}</h4>
               <h4>Activity Type: {answer.act.type}</h4>
-              <h4>Patient: {answer.user && answer.user.first_name}</h4>
+              <h4>User: {answer.user && answer.user.first_name}</h4>
             </div>
               {this.renderActivity(answer)}
             <div>

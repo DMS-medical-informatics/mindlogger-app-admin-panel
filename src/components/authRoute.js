@@ -4,8 +4,8 @@ import { connect } from "react-redux"
 import { Route, Redirect } from "react-router-dom"
 
 export const pathsByRole = {
-  clinician: ["/users", "/answers"],
-  patient: ["/profile"],
+  admin: ["/users", "/answers"],
+  user: ["/profile"],
   viewer: ["/dashboard", "/users"]
 }
 
@@ -20,9 +20,7 @@ class AuthRoute extends React.Component {
     
     if (role.includes('admin')) {
 
-    } else if (role == 'clinician') {
-
-    } else if (role == 'patient' || role == 'viewer') {
+    } else if (role == 'user' || role == 'viewer') {
       let paths = pathsByRole[role]
       redirectPath = (paths && paths.some(item => props.location.pathname.startsWith(item))) ? false : '/'
     } else {
