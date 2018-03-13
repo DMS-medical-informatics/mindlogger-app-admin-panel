@@ -71,20 +71,24 @@ class Users extends Component {
                     <Table responsive bordered>
                         <thead>
                         <tr>
+                            <th>ID</th>
+                            { user.role === 'super_admin' && <th>Email</th> }
                             <th>Name</th>
                             <th>Role</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {users.map((user, index) => (
+                        {users.map((member, index) => (
                             <tr key={index}>
-                            <td>{user.first_name} {user.last_name}</td>
-                            <td>{user.role}</td>
+                            <td>{member.id}</td>
+                            { user.role === 'super_admin' && (<td>{member.email}</td>) }
+                            <td>{member.first_name} {member.last_name}</td>
+                            <td>{member.role}</td>
                             <td>
-                                <LinkContainer to={`/users/${user.id}/setup`}><Button bsStyle="info">Activities</Button></LinkContainer>
+                                <LinkContainer to={`/users/${member.id}/setup`}><Button bsStyle="info">Activities</Button></LinkContainer>
                                 {" "}
-                                <Button bsStyle="info" onClick={() => this.viewAnswers(user)}>Answers</Button>
+                                <Button bsStyle="info" onClick={() => this.viewAnswers(member)}>Answers</Button>
                             </td>
                             </tr>
                         ))}
@@ -95,7 +99,7 @@ class Users extends Component {
                         items={total_pages} maxButtons={5} activePage={page}
                         onSelect={this.selectPage} />
                     </div>}
-                    {user.role.includes('admin') && <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>}
+                    {user.role === 'super_admin' && <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>}
                 </Panel>
             </Col>
             </Row>
