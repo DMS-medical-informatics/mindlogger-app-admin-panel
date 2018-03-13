@@ -20,13 +20,22 @@ class SurveyEditQuestionForm extends Component {
 
     renderRows = ({fields, meta: {error, submitFailed}}) => {
       return (<div>
-          <Row>
-          {fields.map((member,index) => (
-            <Col md={4} key={index}><Field placeholder={`Choice ${index+1}`} name={`${member}.text`} type="text" component={InputFieldWithButton} onAction={() => fields.remove(index)} actionIcon={"trash"}/></Col>
+            {fields.map((member,index) => (
+                <Row key={index}>
+                    <Col md={4}>
+                        <Field placeholder={`Choice ${index+1}`} name={`${member}.text`} type="text" component={InputField}/>
+                    </Col>
+                    <Col md={4}>
+                        <Field placeholder={`Score`} name={`${member}.value`} type="text" component={InputField}/>
+                    </Col>
+                    <Col md={4}>
+                    <Button onClick={() => fields.remove(index)} bsStyle="danger"><Glyphicon glyph={'trash'}/></Button>
+                    </Col>
+                </Row>
+                
           ))}
           
-          <Col md={4}><Button onClick={()=> fields.push({text:'', value:fields.length})}>Add choice</Button></Col>
-          </Row>
+          <Button onClick={()=> fields.push({text:'', value:fields.length})}>Add choice</Button>
           
         </div>)
     }
