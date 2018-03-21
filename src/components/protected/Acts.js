@@ -18,7 +18,7 @@ import { prepareAct } from '../../helpers/index';
 
 const ITEMS_PER_PAGE = 10
 
-const mapDispatchToProps = { addAct, getActs, deleteAct, submit }
+const mapDispatchToProps = { addAct, getActs, deleteAct, updateAct, submit }
 
 const mapStateToProps = (state, ownProps) => ({
     acts: state.entities.acts,
@@ -29,7 +29,7 @@ const mapStateToProps = (state, ownProps) => ({
 class Acts extends Component {
     componentWillMount() {
         const {getActs} = this.props;
-        this.setState({name: ''})
+        this.setState({name: '', page: 1})
         getActs(0,ITEMS_PER_PAGE)
     }
     onChangeName = (event) => {

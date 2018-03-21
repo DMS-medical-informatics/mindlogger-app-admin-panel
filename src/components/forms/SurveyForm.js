@@ -37,7 +37,7 @@ class SurveyForm extends Component {
                 <Field name="instruction" type="text" label="Instruction" placeholder='' component={InputField} />
                 {/* <Field name="audio_path" type="text" stackedLabel label="Audio instruction" component={FormInputAudio} /> */}
                 <Field name="mode" label="Mode" componentClass="select" component={InputField} options={modeOptions}/>
-                <Field name="accordion" label="Accordion style survey?" componentClass="select" component={InputField} options={accordionOptions}/>
+                <Field name="accordion" label="Accordion style survey?" parse={value => value == "true"} componentClass="select" component={InputField} options={accordionOptions}/>
                 <Field name="frequency" componentClass="select" component={InputField} options={frequencyOptions} label="Frequency" placeholder="" validate={isRequired} />
             </form>
         )
