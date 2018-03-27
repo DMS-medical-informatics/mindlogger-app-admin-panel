@@ -8,6 +8,7 @@ import { InputField, InputFieldWithButton } from '../../forms/FormItems';
 import { isRequired } from '../../forms/validation';
 import ImageBrowser from '../../forms/ImageBrowser';
 import '../../forms/form.css';
+import ImageField from '../../forms/ImageField';
 
 class SurveyEditQuestionForm extends Component {
 
@@ -68,6 +69,8 @@ class SurveyEditQuestionForm extends Component {
                 return (<FieldArray name="rows" component={this.renderRows} />)
             case 'image_sel':
                 return (<FieldArray name="images" component={this.renderImageRows} value={this.state.images || []} />)
+            case 'drawing':
+                return (<Field name="image_url" label="Image" component={ImageField} />)
             default:
                 return false
         }
@@ -117,7 +120,9 @@ class SurveyEditQuestionForm extends Component {
                         { label: "Text", value: "text" },
                         { label: "Choice", value: "single_sel" },
                         { label: "Multiple", value: "multi_sel" },
-                        { label: "Image", value: "image_sel" }
+                        { label: "Image", value: "image_sel" },
+                        { label: "Drawing", value: "drawing" },
+                        { label: "Audio", value: "audio" },
                     ]} validate={isRequired} />
                 {this.renderExtraFields(question_type)}
                 {this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onSelectImage={this.onSelectImage} />}
@@ -127,7 +132,7 @@ class SurveyEditQuestionForm extends Component {
                         <Field
                             name="condition_question_index"
                             component={InputField}
-                            parse={value => Number(value)}
+                            parse={value => value && Number(value)}
                             componentClass="select"
                             placeholder="Condition"
                             options={[
