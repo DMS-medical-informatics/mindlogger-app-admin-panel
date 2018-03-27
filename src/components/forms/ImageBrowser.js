@@ -6,11 +6,10 @@ import { S3_IMAGE_BUCKET } from '../../constants/index';
 import { getFiles } from '../../actions/api';
 
 const S3_REGION = 'us-east-1'
-
+const IMAGE_AB_PATH = 'images/'
 class ImageBrowser extends Component {
     componentWillMount() {
-        let path = 'images/'
-        this.setState({path})
+        this.setState({path: IMAGE_AB_PATH})
         this.props.getFiles('')
         
     }
@@ -21,6 +20,7 @@ class ImageBrowser extends Component {
     folderSelect(item) {
         let {path} = this.state
         path = item.file
+        console.log(item)
         this.setState({path})
     }
 
@@ -44,7 +44,7 @@ class ImageBrowser extends Component {
         files.forEach(file => {
             let arr = file.split("/")
             if (file != path && file.startsWith(path) && (arr.length - count <= 1)) {
-                let item = {path: `https://${S3_IMAGE_BUCKET}.s3.amazonaws.com/${file}`}
+                let item = {path: `https://${S3_IMAGE_BUCKET}.s3.amazonaws.com/${file}`, file}
                 if (file.endsWith("/")) {
                     item.is_folder = true
                     item.name = arr[arr.length-2]
@@ -58,6 +58,12 @@ class ImageBrowser extends Component {
         <section>
             {loading && <img src="//assets.okfn.org/images/icons/ajaxload-circle.gif" />}
             <Row>
+                { IMAGE_AB_PATH != path &&
+                <Col md={2} className="image-cell">
+                    <Image src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human-folder.svg" onClick={() => this.upFolder()}/>
+                    <p>..</p>
+                </Col>
+                }
                 {list.map( (item, idx) => 
                     item.is_folder ? (<Col md={2} className="image-cell" key={idx}>
                         <Image src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human-folder.svg" onClick={() => this.folderSelect(item)}/>

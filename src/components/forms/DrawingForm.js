@@ -29,7 +29,7 @@ class DrawingForm extends Component {
                 <Field name="title" type="text" label="Title" validate={isRequired} component={InputField} />
                 <Field name="instruction" type="text" label="Instruction" placeholder='' component={InputField} />
                 {/* <Field name="audio_path" type="text" stackedLabel label="Audio instruction" component={FormInputAudio} /> */}
-                <Field name="image" label="Image" component={ImageField} />
+                <Field name="image_url" label="Image" component={ImageField} />
                 <Field name="frequency" componentClass="select" component={InputField} options={frequencyOptions} label="Frequency" placeholder="" validate={isRequired} />
             </form>
         )
