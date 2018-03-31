@@ -5,7 +5,7 @@ import { submit } from 'redux-form';
 import {withRouter} from 'react-router'
 import Dropzone from 'react-dropzone'
 import firebase from 'firebase'
-import {Row, Panel, Table, Button, Modal, Pagination} from 'react-bootstrap'
+import {Row, Panel, Table, Button, Modal, Pagination, Col} from 'react-bootstrap'
 import Papa from 'papaparse';
 
 import { addAct, getActs, deleteAct, updateAct } from '../../actions/api';
@@ -137,7 +137,6 @@ class Acts extends Component {
             </Modal.Footer>
         </Modal>)
     }
-
     onResult = (results, file) => {
         const {addAct, actType} = this.props;
         let acts = convertToActivity(results.data, actType);
