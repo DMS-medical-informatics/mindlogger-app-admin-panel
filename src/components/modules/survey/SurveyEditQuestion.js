@@ -68,6 +68,7 @@ class SurveyEditQuestionForm extends Component {
             case 'multi_sel':
                 return (<FieldArray name="rows" component={this.renderRows} />)
             case 'image_sel':
+            case 'image_sort':
                 return (<FieldArray name="images" component={this.renderImageRows} value={this.state.images || []} />)
             case 'drawing':
                 return (<Field name="image_url" label="Image" component={ImageField} />)
@@ -123,6 +124,9 @@ class SurveyEditQuestionForm extends Component {
                         { label: "Image", value: "image_sel" },
                         { label: "Drawing", value: "drawing" },
                         { label: "Audio", value: "audio" },
+                        { label: "Camera", value: "camera" },
+                        { label: "Sort Image", value: "image_sort" },
+                        { label: "Accelorometer", value: "acc" },
                     ]} validate={isRequired} />
                 {this.renderExtraFields(question_type)}
                 {this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onSelectImage={this.onSelectImage} />}
