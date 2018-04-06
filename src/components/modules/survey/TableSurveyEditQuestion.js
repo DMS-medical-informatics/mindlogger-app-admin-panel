@@ -6,6 +6,7 @@ import { Row, Col, Button, Glyphicon, Image} from 'react-bootstrap';
 import {reduxForm, Field, formValueSelector, FieldArray, submit, reset} from 'redux-form';
 import { isRequired } from '../../../helpers/index';
 import { InputField, InputFieldWithButton } from '../../forms/FormItems';
+import ImageBrowser from '../../forms/ImageBrowser';
 
 
 class SurveyTableEditQuestionForm extends Component {
@@ -53,7 +54,7 @@ class SurveyTableEditQuestionForm extends Component {
 
     onSelectImage = (item, imagePath) => {
         if(item) {
-             this.imageInput.onChange(item.image_url)
+             this.imageInput.onChange(item.path)
         }
         this.setState({imagePath, imageSelect:false})
         
@@ -85,7 +86,7 @@ class SurveyTableEditQuestionForm extends Component {
                     {label:"Image selection", value: "image_sel"},
                 ]} validate={isRequired}/>
                 <FieldArray name="cols" label="Col" count={this.props.cols_count} component={ type == 'image_sel' ? this.renderImageRows : this.renderRows} value={cols}/>
-                {/* { this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onSelectImage={this.onSelectImage}/> } */}
+                { this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onFile={this.onSelectImage}/> }
             </form>)
     }
 }

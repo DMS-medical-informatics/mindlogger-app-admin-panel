@@ -44,17 +44,18 @@ class SurveyEditQuestionForm extends Component {
 
     renderImageRows = ({ fields, meta: { error, submitFailed } }) => {
         let images = fields.getAll() || []
+        console.log(images);
         return (<div>
             {images.map((item, index) => (
                 <Row key={index}>
-                    <Col md={3}>
-                        <Image thumbnail src={{ uri: item.image_url }} />
+                    <Col md={2}>
+                        <Image thumbnail src={item.image_url} />
                     </Col>
-                    <Col md={6}>
+                    <Col md={8}>
                         {item.name}
                     </Col>
-                    <Col md={3}>
-                        <Button transparent onClick={() => fields.remove(index)}><Glyphicon glyph="trash" /></Button>
+                    <Col md={2}>
+                        <Button onClick={() => fields.remove(index)}><Glyphicon glyph="trash" /></Button>
                     </Col>
                 </Row>
             ))}
@@ -84,7 +85,7 @@ class SurveyEditQuestionForm extends Component {
 
     onSelectImage = (item, imagePath) => {
         if (item) {
-            this.imageFields.push(item)
+            this.imageFields.push({image_url: item.path, name: item.name})
         }
         this.setState({ imagePath, imageSelect: false })
 
@@ -129,7 +130,7 @@ class SurveyEditQuestionForm extends Component {
                         { label: "Accelorometer", value: "acc" },
                     ]} validate={isRequired} />
                 {this.renderExtraFields(question_type)}
-                {this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onSelectImage={this.onSelectImage} />}
+                {this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onFile={this.onSelectImage} />}
                 <Row>
                     <Col xs={4}>Conditional Question</Col>
                     <Col xs={4}>

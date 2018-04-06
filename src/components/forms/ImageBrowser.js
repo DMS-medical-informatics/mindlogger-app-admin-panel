@@ -14,7 +14,7 @@ class ImageBrowser extends Component {
         
     }
     imageSelect(image) {
-        this.props.onFile(image)
+        this.props.onFile(image, this.state.path)
     }
 
     folderSelect(item) {
