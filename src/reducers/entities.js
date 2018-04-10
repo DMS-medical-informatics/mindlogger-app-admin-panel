@@ -32,6 +32,11 @@ const entities = (state = {}, action) => {
                     ...state,
                     auth: action.response.user
                 }
+            case types.CHANGE_PROFILE:
+                return {
+                    ...state,
+                    auth: {...state.auth, ...action.response.user}
+                }
             case types.SIGN_OUT:
                 return {
                     ...state,

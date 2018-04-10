@@ -6,6 +6,9 @@ import {isRequired} from './validation'
 
 const roleOptions = [
     {
+        label: 'Choose one'
+    },
+    {
         value: 'admin',
         label: 'Admin'
     },

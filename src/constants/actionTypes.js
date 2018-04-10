@@ -5,6 +5,7 @@ export const SIGN_OUT = 'LOG_OUT';
 export const CHANGE_PASSWORD = 'CHANGE_PASSWORD';
 export const RESET_PASSWORD = 'RESET_PASSWORD';
 export const FORGOT_PASSWORD = 'FORGOT_PASSWORD';
+export const CHANGE_PROFILE = 'CHANGE_PROFILE';
 // User management
 export const GET_USER = 'GET_USER';
 export const POST_USER = 'POST_USER';

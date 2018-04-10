@@ -16,6 +16,7 @@ import Header from './Header'
 import SetupActs from './protected/SetupActs';
 import Acts from './protected/Acts';
 import EditSurvey from './modules/survey/EditSurvey';
+import Profile from './protected/Profile';
 
 export default class App extends Component {
   componentDidMount () {
@@ -40,6 +41,7 @@ export default class App extends Component {
                 <AuthRoute path='/users/:id/answers' component={Answers} />
                 <AuthRoute path='/users/:id/setup' component={SetupActs} />
                 <AuthRoute path='/users' component={Users} />
+                <AuthRoute path='/profile' component={Profile} />
                 <AuthRoute path='/acts' component={Acts} />
                 <AuthRoute path='/surveys/:id' component={EditSurvey} />
                 

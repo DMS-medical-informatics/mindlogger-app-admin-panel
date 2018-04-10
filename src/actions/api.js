@@ -17,11 +17,11 @@ export const signup = (body) => ({
     body,
 });
 
-export const createProfile = (body) => ({
-    type: types.PUT_USER,
-    method: 'PUT',
-    path: '/user',
-    body,
+export const changeProfile = (body) => ({
+  type: types.CHANGE_PROFILE,
+  method: 'PUT',
+  path: '/user',
+  body,
 });
 
 export const changePassword = (body) => ({

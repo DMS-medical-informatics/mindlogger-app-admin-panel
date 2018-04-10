@@ -52,11 +52,12 @@ class Header extends Component {
             {authed &&
             <Nav pullRight>
               <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
+              <LinkContainer to="/take"><NavItem>Take</NavItem></LinkContainer>
               <LinkContainer to="/users"><NavItem>Users</NavItem></LinkContainer>
               <LinkContainer to="/acts"><NavItem>Activities</NavItem></LinkContainer>
               
               <NavDropdown id="dropdownId" title={`Hi, ${auth.first_name}`}>
-                <LinkContainer eventKey="1" to="/"><NavItem>Profile</NavItem></LinkContainer>
+                <LinkContainer eventKey="1" to="/profile"><NavItem>Profile</NavItem></LinkContainer>
                 <NavItem eventKey="2" onClick={this.onSignout}>Logout</NavItem>
               </NavDropdown>
             </Nav>
