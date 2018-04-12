@@ -138,6 +138,21 @@ export const getAnsweredActs = (userId) => ({
   path: `/users/${userId}/answered_acts`
 })
 
+/*------- organizations ------*/
+
+export const getOrganizations = (offset, limit) => ({
+  type: types.GET_LIST,
+  method: 'GET',
+  path: `/organizations?${generateQuery({offset, limit})}`
+})
+
+export const addOrganization = (body) => ({
+  type: types.ADD_ORGANIZATION,
+  method: 'POST',
+  path: '/organizations',
+  body,
+})
+
 /*------- files ------- */
 
 export const getFiles = (path) => ({

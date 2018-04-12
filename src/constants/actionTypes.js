@@ -24,3 +24,5 @@ export const DELETE_ACT = 'DELETE_ACT';
 // FILE
 export const POST_FILE = 'POST_FILE';
 export const DELETE_FILE = 'DELETE_FILE';
+// ORGANIZATION
+export const ADD_ORGANIZATION = 'ADD_ORGANIZATION';

@@ -1,34 +1,42 @@
-import React, { Component } from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { submit } from 'redux-form'
-import { withRouter } from 'react-router'
-import {BarChart} from 'recharts'
-import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { Field, reduxForm, submit } from 'redux-form';
+import { withRouter } from 'react-router';
+import {BarChart} from 'recharts';
+import {Row, Col, Panel, Table, Pagination, Button, Modal, FormGroup, FormControl} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-import { getUsers, inviteUser } from "../../actions/api"
+import { InputField } from '../forms/FormItems';
+import { isRequired, isValidEmail} from '../forms/validation';
+
+import { getOrganizations, addOrganization } from "../../actions/api"
 import AddUser from '../forms/AddUser';
-class Users extends Component {
+
+const AddOrganization = reduxForm({
+    form: 'add-organization-form'
+})(({handleSubmit, pristine, submitting}) => (
+    <form onSubmit={ handleSubmit }>
+        <Field name="name" type="text" component={InputField} label="Name" placeholder="" validate={isRequired} />
+    </form>
+));
+
+class Organizations extends Component {
     
     componentWillMount() {
-        this.props.getUsers(0, 10)
+        this.props.getOrganizations(0, 10)
         this.setState({page:1})
     }
+
     selectPage = (page) => {
         this.setState({page})
-        this.props.getUsers((page-1)*10, 10)
+        this.props.getOrganizations((page-1)*10, 10)
     }
 
-    viewAnswers = (user) => {
-        const {history} = this.props
-        history.push(`/users/${user.id}/answers`)
-    }
-
-    onAddUser = (body) => {
-        return this.props.inviteUser(body).then( res => {
+    onAddOrganization = (body) => {
+        return this.props.addOrganization(body).then( res => {
             this.close()
-            return this.props.getUsers(0, 10)
+            return this.props.getOrganizations(0, 10)
         })
     }
 
@@ -36,23 +44,23 @@ class Users extends Component {
         this.setState({form: ''})
     }
 
-    renderInviteUserModal = () => {
-        return (<Modal show={this.state.form == 'user'} onHide={this.close}>
+    renderOrganizationModal = () => {
+        return (<Modal show={this.state.form == true} onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>Invite User</Modal.Title>
+          <Modal.Title>Add Organization</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddUser onSubmit={this.onAddUser} />
+          <AddOrganization onSubmit={this.onAddOrganization} />
         </Modal.Body>
         <Modal.Footer>
-            <Button bsStyle="primary" onClick={() => this.props.submit('add-user-form')}>Submit</Button>
+            <Button bsStyle="primary" onClick={() => this.props.submit('add-organization-form')}>Add</Button>
             <Button onClick={this.close}>Close</Button>
         </Modal.Footer>
       </Modal>)
     }
     
     render () {
-        const {users, total_count, user} = this.props
+        const {organizations, total_count, user} = this.props
         const total_pages = total_count/10+1
         const {page} = this.state
         
@@ -62,52 +70,45 @@ class Users extends Component {
         // ]
         return (
         <div>
-            <h2 className="text-center">Users</h2>
+            <h2 className="text-center">Organizations</h2>
 
             <Row>
             <Col xs={12}>
-                <Panel header="Users">
-                    { users &&
+                <Panel header="Organizations">
+                    { organizations &&
                     <Table responsive bordered>
                         <thead>
                         <tr>
                             <th>ID</th>
-                            { user.role === 'super_admin' && <th>Email</th> }
                             <th>Name</th>
-                            <th>Organization</th>
-                            <th>Role</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
-                        {users.map((member, index) => (
+                        {organizations.map((member, index) => (
                             <tr key={index}>
                             <td>{member.id}</td>
-                            { user.role === 'super_admin' && (<td>{member.email}</td>) }
-                            <td>{member.first_name} {member.last_name}</td>
-                            <td>{member.organization && member.organization.name}</td>
-                            <td>{member.role}</td>
+                            <td>{member.name}</td>
                             <td>
-                                <LinkContainer to={`/users/${member.id}/setup`}><Button bsStyle="info">Activities</Button></LinkContainer>
                                 {" "}
-                                <Button bsStyle="info" onClick={() => this.viewAnswers(member)}>Answers</Button>
+                                {/* <Button bsStyle="info" onClick={() => this.viewAnswers(member)}>Answers</Button> */}
                             </td>
                             </tr>
                         ))}
                         </tbody>
                     </Table> }
-                    {users && <div>
+                    {organizations && <div>
                         <Pagination prev next first last boundaryLinks
                         items={total_pages} maxButtons={5} activePage={page}
                         onSelect={this.selectPage} />
                     </div>}
-                    {user.role === 'super_admin' && <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>}
+                    {user.role === 'super_admin' && <Button onClick={() => this.setState({form:true})}>Add Organization</Button>}
                 </Panel>
             </Col>
             </Row>
             <Row>
             <Col xs={10} xsOffset={1}>
-            {this.renderInviteUserModal()}
+            {this.renderOrganizationModal()}
             </Col>
             </Row>
         </div>
@@ -115,11 +116,11 @@ class Users extends Component {
     }
 }
 const mapDispatchToProps = {
-    getUsers, inviteUser, submit
+    getOrganizations, addOrganization, submit
 }
   
 const mapStateToProps = (state) => ({
-    users: state.entities.users,
+    organizations: state.entities.organizations,
     total_count: state.entities.paging && state.entities.paging.total || 0,
     user: state.entities.auth || {},
 })
@@ -127,4 +128,4 @@ const mapStateToProps = (state) => ({
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withRouter
-)(Users)
+)(Organizations)

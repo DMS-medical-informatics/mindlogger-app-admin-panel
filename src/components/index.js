@@ -17,6 +17,7 @@ import SetupActs from './protected/SetupActs';
 import Acts from './protected/Acts';
 import EditSurvey from './modules/survey/EditSurvey';
 import Profile from './protected/Profile';
+import Organizations from './protected/Organizations';
 
 export default class App extends Component {
   componentDidMount () {
@@ -44,7 +45,7 @@ export default class App extends Component {
                 <AuthRoute path='/profile' component={Profile} />
                 <AuthRoute path='/acts' component={Acts} />
                 <AuthRoute path='/surveys/:id' component={EditSurvey} />
-                
+                <AuthRoute path='/organizations' component={Organizations} />
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
             </div>
