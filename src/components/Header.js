@@ -53,8 +53,14 @@ class Header extends Component {
             <Nav pullRight>
               <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to="/take"><NavItem>Take</NavItem></LinkContainer>
-              <LinkContainer to="/users"><NavItem>Users</NavItem></LinkContainer>
-              <LinkContainer to="/acts"><NavItem>Activities</NavItem></LinkContainer>
+              <NavDropdown title="Manage">
+                { auth.role == 'super_admin' && (<LinkContainer to="/organizations"><NavItem>Organizations</NavItem></LinkContainer>)}
+                <LinkContainer to="/users"><NavItem>Users</NavItem></LinkContainer>
+              </NavDropdown>
+              <NavDropdown title="Resource">
+                <LinkContainer to="/acts"><NavItem>Activities</NavItem></LinkContainer>
+                <LinkContainer to="/images"><NavItem>Images</NavItem></LinkContainer>
+              </NavDropdown>
               
               <NavDropdown id="dropdownId" title={`Hi, ${auth.first_name}`}>
                 <LinkContainer eventKey="1" to="/profile"><NavItem>Profile</NavItem></LinkContainer>
