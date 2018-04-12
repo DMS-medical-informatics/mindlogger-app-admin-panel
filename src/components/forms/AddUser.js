@@ -29,7 +29,7 @@ class AddUser extends Component {
         this.setState({name:event.target.value})
     }
     render () {
-        const {handleSubmit} = this.props
+        const {handleSubmit, organizations} = this.props
         return (
             <form onSubmit={ handleSubmit }>
                 <Field name="first_name" type="text" component={InputField} label="First Name" placeholder="" validate={isRequired} />
@@ -37,6 +37,7 @@ class AddUser extends Component {
                 <Field name="email" type="email" component={InputField} label="Email" placeholder="" validate={isRequired} />
                 <Field name="password" type="password" component={InputField} label="Password" placeholder="" validate={isRequired} />
                 <Field name="role" componentClass="select" component={InputField} options={roleOptions} label="Role" placeholder="" validate={isRequired} />
+                {organizations && (<Field name="organization_id" componentClass="select" component={InputField} options={organizations.map((item) => ({value: item.id, label: item.name}))} label="Organization" placeholder="" validate={isRequired} />)}
             </form>
         )
     }

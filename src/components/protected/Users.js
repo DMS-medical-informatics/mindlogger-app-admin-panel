@@ -7,13 +7,15 @@ import {BarChart} from 'recharts'
 import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 
-import { getUsers, inviteUser } from "../../actions/api"
+import { getUsers, inviteUser, getOrganizations } from "../../actions/api"
 import AddUser from '../forms/AddUser';
 class Users extends Component {
     
     componentWillMount() {
-        this.props.getUsers(0, 10)
-        this.setState({page:1})
+        this.props.getUsers(0, 10);
+        if (this.props.user.role == 'super_admin')
+            this.props.getOrganizations();
+        this.setState({page:1});
     }
     selectPage = (page) => {
         this.setState({page})
@@ -37,12 +39,15 @@ class Users extends Component {
     }
 
     renderInviteUserModal = () => {
+        const {organizations, user} = this.props;
         return (<Modal show={this.state.form == 'user'} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Invite User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddUser onSubmit={this.onAddUser} />
+            { user.role == 'super_admin' ? 
+            (<AddUser onSubmit={this.onAddUser} organizations={this.props.organizations} />) : (<AddUser onSubmit={this.onAddUser}/>)}
+          
         </Modal.Body>
         <Modal.Footer>
             <Button bsStyle="primary" onClick={() => this.props.submit('add-user-form')}>Submit</Button>
@@ -101,7 +106,7 @@ class Users extends Component {
                         items={total_pages} maxButtons={5} activePage={page}
                         onSelect={this.selectPage} />
                     </div>}
-                    {user.role === 'super_admin' && <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>}
+                    {(user.role === 'super_admin' || user.role === 'admin') && <Button onClick={() => this.setState({form:'user'})}>Invite User</Button>}
                 </Panel>
             </Col>
             </Row>
@@ -115,11 +120,12 @@ class Users extends Component {
     }
 }
 const mapDispatchToProps = {
-    getUsers, inviteUser, submit
+    getUsers, inviteUser, submit, getOrganizations
 }
   
 const mapStateToProps = (state) => ({
     users: state.entities.users,
+    organizations: state.entities.organizations || [],
     total_count: state.entities.paging && state.entities.paging.total || 0,
     user: state.entities.auth || {},
 })
