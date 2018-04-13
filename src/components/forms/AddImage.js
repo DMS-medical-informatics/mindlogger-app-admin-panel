@@ -1,6 +1,5 @@
 import React,{Component} from 'react'
 import Dropzone from 'react-dropzone'
-import firebase from 'firebase'
 import {FormGroup, FormControl} from 'react-bootstrap'
 
 class AddImage extends Component {

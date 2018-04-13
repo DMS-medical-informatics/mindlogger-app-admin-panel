@@ -20,6 +20,11 @@ const entities = (state = {}, action) => {
                 ...state,
                 auth ,
             }
+        case types.SET_DATA:
+            return {
+                ...state,
+                ...action.data,
+            }
         default:
             break;
     }

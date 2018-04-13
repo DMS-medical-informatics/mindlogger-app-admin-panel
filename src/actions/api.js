@@ -138,6 +138,18 @@ export const getAnsweredActs = (userId) => ({
   path: `/users/${userId}/answered_acts`
 })
 
+export const saveAnswer = (actId, actData, answerData) => ({
+  type: types.SAVE_ANSWER,
+  method: 'POST',
+  path: '/answers',
+  body: {
+      act_id:actId,
+      act_data:actData,
+      answer_data:answerData,
+      platform: 'web'
+  }
+})
+
 /*------- organizations ------*/
 
 export const getOrganizations = (offset, limit) => ({

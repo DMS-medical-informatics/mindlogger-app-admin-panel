@@ -15,6 +15,8 @@ import AuthRoute from './authRoute'
 import Header from './Header'
 import SetupActs from './protected/SetupActs';
 import Acts from './protected/Acts';
+import TakeActs from './protected/TakeActs';
+import TakeAct from './protected/TakeAct';
 import EditSurvey from './modules/survey/EditSurvey';
 import Profile from './protected/Profile';
 import Organizations from './protected/Organizations';
@@ -44,6 +46,8 @@ export default class App extends Component {
                 <AuthRoute path='/users' component={Users} />
                 <AuthRoute path='/profile' component={Profile} />
                 <AuthRoute path='/acts' component={Acts} />
+                <AuthRoute path='/take/:actId' component={TakeAct} />
+                <AuthRoute path='/take' component={TakeActs} />
                 <AuthRoute path='/surveys/:id' component={EditSurvey} />
                 <AuthRoute path='/organizations' component={Organizations} />
                 <Route render={() => <h3>No Match</h3>} />

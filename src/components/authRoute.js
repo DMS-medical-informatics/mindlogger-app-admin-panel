@@ -5,7 +5,7 @@ import { Route, Redirect } from "react-router-dom"
 
 export const pathsByRole = {
   admin: ["/users", "/answers"],
-  user: ["/profile"],
+  user: ["/profile", "/take"],
   viewer: ["/dashboard", "/users"]
 }
 
