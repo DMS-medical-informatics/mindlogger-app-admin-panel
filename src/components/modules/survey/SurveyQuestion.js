@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col, Panel, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import randomString from 'random-string';
@@ -85,8 +85,8 @@ class SurveyQuestion extends Component {
 
   prevQuestion = () => {
     this.saveChange();
-    let {questionIndex, survey:{questions}} = this.props
-    let {answers} = this.props
+    let {questionIndex} = this.state;
+    let {answers, survey:{questions}} = this.props
     for(questionIndex=questionIndex-1; questionIndex>=0; questionIndex--)
     {
       let { condition_question_index, condition_choice } = questions[questionIndex];
@@ -104,13 +104,8 @@ class SurveyQuestion extends Component {
   renderHeader() {
     const { act } = this.props
     return (<div>
-        <Button onClick={() => this.prevQuestion()}>
-            Back
-        </Button>
         <h3>{act.title}</h3>
-        <Button onClick={() => this.nextQuestion()}>
-            Next
-        </Button>
+        
     </div>);
   }
 
@@ -144,6 +139,7 @@ class SurveyQuestion extends Component {
           comp = (<SurveyImageSelector onSelect={this.onInputAnswer} data={{question, answer}}/>);
           break;
         case 'drawing':
+          console.log(answer);
           scroll = false;
           comp = (
           <div>
@@ -189,13 +185,12 @@ class SurveyQuestion extends Component {
       comp = (<SurveyTableInput onSelect={this.onInputAnswer} data={{question, answer}}/>);
     }
 
-    return (<div>
+    return (<Panel header={`${index}/${length}`}>
       {comp}
       <div>
         {/* <Progress.Bar progress={progressValue} width={null} height={20}/> */}
-        <p>{`${index}/${length}`}</p>
       </div>
-      </div>);
+      </Panel>);
   }
 
   saveDrawing = () => {
@@ -243,6 +238,14 @@ class SurveyQuestion extends Component {
       <div>
         { this.renderHeader() }
         { this.renderContent() }
+        <ButtonGroup>
+            <Button onClick={() => this.prevQuestion()}>
+                Back
+            </Button>
+            <Button onClick={() => this.nextQuestion()}>
+                Next
+            </Button>
+        </ButtonGroup>
       </div>
     )
   }

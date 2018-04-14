@@ -41,7 +41,7 @@ class SurveyToggleSelector extends SurveyInputComponent {
           (<Col size={1} key={idx}>
             <View >
               <Text numberOfLines={5}>{row.text}</Text>
-              <CheckBox onPress={() => this.checkValue(row.value)} checked={answer.includes(row.value)} />
+              <CheckBox onClick={() => this.checkValue(row.value)} checked={answer.includes(row.value)} />
             </View>
           </Col>)
         )}
@@ -58,7 +58,7 @@ class SurveyToggleSelector extends SurveyInputComponent {
         </Grid>
         <View style={baseTheme.centerCol}>
         <View style={baseTheme.paddingView}>
-          <Button onPress={() => this.selectAnswer(answer)}><Text>Submit</Text></Button>
+          <Button onClick={() => this.selectAnswer(answer)}><Text>Submit</Text></Button>
         </View>
         </View>
       </View>

@@ -29,7 +29,7 @@ class SurveyTableEditQuestionForm extends Component {
     }
 
     renderImageComponent = ({input}) => {
-        return (<Button transparent onPress={() => this.showImageBrowser(input) }>{input.value ? <Image src={{uri: input.value}} /> : <Glyphicon name="image" />}</Button>)
+        return (<Button onClick={() => this.showImageBrowser(input) }>{input.value ? <Image src={{uri: input.value}} /> : <Glyphicon name="image" />}</Button>)
     }
 
     renderImageRows = ({fields,label, count, meta: {error, submitFailed}}) => {

@@ -19,6 +19,13 @@ export default class DrawingBoard extends Component {
 
     componentDidMount() {
         document.addEventListener("mouseup", this.handleMouseUp);
+        const {lines} = this.props;
+        if(lines) {
+            console.log(lines);
+            const width = this.refs.drawArea.getBoundingClientRect().width;
+            let linesList = new Immutable.List(lines.map(line => (new Immutable.List(line.points.map( point => ({x:point.x*width/100, y: point.y*width/100, time: point.time}))))));
+            this.setState({lines: linesList})
+        }
     }
 
     componentWillUnmount() {
@@ -86,15 +93,14 @@ export default class DrawingBoard extends Component {
         const {lines, start_time} = this.state;
         const width = this.refs.drawArea.getBoundingClientRect().width;
         let results = lines.map(line => ({
-            ...line,
             points: line.map( point => ({
                 ...point,
                 x: point.x/width*100,
                 y: point.y/width*100
-                }))
+                })).toArray()
             })
-        )
-        return {results, start_time}
+        ).toArray();
+        return {lines: results, start_time}
     }
 }
 

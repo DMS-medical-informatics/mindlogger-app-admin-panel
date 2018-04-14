@@ -63,13 +63,13 @@ class SurveyTableInput extends SurveyInputComponent {
             case 'text':
                 return (<div key={colIdx} className='text-input' ><input placeholder='' onChange={(value)=>this.onTextInput(value, rowIdx, colIdx)} value={answer[rowIdx][colIdx]}/></div>)
             case 'number':
-                return (<Button style={{width:'100%'}} delayLongPress={600} onPress={() => this.onNumberAdd(1, rowIdx,colIdx)} onLongPress={() => this.onNumberAdd(-1, rowIdx, colIdx)}>{answer[rowIdx][colIdx]}</Button>)
+                return (<Button style={{width:'100%'}} delayLongPress={600} onClick={() => this.onNumberAdd(1, rowIdx,colIdx)} onLongPress={() => this.onNumberAdd(-1, rowIdx, colIdx)}>{answer[rowIdx][colIdx]}</Button>)
             case 'single_sel':
-                return (<Button onPress={() => this.onChoiceSelect(rowIdx, colIdx) }><input type='radio' selected={answer[rowIdx] == colIdx} onPress={() => this.onChoiceSelect(rowIdx, colIdx) }/></Button>)
+                return (<Button onClick={() => this.onChoiceSelect(rowIdx, colIdx) }><input type='radio' selected={answer[rowIdx] == colIdx} onClick={() => this.onChoiceSelect(rowIdx, colIdx) }/></Button>)
             case 'multi_sel':
-                return (<div onPress={() => this.onMultiSelect(rowIdx, colIdx) }><input type='checkbox' checked={answer[rowIdx][colIdx]} onPress={() => this.onMultiSelect(rowIdx, colIdx) } /></div>)
+                return (<div onClick={() => this.onMultiSelect(rowIdx, colIdx) }><input type='checkbox' checked={answer[rowIdx][colIdx]} onClick={() => this.onMultiSelect(rowIdx, colIdx) } /></div>)
             case 'image_sel':
-                return (<div key={colIdx} onPress={() => {
+                return (<div key={colIdx} onClick={() => {
                     this.onChoiceSelect(rowIdx, colIdx)
                   }}>
                   <img style={answer[rowIdx] == colIdx ? { ...this.imageStyle, borderWidth: 3, borderColor: '#ee5555'} : this.imageStyle} source={{uri: question.cols[colIdx].image_url}}/>

@@ -53,7 +53,6 @@ class TakeAct extends Component {
         return (
             <div>
                 <SurveyQuestion />
-                
             </div>
         );
     }
