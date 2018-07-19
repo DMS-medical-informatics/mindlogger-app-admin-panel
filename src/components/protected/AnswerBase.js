@@ -106,6 +106,8 @@ export default class AnswerBase extends Component {
             return answer[rowIdx][colIdx] && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
           case 'image_sel':
             return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] == colIdx ? "selected-image" : "" } height="50px" alt={answer[rowIdx]}/>
+          case 'image_multi_sel':
+            return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] && answer[rowIdx].includes(colIdx) ? "selected-image" : "" } height="50px" alt={answer[rowIdx]}/>
           default:
             break
     }

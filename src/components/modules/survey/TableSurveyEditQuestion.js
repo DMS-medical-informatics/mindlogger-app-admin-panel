@@ -75,17 +75,18 @@ class SurveyTableEditQuestionForm extends Component {
                 <Field name="type"
                 label="For Columns"
                 componentClass="select"
-                component ={InputFieldWithButton}
+                component = {InputFieldWithButton}
                 placeholder = "Response type"
-                options   ={[
+                options   = {[
                     {label:"Response Type", value:undefined},
                     {label:"Text value",value:"text"},
                     {label:"Number #",value:"number"},
                     {label:"Single selection",value:"single_sel"},
                     {label:"Multiple selection",value:"multi_sel"},
                     {label:"Image selection", value: "image_sel"},
+                    {label:"Multiple image selection", value: "image_multi_sel"},
                 ]} validate={isRequired}/>
-                <FieldArray name="cols" label="Col" count={this.props.cols_count} component={ type == 'image_sel' ? this.renderImageRows : this.renderRows} value={cols}/>
+                <FieldArray name="cols" label="Col" count={this.props.cols_count} component={ type == 'image_sel' || type == 'image_multi_sel' ? this.renderImageRows : this.renderRows} value={cols}/>
                 { this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onFile={this.onSelectImage}/> }
             </form>)
     }

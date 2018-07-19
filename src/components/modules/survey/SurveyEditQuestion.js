@@ -69,6 +69,7 @@ class SurveyEditQuestionForm extends Component {
             case 'multi_sel':
                 return (<FieldArray name="rows" component={this.renderRows} />)
             case 'image_sel':
+            case 'image_multi_sel':
             case 'image_sort':
                 return (<FieldArray name="images" component={this.renderImageRows} value={this.state.images || []} />)
             case 'drawing':
@@ -94,8 +95,8 @@ class SurveyEditQuestionForm extends Component {
 
     render() {
         const { handleSubmit, onSubmit, submitting, reset, questions, condition_question_index } = this.props;
-        let question_type = this.props.question_type || (this.props.initialValues && this.props.initialValues.type)
-        let condition_rows
+        let question_type = this.props.question_type || (this.props.initialValues && this.props.initialValues.type);
+        let condition_rows;
         if (condition_question_index > -1) {
             let question = questions[condition_question_index]
             switch (question.type) {
@@ -104,6 +105,7 @@ class SurveyEditQuestionForm extends Component {
                     condition_rows = question.rows
                     break;
                 case 'image_sel':
+                case 'image_multi_sel':
                     condition_rows = question.images
                     break;
                 default:
@@ -123,6 +125,7 @@ class SurveyEditQuestionForm extends Component {
                         { label: "Choice", value: "single_sel" },
                         { label: "Multiple", value: "multi_sel" },
                         { label: "Image", value: "image_sel" },
+                        { label: "Multiple Image", value: "image_multi_sel" },
                         { label: "Drawing", value: "drawing" },
                         { label: "Audio", value: "audio" },
                         { label: "Camera", value: "camera" },
