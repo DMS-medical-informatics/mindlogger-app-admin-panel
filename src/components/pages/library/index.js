@@ -12,6 +12,7 @@ import {
   Pagination,
   Button,
   Modal,
+  Form,
   FormGroup,
   FormControl
 } from "react-bootstrap";
@@ -27,16 +28,49 @@ import plus from './plus.svg';
 const AddVolumeForm = reduxForm({
   form: "add-organization-form"
 })(({ handleSubmit, pristine, submitting }) => (
-  <form onSubmit={handleSubmit}>
+  <Form onSubmit={handleSubmit} horizontal>
+    <Field
+      name="short_name"
+      type="text"
+      component={InputField}
+      label="Short Name"
+      placeholder=""
+      validate={isRequired}
+    />
     <Field
       name="name"
       type="text"
       component={InputField}
-      label="Name"
+      label="Full Name"
       placeholder=""
       validate={isRequired}
     />
-  </form>
+    <Field
+      name="description"
+      type="text"
+      componentClass="textarea"
+      component={InputField}
+      label="Description"
+      placeholder=""
+      validate={isRequired}
+    />
+    <Field
+      name="logo"
+      type="file"
+      component={InputField}
+      label="Logo"
+      placeholder=""
+      validate={isRequired}
+    />
+    <center>
+    <Button
+      bsStyle="primary"
+      type="submit"
+    >
+      Save
+    </Button>
+    </center>
+  </Form>
 ));
 
 class Home extends Component {
@@ -61,24 +95,16 @@ class Home extends Component {
     this.setState({ form: "" });
   };
 
-  renderOrganizationModal = () => {
+  renderAddVolumeModal = () => {
     return (
       <Modal show={this.state.form == true} onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Organization</Modal.Title>
+          <Modal.Title>Add Volume</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <p>Create a new Volume of Activities. Mindlogger will create a cross-platform app with these Activities.</p>
           <AddVolumeForm onSubmit={this.onAddOrganization} />
         </Modal.Body>
-        <Modal.Footer>
-          <Button
-            bsStyle="primary"
-            onClick={() => this.props.submit("add-organization-form")}
-          >
-            Add
-          </Button>
-          <Button onClick={this.close}>Close</Button>
-        </Modal.Footer>
       </Modal>
     );
   };
@@ -102,13 +128,13 @@ class Home extends Component {
           <div className="volume">
             <span>HBN</span>
           </div>
-          <div className="plus-button">
+          <div className="plus-button" onClick={() => this.setState({form: true})}>
             <img src={plus} />
           </div>
         </div>
         <Row>
           <Col xs={10} xsOffset={1}>
-            {this.renderOrganizationModal()}
+            {this.renderAddVolumeModal()}
           </Col>
         </Row>
       </div>

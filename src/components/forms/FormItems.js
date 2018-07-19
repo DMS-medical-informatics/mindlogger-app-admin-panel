@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormGroup, FormControl, ControlLabel, HelpBlock, InputGroup, Button, Glyphicon } from 'react-bootstrap'
+import { FormGroup, FormControl, Col, ControlLabel, HelpBlock, InputGroup, Button, Glyphicon } from 'react-bootstrap'
 
 export const InputField = ({
   input,
@@ -13,13 +13,17 @@ export const InputField = ({
   meta: { touched, error, warning }
 }) => (
   <FormGroup validationState={touched && error ? 'error' : null}>
-    {label && (<ControlLabel>{label}</ControlLabel>) }
+    <Col sm={4}>
+      {label && (<ControlLabel>{label}</ControlLabel>) }
+    </Col>
+    <Col sm={8}>
     <FormControl readOnly={readOnly} {...input} placeholder={placeholder} type={type} componentClass={componentClass} required={required}>
       {componentClass === 'select' && options ? options.map((item, index) => (
         <option key={index} value={item.value}>{item.label}</option>
       )) : undefined}
     </FormControl>
     {touched && error && <HelpBlock>{error}</HelpBlock>}
+    </Col>
   </FormGroup>
 )
 

@@ -3,9 +3,9 @@
   align-content: center;
   justify-content: center;
   .plus-button, .volume {
-    width: 180px;
-    height: 180px;
-    margin:45px;
+    width: 7.5rem;
+    height: 7.5rem;
+    margin:2rem;
     cursor: pointer;
   }
   .volume {
@@ -14,16 +14,19 @@
     justify-content: center;
     text-align: center;
     background: #8C8C8C;
-    border: 5px solid #000000;
-    border-radius: 10px;
+    border: 0.2rem solid #000000;
+    border-radius: 0.7rem;
     color: white;
-    font-size: 36px;
+    font-size: 1.5rem;
     &:hover {
       background: #97E2EF;
       color: black;
     }
   }
   .plus-button {
-    padding:30px;
+    padding:1.25rem;
+    img {
+      width: 5rem;
+    }
   }
 }

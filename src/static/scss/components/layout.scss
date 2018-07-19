@@ -5,12 +5,16 @@
   }
   .navbar-brand, .navbar-nav > li > a {
     color: white;
-    font-size: 30px;
+    font-size: 1.25rem;
     font-weight: lighter;
-    line-height: 30px;
   }
   .navbar-brand {
     text-transform: uppercase;
     
   }
+}
+
+.modal-header{
+  color: white;
+  background: #0067A0;
 }
