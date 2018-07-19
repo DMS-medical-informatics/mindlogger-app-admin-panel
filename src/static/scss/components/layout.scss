@@ -1,0 +1,16 @@
+.navbar-default {
+  &.navbar-blue {
+    color: white;
+    background: #0067A0;
+  }
+  .navbar-brand, .navbar-nav > li > a {
+    color: white;
+    font-size: 30px;
+    font-weight: lighter;
+    line-height: 30px;
+  }
+  .navbar-brand {
+    text-transform: uppercase;
+    
+  }
+}

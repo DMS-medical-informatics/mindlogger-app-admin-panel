@@ -13,3 +13,6 @@ build
 .DS_Store
 .env
 npm-debug.log
+
+# main.css is compiled file from scss, so should be ignored
+/src/static/css

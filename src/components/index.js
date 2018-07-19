@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import {Provider} from 'react-redux';
 
+import '../static/css/app.css';
+
 import Login from './Login';
 import Register from './Register';
 import Home from './Home';
@@ -19,6 +21,8 @@ import TakeAct from './protected/TakeAct';
 import EditSurvey from './modules/survey/EditSurvey';
 import Profile from './protected/Profile';
 import Organizations from './protected/Organizations';
+
+import Library from './pages/library';
 
 export default class App extends Component {
   componentDidMount () {
@@ -50,6 +54,7 @@ export default class App extends Component {
                 <AuthRoute path='/take' component={TakeActs} />
                 <AuthRoute path='/surveys/:id' component={EditSurvey} />
                 <AuthRoute path='/organizations' component={Organizations} />
+                <Route path='/library' component={Library}/>
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
             </div>

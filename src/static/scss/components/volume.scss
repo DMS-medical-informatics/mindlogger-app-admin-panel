@@ -1,0 +1,29 @@
+.volumes {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  .plus-button, .volume {
+    width: 180px;
+    height: 180px;
+    margin:45px;
+    cursor: pointer;
+  }
+  .volume {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background: #8C8C8C;
+    border: 5px solid #000000;
+    border-radius: 10px;
+    color: white;
+    font-size: 36px;
+    &:hover {
+      background: #97E2EF;
+      color: black;
+    }
+  }
+  .plus-button {
+    padding:30px;
+  }
+}

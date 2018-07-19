@@ -39,10 +39,10 @@ class Header extends Component {
       //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
       // ]
       return (
-          <Navbar collapseOnSelect>
+          <Navbar className="navbar-blue" collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">Child Mind Institue</Link>
+              <Link to="/">MindLogger</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
