@@ -15,7 +15,6 @@ import Answers from './protected/Answers';
 import AuthRoute from './authRoute';
 import Header from './Header';
 import SetupActs from './protected/SetupActs';
-import Acts from './protected/Acts';
 import TakeActs from './protected/TakeActs';
 import TakeAct from './protected/TakeAct';
 import EditSurvey from './modules/survey/EditSurvey';

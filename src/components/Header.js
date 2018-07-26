@@ -1,10 +1,9 @@
 
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import {Navbar, NavItem, Button, NavDropdown, Nav, MenuItem} from 'react-bootstrap'
-import { LinkContainer, IndexLinkContainer } from 'react-router-bootstrap'
-import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
-import {compose} from 'redux'
+import { connect } from 'react-redux';
+import {Navbar, NavItem, NavDropdown, Nav, MenuItem} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 import {withRouter} from 'react-router'
 
 import {signout} from '../actions/api'
@@ -63,7 +62,7 @@ class Header extends Component {
               <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to="/take"><NavItem>Take</NavItem></LinkContainer>
               <NavDropdown id="manageId" title="Manage">
-                { auth.role == 'super_admin' && (<LinkContainer eventKey="1" to="/organizations"><NavItem>Organizations</NavItem></LinkContainer>)}
+                { auth.role === 'super_admin' && (<LinkContainer eventKey="1" to="/organizations"><NavItem>Organizations</NavItem></LinkContainer>)}
                 <LinkContainer eventKey="2" to="/users"><NavItem>Users</NavItem></LinkContainer>
               </NavDropdown>
               <NavDropdown id="resourceId" title="Resource">

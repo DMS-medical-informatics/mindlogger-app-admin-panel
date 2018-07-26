@@ -13,13 +13,8 @@ import Screens from './screens';
 
 class EditAct extends Component {
   componentWillMount() {
-    this.setState({index: 1});
+
   }
-
-  selectScreen = index => {
-    this.setState({ index });
-  };
-
 
   close = e => {
     this.setState({ form: "" });
@@ -40,7 +35,6 @@ class EditAct extends Component {
   };
 
   render() {
-    const { index } = this.state;
 
     // let data = [
     //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
@@ -53,7 +47,7 @@ class EditAct extends Component {
           Settings
         </Tab>
         <Tab eventKey={2} title="Screens">
-          <Screens />
+          <Screens/>
         </Tab>
         <Button>Submit</Button>
       </Tabs>

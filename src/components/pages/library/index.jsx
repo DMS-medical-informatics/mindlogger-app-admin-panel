@@ -1,25 +1,18 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, submit } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import { withRouter } from "react-router";
-import { BarChart } from "recharts";
 import {
   Row,
   Col,
-  Panel,
-  Table,
-  Pagination,
   Button,
   Modal,
   Form,
-  FormGroup,
-  FormControl
 } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
 
 import { InputField } from "../../forms/FormItems";
-import { isRequired, isValidEmail } from "../../forms/validation";
+import { isRequired } from "../../forms/validation";
 
 //import { getVolumes, addVolume } from "../../../actions/api"
 
@@ -97,7 +90,7 @@ class Home extends Component {
 
   renderAddVolumeModal = () => {
     return (
-      <Modal show={this.state.form == true} onHide={this.close}>
+      <Modal show={this.state.form} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Add Volume</Modal.Title>
         </Modal.Header>
@@ -110,14 +103,6 @@ class Home extends Component {
   };
 
   render() {
-    const { organizations, total_count, user } = this.props;
-    const total_pages = total_count / 10 + 1;
-    const { page } = this.state;
-
-    // let data = [
-    //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
-    //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
-    // ]
     return (
       <div>
         <div className="volumes">
@@ -128,7 +113,7 @@ class Home extends Component {
             <span>HBN</span>
           </div>
           <div className="plus-button" onClick={() => this.setState({form: true})}>
-            <img src={plus} />
+            <img src={plus} alt="plus"/>
           </div>
         </div>
         <Row>
