@@ -120,7 +120,6 @@ class Home extends Component {
     // ]
     return (
       <div>
-        <h2 className="text-center">Organizations</h2>
         <div className="volumes">
           <div className="volume">
             <span>TEST</span>

@@ -21,8 +21,8 @@ import TakeAct from './protected/TakeAct';
 import EditSurvey from './modules/survey/EditSurvey';
 import Profile from './protected/Profile';
 import Organizations from './protected/Organizations';
-
 import Library from './pages/library';
+import EditAct from './pages/acts/edit';
 
 export default class App extends Component {
   componentDidMount () {
@@ -49,12 +49,13 @@ export default class App extends Component {
                 <AuthRoute path='/users/:id/setup' component={SetupActs} />
                 <AuthRoute path='/users' component={Users} />
                 <AuthRoute path='/profile' component={Profile} />
-                <AuthRoute path='/acts' component={Acts} />
+                {/* <AuthRoute path='/acts' component={Acts} /> */}
                 <AuthRoute path='/take/:actId' component={TakeAct} />
                 <AuthRoute path='/take' component={TakeActs} />
                 <AuthRoute path='/surveys/:id' component={EditSurvey} />
                 <AuthRoute path='/organizations' component={Organizations} />
                 <Route path='/library' component={Library}/>
+                <Route path='/acts/new' component={EditAct}/>
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
             </div>

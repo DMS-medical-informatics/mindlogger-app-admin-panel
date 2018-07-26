@@ -1,8 +1,6 @@
-.navbar-default {
-  &.navbar-blue {
-    color: white;
-    background: #0067A0;
-  }
+.navbar-default.navbar-blue {
+  color: white;
+  background: #0067A0;
   .navbar-brand, .navbar-nav > li > a {
     color: white;
     font-size: 1.25rem;
@@ -12,9 +10,40 @@
     text-transform: uppercase;
     
   }
+  .navbar-nav > li > a {
+    &:hover, &:focus {
+      color: #aaf;
+    }
+  }
+  .navbar-nav > .open > a {
+    &, &:hover, &:focus {
+      color: white;
+      background: #0067A0;
+    }
+  }
 }
 
 .modal-header{
   color: white;
   background: #0067A0;
 }
+
+.page-title {
+  text-align: center;
+  font-size: 1.25rem;
+  position: absolute;
+  //z-index: -1;
+  top: 15px;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-tabs {
+  text-align: right;
+  > li {
+    display:inline-block;
+    float:none;
+  }
+}
+

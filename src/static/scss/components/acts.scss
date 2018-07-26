@@ -1,0 +1,21 @@
+
+// Edit Act
+
+.edit-act {
+  font-size: 1.5rem;
+  .screens {
+    display: flex;
+    .bookmarks {
+      width: 218px;
+      background-color: #4c4b4b;
+      .subtitle {
+        color: white;
+        text-align: center;
+      }
+    }
+    .screen {
+      flex-grow: 1;
+      padding: 20px 40px;
+    }
+  }
+}

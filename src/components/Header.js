@@ -31,7 +31,7 @@ class Header extends Component {
       })
     }
     render () {
-      let {auth} = this.props
+      let {auth, pageTitle} = this.props
       let authed = auth && auth.access_token ? true : false
       
       // let data = [
@@ -48,8 +48,17 @@ class Header extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
+              <NavDropdown id="resourceId" title="HBN Menu">
+                <LinkContainer eventKey="1" to="/acts"><NavItem>Go to Web App</NavItem></LinkContainer>
+                <LinkContainer eventKey="2" to="/images"><NavItem>View User Data</NavItem></LinkContainer>
+                <LinkContainer eventKey="3" to="/acts"><NavItem>Edit Activities</NavItem></LinkContainer>
+                <MenuItem disabled>Manage Users</MenuItem>
+                <LinkContainer eventKey="5" to="/acts"><NavItem>&nbsp; Viewers</NavItem></LinkContainer>
+                <LinkContainer eventKey="6" to="/images"><NavItem>&nbsp; Editors</NavItem></LinkContainer>
+                <LinkContainer eventKey="6" to="/images"><NavItem>&nbsp; Managers</NavItem></LinkContainer>
+              </NavDropdown>
             </Nav>
-            {authed &&
+            {false && authed &&
             <Nav pullRight>
               <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to="/take"><NavItem>Take</NavItem></LinkContainer>
@@ -79,6 +88,9 @@ class Header extends Component {
               </LinkContainer>
               </Nav>)}
           </Navbar.Collapse>
+          <div className="page-title">
+            {pageTitle}
+          </div>
           </Navbar>
       )
     }
@@ -88,7 +100,8 @@ const mapDispatchToProps = {
 }
   
 const mapStateToProps = (state) => ({
-    auth: state.entities.auth
+    auth: state.entities.auth,
+    pageTitle: state.entities.pageTitle,
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
