@@ -15,7 +15,21 @@
     }
     .screen {
       flex-grow: 1;
-      padding: 20px 40px;
+      padding: 20px 0px 20px 40px;
     }
   }
+  .section-title {
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+.num-input-wrapper {
+  .form-control{
+    display: inline-block;
+    width: 60px;
+  }
+}
+
+.form-control-auto .form-control{
+  width: auto;
 }

@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm, submit } from "redux-form";
 import { withRouter } from "react-router";
-import { BarChart } from "recharts";
 import {
   Button,
   Modal,
   Tab, Tabs
 } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
 
 import Screens from './screens';
 //import { getVolumes, addVolume } from "../../../actions/api"
@@ -30,7 +27,7 @@ class EditAct extends Component {
 
   renderAddVolumeModal = () => {
     return (
-      <Modal show={this.state.form == true} onHide={this.close}>
+      <Modal show={this.state.form} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Add Volume</Modal.Title>
         </Modal.Header>
@@ -51,7 +48,7 @@ class EditAct extends Component {
     // ]
     return (
       <section className="edit-act">
-      <Tabs defaultActiveKey={2}>
+      <Tabs id="edit-act-tabs" defaultActiveKey={2}>
         <Tab eventKey={1} title="Settings">
           Settings
         </Tab>

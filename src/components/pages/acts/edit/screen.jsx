@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import {Row, Col} from 'react-bootstrap';
+
+import ScreenForm from './screen-form';
 
 export default class Screen extends Component {
   render() {
@@ -6,9 +9,10 @@ export default class Screen extends Component {
       <div className="screen">
         <a href="#display">Screen display</a>
         <br/>
-        <a href="#activity">Screen Activity</a>
+        <a href="#survey">Survey</a>
         <br/>
-        <a href="#canvas">Canvas activity</a>
+        <a href="#canvas">Canvas</a>
+        <ScreenForm />
       </div>
     );
   }
