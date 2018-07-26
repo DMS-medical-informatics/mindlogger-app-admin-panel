@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
@@ -10,9 +10,6 @@ import { S3_IMAGE_BUCKET } from '../../../../constants/index';
 
 
 class SurveyPhotoInput extends SurveyInputComponent {
-  constructor(props) {
-    super(props);
-  }
 
   componentWillMount() {
     this.setState({});
@@ -25,7 +22,7 @@ class SurveyPhotoInput extends SurveyInputComponent {
 
   savePhoto = () => {
     const {file} = this.state;
-    const {postFile, selectAnswer} = this.props;
+    const {postFile} = this.props;
     let timestamp = Math.floor(Date.now());
     let filename = `${timestamp}_${randomString({length:20})}_`+file.name;
     let formData = new FormData();
@@ -49,7 +46,7 @@ class SurveyPhotoInput extends SurveyInputComponent {
     return (
       <section>
         <Dropzone accept="image/jpeg, image/png" onDrop={this.onDrop} multiple={false}>
-            <img src={file && file.preview} style={{width: '100%'}}/>
+            <img src={file && file.preview} style={{width: '100%'}} alt="preview"/>
         </Dropzone>
         <Button onClick={this.savePhoto} disabled={!file}>Save</Button>
       </section>

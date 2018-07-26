@@ -33,8 +33,8 @@ export default class DrawingBoard extends Component {
     }
 
     handleMouseDown(mouseEvent) {
-        if (mouseEvent.button != 0) {
-        return;
+        if (mouseEvent.button !== 0) {
+            return;
         }
 
         let {start_time} = this.state;

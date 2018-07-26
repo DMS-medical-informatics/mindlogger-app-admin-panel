@@ -1,14 +1,9 @@
-import React, { Component } from 'react'
-import {Modal, Button, Table, Glyphicon} from 'react-bootstrap'
-import moment from 'moment'
-import FileSaver from 'file-saver'
+import React, { Component } from 'react';
+import {Modal, Button, Table, Glyphicon} from 'react-bootstrap';
+import moment from 'moment';
+import FileSaver from 'file-saver';
 
-import './Answers.css'
-import { getTimestamp } from '../../helpers';
-
-function currentTime() {
-  return (new Date()).getTime()
-}
+import './Answers.css';
 
 export default class AnswerBase extends Component {
 
@@ -101,11 +96,11 @@ export default class AnswerBase extends Component {
           case 'number':
             return answer[rowIdx][colIdx]
           case 'single_sel':
-            return answer[rowIdx] == colIdx && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
+            return answer[rowIdx] === colIdx && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
           case 'multi_sel':
             return answer[rowIdx][colIdx] && (<Glyphicon glyph="glyphicon glyphicon-ok" />)
           case 'image_sel':
-            return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] == colIdx ? "selected-image" : "" } height="50px" alt={answer[rowIdx]}/>
+            return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] === colIdx ? "selected-image" : "" } height="50px" alt={answer[rowIdx]}/>
           case 'image_multi_sel':
             return <img src={question.cols[colIdx].image_url} className={answer[rowIdx] && answer[rowIdx].includes(colIdx) ? "selected-image" : "" } height="50px" alt={answer[rowIdx]}/>
           default:
@@ -118,12 +113,12 @@ export default class AnswerBase extends Component {
     this.setState({answer_data})
     if(this.intervalId)
       clearInterval(this.intervalId)
-    this.startTime = currentTime()
+    this.startTime = Date.now()
     const {lines} = answer_data
     const {points} = lines[lines.length-1]
     this.endTime = points[points.length-1].time
     this.intervalId = setInterval(() => {
-      const time = currentTime() - this.startTime
+      const time = Date.now() - this.startTime
       if(this.endTime<time) {
         clearInterval(this.intervalId)
         this.setState({time: undefined})
@@ -171,7 +166,7 @@ export default class AnswerBase extends Component {
     } else if(act.type === 'drawing') {
       return (
         <div className="drawboard-container">
-          <img src={act_data.image_url} className="drawboard-image" />
+          <img src={act_data.image_url} className="drawboard-image"  alt="dashboard"/>
           <div className="drawboard">
               <svg width="300" height="300">
               {answer_data.lines.map(this.renderLine)}
@@ -190,7 +185,7 @@ export default class AnswerBase extends Component {
   }
 
   renderAnswerDialog() {
-    const {answer, users} = this.state
+    const {answer} = this.state
     return (
         <Modal show={this.state.showModal} onHide={this.close}>
             <Modal.Header closeButton>

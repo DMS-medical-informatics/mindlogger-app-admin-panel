@@ -1,9 +1,8 @@
 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Row, Col, Button, Glyphicon, Image} from 'react-bootstrap';
-import {reduxForm, Field, formValueSelector, FieldArray, submit, reset} from 'redux-form';
+import {reduxForm, Field, formValueSelector, FieldArray} from 'redux-form';
 import { isRequired } from '../../../helpers/index';
 import { InputField, InputFieldWithButton } from '../../forms/FormItems';
 import ImageBrowser from '../../forms/ImageBrowser';
@@ -11,11 +10,8 @@ import ImageBrowser from '../../forms/ImageBrowser';
 
 class SurveyTableEditQuestionForm extends Component {
 
-    constructor(props) {
-      super(props)
-    }
     componentWillMount() {
-        this.setState({})
+        this.setState({});
     }
     renderRows = ({fields, label, count, meta: {error, submitFailed}}) => {
         return (<div>
@@ -25,11 +21,11 @@ class SurveyTableEditQuestionForm extends Component {
             ))}
             </Row>
             
-          </div>)
+          </div>);
     }
 
     renderImageComponent = ({input}) => {
-        return (<Button onClick={() => this.showImageBrowser(input) }>{input.value ? <Image src={{uri: input.value}} /> : <Glyphicon name="image" />}</Button>)
+        return (<Button onClick={() => this.showImageBrowser(input) }>{input.value ? <Image src={{uri: input.value}} /> : <Glyphicon name="image" />}</Button>);
     }
 
     renderImageRows = ({fields,label, count, meta: {error, submitFailed}}) => {
@@ -44,28 +40,27 @@ class SurveyTableEditQuestionForm extends Component {
                     </Col>
                 </Row>
             ))}
-          </div>)
+          </div>);
     }
 
     showImageBrowser(input) {
-        this.imageInput = input
-        this.setState({imageSelect:true})
+        this.imageInput = input;
+        this.setState({imageSelect:true});
     }
 
     onSelectImage = (item, imagePath) => {
         if(item) {
-             this.imageInput.onChange(item.path)
+             this.imageInput.onChange(item.path);
         }
-        this.setState({imagePath, imageSelect:false})
+        this.setState({imagePath, imageSelect:false});
         
     }
 
     render() {
-        const { handleSubmit, onSubmit, submitting, reset, initialValues } = this.props;
-        let {rows, cols, type} = this.props
-        let question_type = this.props.question_type || (initialValues && initialValues.type)
+        const { handleSubmit, submitting } = this.props;
+        let {rows, cols, type} = this.props;
         return (
-            <form>
+            <form onSubmit={handleSubmit} disabled={submitting}>
                 <Field name="title" type="text" placeholder="Add a question" validate={isRequired} component={InputField} />
                 <Row>
                     <Col md={4}><Field name="rows_count" type="number" label="Number of rows" min={1} component={InputField} /></Col>
@@ -86,9 +81,9 @@ class SurveyTableEditQuestionForm extends Component {
                     {label:"Image selection", value: "image_sel"},
                     {label:"Multiple image selection", value: "image_multi_sel"},
                 ]} validate={isRequired}/>
-                <FieldArray name="cols" label="Col" count={this.props.cols_count} component={ type == 'image_sel' || type == 'image_multi_sel' ? this.renderImageRows : this.renderRows} value={cols}/>
+                <FieldArray name="cols" label="Col" count={this.props.cols_count} component={ type === 'image_sel' || type === 'image_multi_sel' ? this.renderImageRows : this.renderRows} value={cols}/>
                 { this.state.imageSelect && <ImageBrowser path={this.state.imagePath} onFile={this.onSelectImage}/> }
-            </form>)
+            </form>);
     }
 }
 
@@ -99,15 +94,16 @@ const SurveyTableEditQuestionReduxForm = reduxForm({
   forceUnregisterOnUnmount: true
 })(SurveyTableEditQuestionForm)
 const expandFields = (fields, count) => {
+    let i;
     if(fields.length>count) {
-        for(var i=0;i<fields.length-count;i++)
+        for(i=0;i<fields.length-count;i++)
         {
-            fields.pop()
+            fields.pop();
         }
     } else if(fields.length<count) {
-        for(var i=0;i<count-fields.length;i++)
+        for(i=0;i<count-fields.length;i++)
         {
-            fields.push({})
+            fields.push({});
         }
     }
     return fields
@@ -115,12 +111,12 @@ const expandFields = (fields, count) => {
 const selector = formValueSelector('survey-table-edit-question')
 const SurveyTableEditQuestionValueForm = connect(
   state => {
-    let {rows_count, cols_count, rows, cols, type} = selector(state, 'rows_count', 'cols_count', 'rows', 'cols', 'type')
-    rows = rows || []
-    rows = expandFields(rows, rows_count)
-    cols = cols || []
-    cols = expandFields(cols, cols_count)
-    return {rows_count, cols_count, rows, cols, type}
+    let {rows_count, cols_count, rows, cols, type} = selector(state, 'rows_count', 'cols_count', 'rows', 'cols', 'type');
+    rows = rows || [];
+    rows = expandFields(rows, rows_count);
+    cols = cols || [];
+    cols = expandFields(cols, cols_count);
+    return {rows_count, cols_count, rows, cols, type};
   }
 )(SurveyTableEditQuestionReduxForm)
 
@@ -133,24 +129,24 @@ class SurveyTableEditQuestion extends Component {
         };
     }
     componentWillMount() {
-        this.setState({})
+        this.setState({});
     }
 
     render() {
-        let {questionIndex, act, onUpdate} = this.props
-        const survey = act.act_data
+        let {questionIndex, act, onUpdate} = this.props;
+        const survey = act.act_data;
         let question = {
             title: "",
             rows_count: 1,
             cols_count: 1,
             rows: [{text:''}],
             cols: [{text:''}],
-          }
-        survey.questions = survey.questions || []
+          };
+        survey.questions = survey.questions || [];
         if(questionIndex<survey.questions.length) {
-            question = survey.questions[questionIndex]
+            question = survey.questions[questionIndex];
         } else if(questionIndex>0) {
-            question = {...question, ...survey.questions[questionIndex-1], title: ''}
+            question = {...question, ...survey.questions[questionIndex-1], title: ''};
         }
         return (
         <div>
@@ -163,7 +159,7 @@ class SurveyTableEditQuestion extends Component {
 
 const mapDispatchToProps = (dispatch) => ({
   
-})
+});
 
 const mapStateToProps = state => ({
 

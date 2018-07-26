@@ -3,15 +3,12 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Field, reduxForm, submit } from 'redux-form';
 import { withRouter } from 'react-router';
-import {BarChart} from 'recharts';
-import {Row, Col, Panel, Table, Pagination, Button, Modal, FormGroup, FormControl} from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap';
 
 import { InputField } from '../forms/FormItems';
-import { isRequired, isValidEmail} from '../forms/validation';
+import { isRequired } from '../forms/validation';
 
 import { getOrganizations, addOrganization } from "../../actions/api"
-import AddUser from '../forms/AddUser';
 
 const AddOrganization = reduxForm({
     form: 'add-organization-form'
@@ -45,7 +42,7 @@ class Organizations extends Component {
     }
 
     renderOrganizationModal = () => {
-        return (<Modal show={this.state.form == true} onHide={this.close}>
+        return (<Modal show={this.state.form} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Add Organization</Modal.Title>
         </Modal.Header>
@@ -121,7 +118,7 @@ const mapDispatchToProps = {
   
 const mapStateToProps = (state) => ({
     organizations: state.entities.organizations,
-    total_count: state.entities.paging && state.entities.paging.total || 0,
+    total_count: (state.entities.paging && state.entities.paging.total) || 0,
     user: state.entities.auth || {},
 })
 

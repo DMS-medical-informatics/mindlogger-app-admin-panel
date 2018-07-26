@@ -2,25 +2,16 @@
 import React, { Component } from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import {formValues, getFormValues, reset, submit} from 'redux-form';
+import {reset, submit} from 'redux-form';
 import {withRouter} from 'react-router';
-import { Panel, Pagination, Row, Col, FormGroup, Button, ButtonToolbar, Well } from 'react-bootstrap';
+import { Panel, Pagination, Row, Col, Button, ButtonToolbar, Well } from 'react-bootstrap';
 
 import { updateAct, addAct } from '../../../actions/api';
-import { prepareAct } from '../../../helpers/index';
 import { LinkContainer } from 'react-router-bootstrap';
 import SurveyEditQuestion from './SurveyEditQuestion';
 import TableSurveyEditQuestion from './TableSurveyEditQuestion';
-const surveyInitial = {
-  questions:[],
-  frequency: '1d',
-}
 
 class EditSurvey extends Component {
-
-    constructor(props) {
-        super(props);
-    }
 
     updateAct = (act) => {
         const {updateAct, history} = this.props
@@ -34,7 +25,7 @@ class EditSurvey extends Component {
     componentWillMount() {
         let {acts, actId} = this.props
         if(actId !== undefined) {
-            const act = acts.find(obj => obj.id == actId) || this.props.act
+            const act = acts.find(obj => obj.id === actId) || this.props.act
             const survey = act.act_data
             this.setState({survey, act, questionIndex:0})
         } else {
@@ -43,7 +34,6 @@ class EditSurvey extends Component {
         this.nextIndex = 0;
     }
     updateQuestion = (body) => {
-        let {acts, user, onUpdate} = this.props
         let {questionIndex, act} = this.state
         const questions = act.act_data.questions || []
         if(questions.length>questionIndex) {
@@ -53,7 +43,7 @@ class EditSurvey extends Component {
         }
         act.questions = questions
         this.setState({act})
-        if(this.nextIndex == -1) {
+        if(this.nextIndex === -1) {
             this.updateAct(act)
         } else {
             this.loadQuestion(this.nextIndex)
@@ -76,7 +66,7 @@ class EditSurvey extends Component {
     }
 
     formName() {
-        return this.state.survey.mode == 'basic' ? 'survey-edit-question' : 'survey-table-edit-question'
+        return this.state.survey.mode === 'basic' ? 'survey-edit-question' : 'survey-table-edit-question'
     }
     updateAndNext = () => {
         this.nextIndex = this.state.questionIndex+1;
@@ -100,8 +90,7 @@ class EditSurvey extends Component {
 
     render() {
         const {survey, questionIndex, act} = this.state;
-        const {actIndex, acts, mode} = this.props
-        let title = act ? act.title : (survey.mode == 'table' ? "New Table Survey" : "New Survey" )
+        let title = act ? act.title : (survey.mode === 'table' ? "New Table Survey" : "New Survey" )
         const count = survey.questions.length
 
         return (
@@ -118,8 +107,8 @@ class EditSurvey extends Component {
                 activePage={questionIndex+1}
                 onSelect={this.selectQuestion}/>
                 <Well>
-                    {survey.mode == 'basic' && <SurveyEditQuestion act={act} questionIndex={questionIndex} onUpdate={this.updateQuestion}/> }
-                    {survey.mode == 'table' && <TableSurveyEditQuestion act={act} questionIndex={questionIndex} onUpdate={this.updateQuestion}/> }
+                    {survey.mode === 'basic' && <SurveyEditQuestion act={act} questionIndex={questionIndex} onUpdate={this.updateQuestion}/> }
+                    {survey.mode === 'table' && <TableSurveyEditQuestion act={act} questionIndex={questionIndex} onUpdate={this.updateQuestion}/> }
                     <ButtonToolbar>
                         <Button onClick={() => this.updateAndNext()}>Next</Button>
                         <Button bsStyle="danger" onClick={() => this.deleteQuestion()}>Delete</Button>

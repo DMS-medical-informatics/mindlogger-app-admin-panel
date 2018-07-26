@@ -1,15 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SurveyInputComponent from './SurveyInputComponent';
 
 class SurveyTextInput extends SurveyInputComponent {
-  constructor(props) {
-    super(props);
-  }
 
   componentWillMount() {
-    const { answer, question} = this.props.data
+    const { answer} = this.props.data
     this.setState({text: answer || ""})
   }
   onChange = ( text) => {
@@ -20,7 +17,7 @@ class SurveyTextInput extends SurveyInputComponent {
     this.selectAnswer(this.state.text || "")
   }
   render() {
-    const { answer, question} = this.props.data
+    const { question} = this.props.data
     return (
       <div>
         { !this.props.disableHeader && (<h4>{question.title}</h4>) }

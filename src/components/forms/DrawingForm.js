@@ -1,9 +1,8 @@
-import React,{Component} from 'react'
-import { Field, reduxForm } from 'redux-form'
-import {FormGroup, FormControl, Button} from 'react-bootstrap'
+import React,{Component} from 'react';
+import { Field, reduxForm } from 'redux-form';
 import { InputField } from './FormItems';
 import ImageField from './ImageField';
-import {isRequired} from './validation'
+import {isRequired} from './validation';
 
 const frequencyOptions = [
     {label:""},
@@ -23,7 +22,7 @@ class DrawingForm extends Component {
         this.setState({name:event.target.value})
     }
     render () {
-        const {handleSubmit, onSubmit, submitting, act} = this.props
+        const {handleSubmit} = this.props
         return (
             <form onSubmit={ handleSubmit }>
                 <Field name="title" type="text" label="Title" validate={isRequired} component={InputField} />

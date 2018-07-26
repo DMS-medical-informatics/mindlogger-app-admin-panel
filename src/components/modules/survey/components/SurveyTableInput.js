@@ -1,13 +1,10 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SurveyInputComponent from './SurveyInputComponent'
 //import styles from './styles'
 
 class SurveyTableInput extends SurveyInputComponent {
-    constructor(props) {
-        super(props);
-    }
 
     componentWillMount() {
         let {answer, question} = this.props.data
@@ -26,6 +23,8 @@ class SurveyTableInput extends SurveyInputComponent {
                     break;
                 case 'multi_sel':
                     answer = rows.map((row)=>cols.map( (col) => false ))
+                    break;
+                default:
                     break;
             }
         }
@@ -65,31 +64,24 @@ class SurveyTableInput extends SurveyInputComponent {
             case 'number':
                 return (<Button style={{width:'100%'}} delayLongPress={600} onClick={() => this.onNumberAdd(1, rowIdx,colIdx)} onLongPress={() => this.onNumberAdd(-1, rowIdx, colIdx)}>{answer[rowIdx][colIdx]}</Button>)
             case 'single_sel':
-                return (<Button onClick={() => this.onChoiceSelect(rowIdx, colIdx) }><input type='radio' selected={answer[rowIdx] == colIdx} onClick={() => this.onChoiceSelect(rowIdx, colIdx) }/></Button>)
+                return (<Button onClick={() => this.onChoiceSelect(rowIdx, colIdx) }><input type='radio' selected={answer[rowIdx] === colIdx} onClick={() => this.onChoiceSelect(rowIdx, colIdx) }/></Button>)
             case 'multi_sel':
                 return (<div onClick={() => this.onMultiSelect(rowIdx, colIdx) }><input type='checkbox' checked={answer[rowIdx][colIdx]} onClick={() => this.onMultiSelect(rowIdx, colIdx) } /></div>)
             case 'image_sel':
                 return (<div key={colIdx} onClick={() => {
                     this.onChoiceSelect(rowIdx, colIdx)
                   }}>
-                  <img style={answer[rowIdx] == colIdx ? { ...this.imageStyle, borderWidth: 3, borderColor: '#ee5555'} : this.imageStyle} source={{uri: question.cols[colIdx].image_url}}/>
+                  <img style={answer[rowIdx] === colIdx ? { ...this.imageStyle, borderWidth: 3, borderColor: '#ee5555'} : this.imageStyle} source={{uri: question.cols[colIdx].image_url}} alt={question.cols[colIdx].image_url}/>
                   </div>)
             default:
                   return (<div></div>)
       }
     }
     render() {
-        const { answer, question} = this.props.data
+        const { question} = this.props.data
         let height = 60
-        if(this.state.dimensions && question.type == 'image_sel') {
+        if(this.state.dimensions && question.type === 'image_sel') {
             height = this.state.dimensions.width/(question.cols.length + 1)
-        }
-        const cellStyle = {
-            height,
-            padding: 4,
-            alignItems: 'center',
-            alignContent: 'center',
-            justifyContent: 'center',
         }
         const rowStyle = {
             height

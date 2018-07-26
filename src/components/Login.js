@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { Field, reduxForm } from "redux-form"
 import { withRouter } from "react-router"
 
-import { isValidEmail, isRequired } from "../helpers"
+import { isRequired } from "../helpers"
 import { signin, forgotPassword } from "../actions/api"
 import { InputField } from "./forms/FormItems"
 function setErrorMsg(error) {

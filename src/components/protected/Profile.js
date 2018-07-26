@@ -3,10 +3,9 @@ import React, { Component } from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
-import { Panel, Row, Col, FormGroup, Button} from 'react-bootstrap';
+import { Panel } from 'react-bootstrap';
 
 import { changePassword, changeProfile } from '../../actions/api';
-import { LinkContainer } from 'react-router-bootstrap';
 
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { InputField } from '../forms/FormItems';
@@ -43,10 +42,6 @@ const PasswordForm = reduxForm({
 
 class Profile extends Component {
 
-    constructor(props) {
-        super(props);
-    }
-
     componentWillMount() {
         const {user} = this.props;
         console.log(user);
@@ -60,9 +55,8 @@ class Profile extends Component {
     }
 
     updatePassword = ({current_password, new_password, confirm_password}) => {
-        if (new_password != confirm_password) {
+        if (new_password !== confirm_password) {
             throw new SubmissionError({confirm_password: "New password does not match with confirm password"});
-            return;
         }
         return this.props.changePassword({new_password, current_password}).then(res => {
             console.log(res);

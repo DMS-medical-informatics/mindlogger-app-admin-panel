@@ -1,11 +1,9 @@
-import React, { Component } from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router'
-import {BarChart} from 'recharts'
-import {Row, Col, Panel, Table, Pagination, Button, Tabs, Tab} from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
-import { getAssignedActs, searchActs, assignAct, cancelAct } from "../../actions/api"
+import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import {Row, Col, Panel, Table, Pagination, Button, Tabs, Tab} from 'react-bootstrap';
+import { getAssignedActs, searchActs, assignAct, cancelAct } from "../../actions/api";
 const ACTS_PER_PAGE=10
 class SetupActs extends Component {
     
@@ -14,7 +12,7 @@ class SetupActs extends Component {
         this.setState({actDict: {}, page:1, key:1})
         searchActs('', 0, ACTS_PER_PAGE)
         getAssignedActs(userId)
-        let user = users.find( obj => obj.id == userId)
+        let user = users.find( obj => obj.id === userId)
         this.setState({user})
     }
 
@@ -35,9 +33,7 @@ class SetupActs extends Component {
     }
 
     renderRow = (act, index) => {
-        const {assignedActs} = this.props
         const {actDict} = this.state
-        var isIncluded = false
         return  (
             <tr key={index}>
                 <td>{act.title}</td>
@@ -97,7 +93,7 @@ class SetupActs extends Component {
     handleTabSelect = (key) => {
         const {getAssignedActs, userId} = this.props
         this.setState({key})
-        if (key == 1) {
+        if (key === 1) {
             getAssignedActs(userId)
         }
     }
@@ -165,7 +161,7 @@ const mapStateToProps = (state, ownProps) => ({
     users: state.entities.users,
     acts: state.entities.acts,
     assignedActs: state.entities.assigned_acts,
-    total_count: state.entities.paging && state.entities.paging.total || 0,
+    total_count: (state.entities.paging && state.entities.paging.total) || 0,
     userId: ownProps.match.params.id
 })
 

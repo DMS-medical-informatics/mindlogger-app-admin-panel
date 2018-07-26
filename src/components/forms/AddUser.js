@@ -1,6 +1,5 @@
 import React,{Component} from 'react'
 import { Field, reduxForm } from 'redux-form'
-import {FormGroup, FormControl} from 'react-bootstrap'
 import { InputField } from './FormItems';
 import {isRequired} from './validation'
 

@@ -152,18 +152,19 @@ export const convertToActivity = (file_json_array, actType) => {
     }
   }
   
+  /* -- TO DO: Commented out function that is not necessary for now -- */
   // Function to create a list item link to download a created JSON object.
   // Returns HTML <li>
-  function json_link(object){
-    var li = document.createElement("li");
-    var link = document.createElement("a");
-    var text = document.createTextNode(object.title);
-    link.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(object, null, '  ')));
-    link.setAttribute("download", encodeURIComponent(object.title.replace(/ /g,'_')) + ".json");
-    link.appendChild(text);
-    li.appendChild(link);
-    return(li);
-  }
+//   function json_link(object){
+//     var li = document.createElement("li");
+//     var link = document.createElement("a");
+//     var text = document.createTextNode(object.title);
+//     link.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(object, null, '  ')));
+//     link.setAttribute("download", encodeURIComponent(object.title.replace(/ /g,'_')) + ".json");
+//     link.appendChild(text);
+//     li.appendChild(link);
+//     return(li);
+//   }
   
   // Function to parse CSV
   // Returns list of JSON objects

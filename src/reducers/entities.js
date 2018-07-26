@@ -1,16 +1,7 @@
 import * as types from '../constants/actionTypes';
 
-const mergeEntities = (state, action) => {
-    return {
-        user: {
-            ...state.user,
-            ...action.response.user
-        },
-    }
-}
-
 const entities = (state = {}, action) => {
-    if(action.status === 'ERRORED' && action.error.error && action.error.error.status == 401) {
+    if(action.status === 'ERRORED' && action.error.error && action.error.error.status === 401) {
         return {}
     }
     switch (action.type) {

@@ -52,6 +52,10 @@ export const makeRequest = (method, path, body, accessToken, isMultipartUpload) 
         })
         .then(response => {
             const status = response.status;
+            if (status !== 200){
+                console.log(status);
+                return {};
+            }
             try {
                 return response.json();
             } catch (error) {

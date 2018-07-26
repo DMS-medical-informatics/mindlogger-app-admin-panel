@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import eventDrops from './eventDrops/'
 import * as d3 from 'd3'
-import {select, event as currentEvent} from 'd3-selection';
-const colors = d3.schemeCategory10
+import {event as currentEvent} from 'd3-selection';
 
 function selectColor(colorNum, colors) {
     if (colors < 1) 
@@ -21,7 +20,7 @@ export default class ActivityChart extends Component {
         if(this.node) return
         this.node = node
         const {start, result} = data
-        const {onSelect, onHover, onOut, onColor} = this.props
+        const {onSelect, onHover, onColor} = this.props
         let chart = eventDrops(
             {
                 date:(d => new Date(d.updatedAt)),

@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import { Button, Row, Col, Panel, ButtonGroup } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import randomString from 'random-string';
-
 import { saveAnswer } from '../../../actions/api';
 import { setAnswer } from '../../../actions/core';
 
@@ -24,9 +22,6 @@ import SurveyPhotoInput from './components/SurveyPhotoInput';
 //   block: {flex: 1, margin: 8, borderRadius: 8, justifyContent: 'center', alignItems: 'center'}
 // });
 class SurveyQuestion extends Component {
-  constructor(props) {
-    super(props)
-  }
 
   componentWillMount() {
     this.setState({questionIndex:0});
@@ -34,7 +29,7 @@ class SurveyQuestion extends Component {
 
   onInputAnswer = (result, data=undefined, final=false) => {
     let {questionIndex} = this.state;
-    let {survey:{questions}, answers} = this.props
+    let {answers, setAnswer} = this.props
     let answer = {
       result,
       time: (new Date()).getTime()
@@ -48,11 +43,13 @@ class SurveyQuestion extends Component {
     let { questionIndex } = this.state;
     let { survey } = this.props
     let answer;
-    if(survey.mode == 'basic') {
+    if(survey.mode === 'basic') {
       switch (survey.questions[questionIndex].type) {
         case 'drawing':
           answer = this.board.save();
           this.onInputAnswer(answer, null, false);
+          break;
+        default:
           break;
       }
     }
@@ -60,7 +57,7 @@ class SurveyQuestion extends Component {
   nextQuestion = () => {
     this.saveChange();
     let {questionIndex} = this.state;
-    let {survey, answers, indexMap, onFinish, setAnswer} = this.props;
+    let {survey, answers, indexMap, onFinish} = this.props;
     let {questions} = survey;
     let condition_question_index, condition_choice;
     // Skip question does not match condition
@@ -72,13 +69,13 @@ class SurveyQuestion extends Component {
       } else {
         break;
       }
-    }while(condition_question_index>-1 && answers[condition_question_index].result != condition_choice);
+    }while(condition_question_index>-1 && answers[condition_question_index].result !== condition_choice);
 
     if(questionIndex<questions.length) {
         
         this.setState({questionIndex, indexMap});
     } else {
-        this.props.onFinish(answers);
+        onFinish(answers);
     }
     
   }
@@ -90,7 +87,7 @@ class SurveyQuestion extends Component {
     for(questionIndex=questionIndex-1; questionIndex>=0; questionIndex--)
     {
       let { condition_question_index, condition_choice } = questions[questionIndex];
-      if (condition_question_index == undefined || condition_question_index == -1 || (answers[condition_question_index] && answers[condition_question_index].result == condition_choice)) {
+      if (condition_question_index === undefined || condition_question_index === -1 || (answers[condition_question_index] && answers[condition_question_index].result === condition_choice)) {
         break;
       }
     }
@@ -116,12 +113,10 @@ class SurveyQuestion extends Component {
     let answer = answers[questionIndex] && answers[questionIndex].result;
     const length = survey.questions.length
     const index = questionIndex + 1
-    const progressValue = index/length
-
-    let scroll = true;
+    //const progressValue = index/length
     let comp = (<div></div>);
     
-    if(survey.mode == 'basic') {
+    if(survey.mode === 'basic') {
       switch(question.type) {
         case 'text':
           comp = (<SurveyTextInput onSelect={this.onInputAnswer} data={{question, answer}} />);
@@ -139,8 +134,6 @@ class SurveyQuestion extends Component {
           comp = (<SurveyImageSelector onSelect={this.onInputAnswer} data={{question, answer}}/>);
           break;
         case 'drawing':
-          console.log(answer);
-          scroll = false;
           comp = (
           <div>
             <h4>{question.title}</h4>
@@ -180,6 +173,8 @@ class SurveyQuestion extends Component {
         //     </View>
         //     </View>)
         //   break;
+        default:
+          break;
       }
     } else {
       comp = (<SurveyTableInput onSelect={this.onInputAnswer} data={{question, answer}}/>);
@@ -199,7 +194,7 @@ class SurveyQuestion extends Component {
   }
 
   pickPhoto = () => {
-    let options = {title: 'Select Image'}
+    // let options = {title: 'Select Image'}
     // ImagePicker.showImagePicker(options, (response) => {
     //   if (response.didCancel) {
     //     console.log('User cancelled image picker');
@@ -222,7 +217,7 @@ class SurveyQuestion extends Component {
 //   }
 
   renderImageSort(question) {
-    let {images} = question;
+    // let {images} = question;
     // return (
     //   <SortableGrid>
     //     {
@@ -254,7 +249,7 @@ class SurveyQuestion extends Component {
 export default connect(state => ({
     act: state.entities.act,
     survey: state.entities.act.act_data,
-    answers: state.entities.answer && state.entities.answer.answers || [],
+    answers: (state.entities.answer && state.entities.answer.answers) || [],
   }),
   (dispatch) => ({saveAnswer, setAnswer})
 )(SurveyQuestion);

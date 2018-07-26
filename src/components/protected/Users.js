@@ -1,19 +1,18 @@
-import React, { Component } from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { submit } from 'redux-form'
-import { withRouter } from 'react-router'
-import {BarChart} from 'recharts'
-import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap'
-import { LinkContainer } from 'react-router-bootstrap'
+import React, { Component } from 'react';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { submit } from 'redux-form';
+import { withRouter } from 'react-router';
+import {Row, Col, Panel, Table, Pagination, Button, Modal} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-import { getUsers, inviteUser, getOrganizations } from "../../actions/api"
+import { getUsers, inviteUser, getOrganizations } from "../../actions/api";
 import AddUser from '../forms/AddUser';
 class Users extends Component {
     
     componentWillMount() {
         this.props.getUsers(0, 10);
-        if (this.props.user.role == 'super_admin')
+        if (this.props.user.role === 'super_admin')
             this.props.getOrganizations();
         this.setState({page:1});
     }
@@ -39,13 +38,13 @@ class Users extends Component {
     }
 
     renderInviteUserModal = () => {
-        const {organizations, user} = this.props;
-        return (<Modal show={this.state.form == 'user'} onHide={this.close}>
+        const {user} = this.props;
+        return (<Modal show={this.state.form === 'user'} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Invite User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            { user.role == 'super_admin' ? 
+            { user.role === 'super_admin' ? 
             (<AddUser onSubmit={this.onAddUser} organizations={this.props.organizations} />) : (<AddUser onSubmit={this.onAddUser}/>)}
           
         </Modal.Body>
@@ -126,7 +125,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
     users: state.entities.users,
     organizations: state.entities.organizations || [],
-    total_count: state.entities.paging && state.entities.paging.total || 0,
+    total_count: (state.entities.paging && state.entities.paging.total) || 0,
     user: state.entities.auth || {},
 })
 

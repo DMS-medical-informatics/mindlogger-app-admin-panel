@@ -58,7 +58,7 @@ class Answers extends AnswerBase {
             this.onData()
         })
         getAnswers(userId, 0 , ANSWERS_PER_PAGE)
-        let user = users.find( obj => obj.id == userId)
+        let user = users.find( obj => obj.id === userId)
         this.setState({user})
         console.log(user)
     }
@@ -69,7 +69,7 @@ class Answers extends AnswerBase {
     }
 
     getAnswers = (page, startDate, endDate) => {
-        const {userId, users, getAnswers, getAnsweredActs} = this.props
+        const {userId, getAnswers} = this.props
         if(startDate && endDate)
             getAnswers(userId, (page-1)*ANSWERS_PER_PAGE , ANSWERS_PER_PAGE, moment(startDate).format(), moment(endDate).format())
         else
@@ -92,7 +92,7 @@ class Answers extends AnswerBase {
     onSelect = (answer) => {
         const {answered_acts} = this.props
         let act = answered_acts.find(obj => {
-            return obj.id == answer.act_id
+            return obj.id === answer.act_id
         })
         this.setState({answer:{...answer, act:{type:act.type}}})
         this.open()
@@ -108,7 +108,7 @@ class Answers extends AnswerBase {
         this.cx = event.clientX
         this.cy = event.clientY
         let act = answered_acts.find(obj => {
-            return obj.id == answer.act_id
+            return obj.id === answer.act_id
         })
         this.setState({hover: true, answer:{...answer, type: act.type} })
     }

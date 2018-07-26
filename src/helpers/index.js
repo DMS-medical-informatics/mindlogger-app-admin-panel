@@ -5,7 +5,7 @@ export const validateEmail = (email) => {
 
 export const isRequired = (value) => (value === undefined || value === "") && "Required"
 export const isValidEmail = (value) => !validateEmail(value) && "Not Email Format"
-export const isPositiveInteger = (value) => (value <= 0 || !(parseInt(value) == value)) && "Not Positive Number"
+export const isPositiveInteger = (value) => (value <= 0 || !(parseInt(value, 10) === value)) && "Not Positive Number"
 
 export const getTimestamp = (str) => {
   return (new Date(str)).getTime()
@@ -14,7 +14,7 @@ export const getTimestamp = (str) => {
 export const prepareAct = (data) => {
   return new Promise((resolve, reject) => {
       if(data.audio_path) {
-          var filename = data.audio_path.replace(/^.*[\\\/]/, '')
+          var filename = data.audio_path.replace(/^.*[\\\/]/, '');
           uploadFileS3(data.audio_path, 'audios/', filename).then(url => {
               data.audio_url = url
               resolve(data);

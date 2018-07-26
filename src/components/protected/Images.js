@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import { submit } from 'redux-form'
-import {Table, Row, Col, Button, Panel, Modal, Clearfix, Image, Glyphicon} from 'react-bootstrap'
+import {Row, Col, Button, Panel, Modal, Clearfix, Image} from 'react-bootstrap'
 
 import AddImage from '../forms/AddImage'
 import AddFolder from '../forms/AddFolder'
@@ -102,7 +102,7 @@ class Images extends Component {
     }
 
     renderAddImageModal = () => {
-        return (<Modal show={this.state.form == 'image'} onHide={this.close}>
+        return (<Modal show={this.state.form === 'image'} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Add Image</Modal.Title>
         </Modal.Header>
@@ -116,7 +116,7 @@ class Images extends Component {
     }
 
     renderAddFolderModal = () => {
-        return (<Modal show={this.state.form == 'folder'} onHide={this.close}>
+        return (<Modal show={this.state.form === 'folder'} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Add Folder</Modal.Title>
         </Modal.Header>
@@ -131,7 +131,7 @@ class Images extends Component {
     }
 
     renderConfirmModal = () => {
-        return (<Modal show={this.state.form == 'confirm'} onHide={this.close}>
+        return (<Modal show={this.state.form === 'confirm'} onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>Are you sure?</Modal.Title>
         </Modal.Header>
@@ -152,7 +152,7 @@ class Images extends Component {
         let list = []
         files.forEach(file => {
             let arr = file.split("/")
-            if (file != path && file.startsWith(path) && (arr.length - count <= 1)) {
+            if (file !== path && file.startsWith(path) && (arr.length - count <= 1)) {
                 let item = {key: file, path:`https://${S3_IMAGE_BUCKET}.s3.amazonaws.com/${file}`}
                 if (file.endsWith("/")) {
                     item.is_folder = true
@@ -191,7 +191,7 @@ class Images extends Component {
             </Col>
             </Row>
             <Row>
-                {loading && <img src="//assets.okfn.org/images/icons/ajaxload-circle.gif" />}
+                {loading && <img src="//assets.okfn.org/images/icons/ajaxload-circle.gif"  alt="progress"/>}
                 {list.map( (item, idx) => 
                     item.is_folder ? (<Col md={2} className="image-cell" key={idx}>
                         <Image src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human-folder.svg" onClick={() => this.folderSelect(item)}/>

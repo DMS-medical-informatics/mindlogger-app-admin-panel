@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { FormGroup, FormControl, ControlLabel, HelpBlock, InputGroup, Button, Glyphicon, Image } from 'react-bootstrap'
+import { FormGroup, ControlLabel, HelpBlock, Button, Image } from 'react-bootstrap'
 import ImageBrowser from './ImageBrowser';
 import Dropzone from 'react-dropzone';
 
@@ -25,12 +25,7 @@ export default class ImageField extends Component{
     render(){
         const {input,
             label,
-            placeholder,
-            options,
-            type,
-            componentClass,
-            readOnly,
-            required, meta: { touched, error, warning }} = this.props;
+            meta: { touched, error }} = this.props;
         return (
             <FormGroup validationState={touched && error ? 'error' : null}>
                 {label && (<ControlLabel>{label}</ControlLabel>) }

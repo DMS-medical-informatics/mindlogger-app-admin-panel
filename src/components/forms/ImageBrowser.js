@@ -1,12 +1,11 @@
-import React, { Component } from 'react'
-import {connect} from 'react-redux'
-import { submit } from 'redux-form'
-import {Row, Col, Content, Button, Image} from 'react-bootstrap'
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import { submit } from 'redux-form';
+import {Row, Col, Image} from 'react-bootstrap';
 import { S3_IMAGE_BUCKET } from '../../constants/index';
 import { getFiles } from '../../actions/api';
 
-const S3_REGION = 'us-east-1'
-const IMAGE_AB_PATH = 'images/'
+const IMAGE_AB_PATH = 'images/';
 class ImageBrowser extends Component {
     componentWillMount() {
         this.setState({path: IMAGE_AB_PATH})
@@ -43,7 +42,7 @@ class ImageBrowser extends Component {
         let list = []
         files.forEach(file => {
             let arr = file.split("/")
-            if (file != path && file.startsWith(path) && (arr.length - count <= 1)) {
+            if (file !== path && file.startsWith(path) && (arr.length - count <= 1)) {
                 let item = {path: `https://${S3_IMAGE_BUCKET}.s3.amazonaws.com/${file}`, file}
                 if (file.endsWith("/")) {
                     item.is_folder = true
@@ -56,9 +55,9 @@ class ImageBrowser extends Component {
         })
         return (
         <section>
-            {loading && <img src="//assets.okfn.org/images/icons/ajaxload-circle.gif" />}
+            {loading && <img src="//assets.okfn.org/images/icons/ajaxload-circle.gif" alt='progress'/>}
             <Row>
-                { IMAGE_AB_PATH != path &&
+                { IMAGE_AB_PATH !== path &&
                 <Col md={2} className="image-cell">
                     <Image src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human-folder.svg" onClick={() => this.upFolder()}/>
                     <p>..</p>

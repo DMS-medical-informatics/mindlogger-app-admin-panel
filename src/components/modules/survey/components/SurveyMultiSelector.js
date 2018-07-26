@@ -1,13 +1,10 @@
-import React, {Component} from 'react';
-import { Button, Checkbox } from 'react-bootstrap';
+import React from 'react';
+import { Checkbox } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import SurveyInputComponent from './SurveyInputComponent';
 
 class SurveyMultiSelector extends SurveyInputComponent {
-  constructor(props) {
-    super(props);
-  }
 
   componentWillMount() {
     this.setState({answer: this.props.data.answer || []})

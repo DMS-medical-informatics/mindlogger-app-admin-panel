@@ -30,7 +30,7 @@ class Register extends Component {
       <div className="col-sm-6 col-sm-offset-3">
         <h1>Register</h1>
         <form onSubmit={handleSubmit(this.submit)}>
-        <Field name="email" type="text" component={InputField} label="Email" placeholder="Email" validate={isRequired} />
+        <Field name="email" type="text" component={InputField} label="Email" placeholder="Email" validate={isValidEmail} />
         <Field name="password" type="password" component={InputField} label="Password" placeholder="Email" validate={isRequired} />
           {
             this.state.registerError &&

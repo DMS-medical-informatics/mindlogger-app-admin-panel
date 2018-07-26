@@ -20,7 +20,7 @@ class AuthRoute extends React.Component {
     
     if (role.includes('admin')) {
 
-    } else if (role == 'user' || role == 'viewer') {
+    } else if (role === 'user' || role === 'viewer') {
       let paths = pathsByRole[role]
       redirectPath = (paths && paths.some(item => props.location.pathname.startsWith(item))) ? false : '/'
     } else {

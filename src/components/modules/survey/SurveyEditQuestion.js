@@ -1,20 +1,15 @@
 import React, { Component } from 'react'
-import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Field, reduxForm, FieldArray, formValueSelector, submit } from 'redux-form'
-import { FormGroup, FormControl, Button, Row, Col, Glyphicon, Image } from 'react-bootstrap'
+import { Button, Row, Col, Glyphicon, Image } from 'react-bootstrap'
 
-import { InputField, InputFieldWithButton } from '../../forms/FormItems';
+import { InputField } from '../../forms/FormItems';
 import { isRequired } from '../../forms/validation';
 import ImageBrowser from '../../forms/ImageBrowser';
 import '../../forms/form.css';
 import ImageField from '../../forms/ImageField';
 
 class SurveyEditQuestionForm extends Component {
-
-    constructor(props) {
-        super(props)
-    }
 
     componentWillMount() {
         this.setState({ imageSelect: false})
@@ -94,7 +89,7 @@ class SurveyEditQuestionForm extends Component {
 
 
     render() {
-        const { handleSubmit, onSubmit, submitting, reset, questions, condition_question_index } = this.props;
+        const { handleSubmit, questions, condition_question_index } = this.props;
         let question_type = this.props.question_type || (this.props.initialValues && this.props.initialValues.type);
         let condition_rows;
         if (condition_question_index > -1) {
@@ -114,7 +109,7 @@ class SurveyEditQuestionForm extends Component {
         }
 
         return (
-            <form>
+            <form onSubmit={handleSubmit}>
                 <Field name="title" type="text" validate={isRequired} placeholder="Add a question" component={InputField} />
                 <Field name="type"
                     component={InputField}

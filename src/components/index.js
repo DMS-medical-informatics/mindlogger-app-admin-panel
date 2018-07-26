@@ -1,18 +1,17 @@
-import React, { Component } from 'react'
-import 'bootstrap/dist/css/bootstrap.css'
-import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom'
-import {Provider} from 'react-redux'
+import React, { Component } from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import { Route, BrowserRouter, Switch } from 'react-router-dom';
+import {Provider} from 'react-redux';
 
-import Login from './Login'
-import Register from './Register'
-import Home from './Home'
-import Dashboard from './protected/Dashboard'
-import Images from './protected/Images'
-import Users from './protected/Users'
-import Answers from './protected/Answers'
-import { logout } from '../helpers/auth'
-import AuthRoute from './authRoute'
-import Header from './Header'
+import Login from './Login';
+import Register from './Register';
+import Home from './Home';
+import Dashboard from './protected/Dashboard';
+import Images from './protected/Images';
+import Users from './protected/Users';
+import Answers from './protected/Answers';
+import AuthRoute from './authRoute';
+import Header from './Header';
 import SetupActs from './protected/SetupActs';
 import Acts from './protected/Acts';
 import TakeActs from './protected/TakeActs';
@@ -23,9 +22,10 @@ import Organizations from './protected/Organizations';
 
 export default class App extends Component {
   componentDidMount () {
+
   }
   componentWillUnmount () {
-    
+
   }
   render() {
     return (

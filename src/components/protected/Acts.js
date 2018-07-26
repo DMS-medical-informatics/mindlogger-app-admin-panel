@@ -1,20 +1,17 @@
-import React,{Component} from 'react'
-import {compose} from 'redux'
-import {connect} from 'react-redux'
+import React,{Component} from 'react';
+import {compose} from 'redux';
+import {connect} from 'react-redux';
 import { submit } from 'redux-form';
-import {withRouter} from 'react-router'
-import Dropzone from 'react-dropzone'
-import firebase from 'firebase'
-import {Row, Panel, Table, Button, Modal, Pagination, Col} from 'react-bootstrap'
+import {withRouter} from 'react-router';
+import Dropzone from 'react-dropzone';
+import {Panel, Table, Button, Modal, Pagination} from 'react-bootstrap'
 import Papa from 'papaparse';
 
 import { addAct, getActs, deleteAct, updateAct } from '../../actions/api';
 import { convertToActivity } from '../../helpers/survey';
-import { LinkContainer } from 'react-router-bootstrap';
 import SurveyForm from '../forms/SurveyForm';
 import VoiceForm from '../forms/VoiceForm';
 import DrawingForm from '../forms/DrawingForm';
-import { prepareAct } from '../../helpers/index';
 
 const ITEMS_PER_PAGE = 10
 
@@ -23,7 +20,7 @@ const mapDispatchToProps = { addAct, getActs, deleteAct, updateAct, submit }
 const mapStateToProps = (state, ownProps) => ({
     acts: state.entities.acts,
     actType: ownProps.match.params.actType || 'survey',
-    total_count: state.entities.paging && state.entities.paging.total || 0,
+    total_count: (state.entities.paging && state.entities.paging.total) || 0,
 })
 
 class Acts extends Component {
@@ -38,10 +35,10 @@ class Acts extends Component {
 
     onAddAct = ({title, image, ...body}) => {
         let type = this.state.form
-        const {addAct, history, getActs} = this.props
+        const {addAct, history} = this.props
         let act_data = {...body}
 
-        if (type == 'survey') {
+        if (type === 'survey') {
             act_data.questions = []
         }
 
@@ -56,7 +53,7 @@ class Acts extends Component {
         formData.set("act_data", JSON.stringify(act_data))
         formData.set("title", title)
         return addAct(formData).then( res => {
-            if (type == 'survey')
+            if (type === 'survey')
                 history.push(`surveys/${res.act.id}`)
             else
                 this.close()
@@ -68,7 +65,7 @@ class Acts extends Component {
     }
 
     onUpdateAct = ({title, ...body}) => {
-        const {updateAct, getActs} = this.props
+        const {updateAct} = this.props
         const {act} = this.state
         return updateAct({id:act.id, act_data:body, title}).then(res => {
             this.close();
@@ -89,7 +86,7 @@ class Acts extends Component {
     renderAddSurveyModal = () => {
         const {act} = this.state;
         let survey = act ? {title: act.title, ...act.act_data} : {mode:'basic', accordion:false};
-        return (<Modal show={this.state.form == 'survey'} onHide={this.close}>
+        return (<Modal show={this.state.form === 'survey'} onHide={this.close}>
             <Modal.Header closeButton>
             <Modal.Title>{ act && act.id ? "Edit Survey" : "Add Survey"}</Modal.Title>
             </Modal.Header>
@@ -107,7 +104,7 @@ class Acts extends Component {
     renderAddVoiceModal = () => {
         const {act} = this.state;
         let voice = act ? {title: act.title, ...act.act_data} : {};
-        return (<Modal show={this.state.form == 'voice'} onHide={this.close}>
+        return (<Modal show={this.state.form === 'voice'} onHide={this.close}>
             <Modal.Header closeButton>
             <Modal.Title>{act && act.id ? "Edit Voice" : "Add Voice"}</Modal.Title>
             </Modal.Header>
@@ -124,7 +121,7 @@ class Acts extends Component {
     renderAddDrawingModal = () => {
         const {act} = this.state;
         let drawing = act ? {title: act.title, ...act.act_data} : {};
-        return (<Modal show={this.state.form == 'drawing'} onHide={this.close}>
+        return (<Modal show={this.state.form === 'drawing'} onHide={this.close}>
             <Modal.Header closeButton>
             <Modal.Title>{act && act.id ? "Edit Drawing" : "Add Drawing"}</Modal.Title>
             </Modal.Header>
@@ -140,8 +137,6 @@ class Acts extends Component {
     onResult = (results, file) => {
         const {addAct, actType} = this.props;
         let acts = convertToActivity(results.data, actType);
-        console.log(acts);
-        console.log(acts.length + " questionnaires extracted from " + file.name);
         let arr = []
         acts.forEach(act => {
             arr.push(addAct(act))
@@ -175,9 +170,6 @@ class Acts extends Component {
     }
 
     renderRow = (act, index) => {
-        const {acts} = this.props
-        const {actDict} = this.state
-        var isIncluded = false
         return  (
             <tr key={index}>
                 <td>{act.title}</td>
@@ -193,13 +185,13 @@ class Acts extends Component {
     }
 
     onEditAct(act) {
-        if (act.type == 'survey') {
+        if (act.type === 'survey') {
             this.setState({act, form:'survey'})
         }
     }
 
     onDeleteAct(act) {
-        const {deleteAct, getActs} = this.props
+        const {deleteAct} = this.props
         deleteAct(act).then(res => {
             return this.refreshPage();
         })

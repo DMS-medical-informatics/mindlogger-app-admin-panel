@@ -1,14 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SurveyInputComponent from './SurveyInputComponent'
 
 class SurveyBoolSelector extends SurveyInputComponent {
-  constructor(props) {
-    super(props);
-  }
+
   render() {
-    const { answer, question} = this.props.data
+    const { question} = this.props.data
     const { text, rows } =question
 
     let texts = rows ? rows : ["YES", "NO"]

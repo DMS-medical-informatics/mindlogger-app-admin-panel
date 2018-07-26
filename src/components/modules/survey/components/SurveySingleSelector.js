@@ -1,15 +1,12 @@
-import React, {Component} from 'react';
-import { Button, Radio } from 'react-bootstrap';
+import React from 'react';
+import { Radio } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import SurveyInputComponent from './SurveyInputComponent';
 
 class SurveySingleSelector extends SurveyInputComponent {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
-    const { answer, question} = this.props.data
+    const { question} = this.props.data
     const { title, rows } =question
 
     return (
