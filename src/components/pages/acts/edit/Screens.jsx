@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Bookmarks from './bookmarks';
-import Screen from './screen';
+import Bookmarks from './Bookmarks';
+import Screen from './Screen';
 export default class Screens extends Component {
   render() {
     return (

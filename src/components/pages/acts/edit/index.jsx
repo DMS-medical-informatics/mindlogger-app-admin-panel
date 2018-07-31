@@ -8,7 +8,8 @@ import {
   Tab, Tabs
 } from "react-bootstrap";
 
-import Screens from './screens';
+import Screens from './Screens';
+import ActSetting from "./ActSetting";
 //import { getVolumes, addVolume } from "../../../actions/api"
 
 class EditAct extends Component {
@@ -44,7 +45,7 @@ class EditAct extends Component {
       <section className="edit-act">
       <Tabs id="edit-act-tabs" defaultActiveKey={2}>
         <Tab eventKey={1} title="Settings">
-          Settings
+          <ActSetting />
         </Tab>
         <Tab eventKey={2} title="Screens">
           <Screens/>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Bookmark from './bookmark';
+import Bookmark from './Bookmark';
 export default class Bookmarks extends Component {
   render() {
     return (

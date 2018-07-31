@@ -106,7 +106,7 @@ class ScreenForm extends Component {
           </Col>
         </Row>
 
-        <div className="section-title"><a name="survey">Canvas (if no picture/video display</a></div>
+        <div className="section-title"><a name="survey">Canvas (if no picture/video display)</a></div>
         <Row>
           <Col md={1}>
           </Col>

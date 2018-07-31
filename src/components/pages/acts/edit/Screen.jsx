@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import ScreenForm from './screen-form';
+import ScreenForm from './ScreenForm';
 
 export default class Screen extends Component {
   render() {
