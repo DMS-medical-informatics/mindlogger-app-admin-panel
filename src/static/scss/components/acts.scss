@@ -40,3 +40,21 @@
 .form-control-auto .form-control{
   width: auto;
 }
+
+.weekday {
+  display: flex;
+  width: 350px;
+  flex-flow: row wrap;
+  box-sizing: content-box;
+  .cell {
+    width: 50px;
+    text-align: center;
+    &.selected {
+      background-color: #aad;
+    }
+    cursor: pointer;
+  }
+  &.bordered {
+    border: solid 1px black;
+  }
+}

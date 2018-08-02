@@ -3,7 +3,9 @@ import { Field, reduxForm } from 'redux-form';
 import {FormGroup, Button,Row, Col} from 'react-bootstrap';
 import { InputField, InputCheckField, InputRadioField } from '../../../forms/FormItems';
 import InputTimeField from '../../../forms/InputTimeField';
-import {isRequired} from '../../../forms/validation'
+import {isRequired} from '../../../forms/validation';
+import InputWeekdayField from './InputWeekdayField';
+import InputMonthDayField from './InputMonthDayField';
 
 class SettingForm extends Component {
   render() {
@@ -41,12 +43,36 @@ class SettingForm extends Component {
             <Field name="notification[reset_time]" label="" component={InputCheckField} />
             </Col>
           </Row>
-          <Field name="notification[mode]" label="Weekly:" component={InputRadioField} value="weekly"/>
-          <Field name="notification[mode]" label="Monthly:" component={InputRadioField} value="monthly"/>
+          <Row>
+            <Col md={6}>
+              <Field name="notification[mode]" label="Weekly:" component={InputRadioField} value="weekly"/>
+              <Field name="notification[week_day]" component={InputWeekdayField} bordered/>
+            </Col>
+            <Col md={6}>
+              <Field name="notification[reset_week]" label="" component={InputCheckField} />
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <Field name="notification[mode]" label="Monthly:" component={InputRadioField} value="monthly"/>
+              <Field name="notification[month_day]" component={InputMonthDayField} bordered/>
+            </Col>
+            <Col md={6}>
+              <Field name="notification[reset_month]" label="" component={InputCheckField} />
+            </Col>
+          </Row>
           <Field name="notification[mode]" label="Calendar Dates:" component={InputRadioField} value="calendar_date"/>
           <Field name="notification[mode]" label="Random:" component={InputRadioField} value="random"/>
-          <Field name="notification[advance]" label="Advance notification:" component={InputCheckField} />
-          <Field name="notification[daily_reminder]" label="Daily reminder for missed activity for up to:" component={InputCheckField} />
+          <div className="num-input-wrapper">
+            <Field name="notification[advance]" label="Advance notification:" component={InputCheckField} inline/>
+            <Field name="notification[advance_min]" type="number"component={InputField} inline/>
+            &nbsp; minutes
+          </div>
+          <div className="num-input-wrapper">
+            <Field name="notification[daily_reminder]" label="Daily reminder for missed activity for up to:" component={InputCheckField} inline/>
+            <Field name="notification[daily_reminder_days]" type="number"component={InputField} inline/>
+            &nbsp; days
+          </div>
         </div>
 
         <div className="section-title">
