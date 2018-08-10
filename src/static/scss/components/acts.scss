@@ -2,7 +2,6 @@
 // Edit Act
 
 .edit-act {
-  font-size: 1.5rem;
   .screens {
     display: flex;
     .bookmarks {
@@ -35,6 +34,10 @@
     display: inline-block;
     width: 60px;
   }
+  &.inline-block {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
 }
 
 .form-control-auto .form-control{
@@ -57,4 +60,9 @@
   &.bordered {
     border: solid 1px black;
   }
+}
+
+.wizard .wizard-footer {
+  margin-top: 50px;
+  text-align: center;
 }

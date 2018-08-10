@@ -1,5 +1,5 @@
 html, body {
-  font-size: 14px;
+  font-size: 18px;
 }
 
 h1 {
@@ -8,4 +8,9 @@ h1 {
 
 label {
   font-weight: normal;
+}
+form {
+  .form-label {
+    font-size: 1rem;
+  }
 }

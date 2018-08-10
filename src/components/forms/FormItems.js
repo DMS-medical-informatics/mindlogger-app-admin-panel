@@ -1,5 +1,8 @@
 import React, {Component} from 'react'
-import { FormGroup, FormControl,Row, Col, ControlLabel, HelpBlock, InputGroup, Button, Glyphicon, Checkbox, Radio } from 'react-bootstrap'
+import { FormGroup, FormControl,Row, Col, ControlLabel, HelpBlock, InputGroup, Button, Glyphicon } from 'react-bootstrap'
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
 
 export class InputField extends Component {
   renderLabel() {
@@ -88,33 +91,44 @@ export const InputCheckField = ({
   meta: { touched, error, warning }
 }) => 
   { 
-    return inline ? [
-      (<Checkbox key={1} checked={input.value} {...input} required={required} inline>
-        {label}
-      </Checkbox>), touched && error && <HelpBlock key={2}>{error}</HelpBlock>] :
-    (<FormGroup validationState={touched && error ? 'error' : null}>
-      <Checkbox checked={input.value} {...input} required={required}>
-        {label}
-      </Checkbox>
-      {touched && error && <HelpBlock>{error}</HelpBlock>}
-    </FormGroup>)
+    return (<FormControlLabel
+      classes={{
+        label: "form-label"
+      }}
+      control={
+        <Checkbox
+          onChange={() => input.onChange(input.value != true)}
+          checked={input.value === true}
+          color="default"
+        />
+      }
+      label={label}
+    />)
   }
 
 
 export const InputRadioField = ({
   input,
   label,
+  select,
   required,
-  value,
   meta: { touched, error, warning }
-}) => (
-  <FormGroup validationState={touched && error ? 'error' : null}>
-    <Radio {...input} required={required} onClick={() => input.onChange(value)} value={value}>
-      {label}
-    </Radio>
-    {touched && error && <HelpBlock>{error}</HelpBlock>}
-  </FormGroup>
-)
+}) => {
+  return (<FormControlLabel
+    classes={{
+      label: "form-label"
+    }}
+    control={
+      <Radio
+        onChange={() => input.onChange(select)}
+        checked={input.value === select}
+        color="default"
+        value={select}
+      />
+    }
+    label={label}
+  />)
+}
 // export const DateTimeField = ({
 //   input,
 //   label,
