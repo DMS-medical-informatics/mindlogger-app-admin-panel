@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import {FormGroup, Button,Row, Col} from 'react-bootstrap';
-import Grid from '@material-ui/core/Grid';
-import cn from 'classnames';
+import Button from '@material-ui/core/Button';
 
 import { InputField } from '../../../../../forms/FormItems';
 import {InputTextField, InputRadioField, InputRow} from '../../../../../forms/Material';
@@ -13,7 +11,7 @@ import validate from './validate';
 class SurveyListTypeForm extends Component {
   
   render() {
-    const {handleSubmit, submitting} = this.props;
+    const {handleSubmit} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <div className="wizard">
@@ -30,7 +28,7 @@ class SurveyListTypeForm extends Component {
           <Field name="mode" label="Enter text or upload pictures for a single set of response options" component={InputRadioField} select="single" />
           <Field name="mode" label="Specify order for multiple presentations of text or picture response options" component={InputRadioField} select="order" />
           <div className="wizard-footer">
-            <Button color="primary" type="submit">Next</Button>
+            <Button variant="contained" color="primary" type="submit">Next</Button>
           </div>
         </div>
       </form>

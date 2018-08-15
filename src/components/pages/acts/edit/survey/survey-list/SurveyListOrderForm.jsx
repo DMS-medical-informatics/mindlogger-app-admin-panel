@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import {Button} from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
-import cn from 'classnames';
+import Button from '@material-ui/core/Button';
 
-import { InputField} from '../../../../../forms/FormItems';
 import {InputRow, InputTextField, InputRadioField} from '../../../../../forms/Material';
 import InputFileField from '../../../../../forms/InputFileField';
 import PadBlock from '../../../../../layout/PadBlock';
@@ -62,8 +60,8 @@ class SurveyListOrderForm extends Component {
             this.renderAdvanceScreen()
            }
           <div className="wizard-footer">
-            <Button color="secondary" onClick={previousPage}>Back</Button>
-            <Button color="primary" type="submit">Submit</Button>
+          <Button variant="contained" onClick={previousPage}>Back</Button>
+          <Button variant="contained" color="primary" type="submit" disabled={submitting}>Submit</Button>
           </div>
         </div>
       </form>

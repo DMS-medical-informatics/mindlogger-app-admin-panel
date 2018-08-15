@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Button } from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
-import { InputField } from '../../../../../forms/FormItems';
 import {InputRow, InputTextField, InputRadioField} from '../../../../../forms/Material';
 import InputFileField from '../../../../../forms/InputFileField';
 import PadBlock from '../../../../../layout/PadBlock';
@@ -20,14 +19,11 @@ class SurvyeListBasicForm extends Component {
             Option {i+1}:
           </Grid>
           <Grid item>
-            <Grid container alignItems="center">
-              <Grid item>
-                <Field name={`options[${i}].type`} label="Text" component={InputRadioField} select="text" />
-              </Grid>
-              <Grid item>
-                <Field name={`options[${i}].text`} component={InputField} type="text" inline/>
-              </Grid>
-            </Grid>
+            <InputRow>
+              <Field name={`options[${i}].type`} label="Text" component={InputRadioField} select="text" />
+              <Field name={`options[${i}].text`} component={InputTextField} type="text" placeholder="Text"/>
+              
+            </InputRow>
             
             <Grid container alignItems="center">
               <Field name={`options[${i}].type`} label="File" component={InputRadioField} select="file" />
@@ -77,8 +73,8 @@ class SurvyeListBasicForm extends Component {
           { this.renderOptions() }
           { options_max_count === '1' && this.renderAdvanceScreen()}
           <div className="wizard-footer">
-            <Button color="secondary" onClick={previousPage}>Back</Button>
-            <Button color="primary" type="submit" disabled={submitting}>Submit</Button>
+            <Button variant="contained" onClick={previousPage}>Back</Button>
+            <Button variant="contained" color="primary" type="submit" disabled={submitting}>Submit</Button>
           </div>
         </div>
       </form>
