@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import {FormGroup, Button,Row, Col} from 'react-bootstrap';
+import {Button,Row, Col} from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
 
 import { InputField, InputCheckField, InputRadioField } from '../../../forms/FormItems';
@@ -12,7 +12,7 @@ import PadBlock from '../../../layout/PadBlock';
 
 class SettingForm extends Component {
   render() {
-    const {handleSubmit, submitting, index} = this.props
+    const {handleSubmit, submitting} = this.props
     return (
       <form onSubmit={ handleSubmit }>
         <div className="section-title"><a name="information">Information</a></div>

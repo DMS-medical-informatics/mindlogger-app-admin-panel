@@ -20,7 +20,7 @@ export class InputField extends Component {
       required,
       inline,
     } = this.props;
-    return (<FormControl readOnly={readOnly} {...input} placeholder={placeholder} type={type} componentClass={componentClass} required={required} className={inline ? "form-control-inline" : ""}>
+    return (<FormControl readOnly={readOnly} {...input} onChange={value => input.onChange((type === 'number' && !isNaN(value)) ? Number(value) : value )} placeholder={placeholder} type={type} componentClass={componentClass} required={required} className={inline ? "form-control-inline" : ""}>
         {componentClass === 'select' && options ? options.map((item, index) => (
           <option key={index} value={item.value}>{item.label}</option>
         )) : undefined}

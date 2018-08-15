@@ -3,25 +3,16 @@ import { Field, reduxForm } from 'redux-form';
 import {FormGroup, Button,Row, Col} from 'react-bootstrap';
 import cn from 'classnames';
 
-import { InputField, InputCheckField, InputRadioField } from '../../../../forms/FormItems'
-import {isRequired} from '../../../../forms/validation'
+import { InputField, InputCheckField, InputRadioField } from '../../../../../forms/FormItems'
+import {isRequired} from '../../../../../forms/validation'
 
-class SurveyListForm extends Component {
-  
-  componentWillMount() {
-    this.setState({page:1});
-  }
-
-  onNextPage = () => {
-    this.setState({page: this.state.page + 1});
-  }
+class SurveyListTypeForm extends Component {
   
   render() {
     const {handleSubmit, submitting} = this.props;
-    const {page} = this.state;
     return (
       <form onSubmit={handleSubmit}>
-        <div className={cn("wizard", {hidden: page !== 1})}>
+        <div className="wizard">
           <Row>
             <Col md={8}>
               Number of response options:
@@ -47,10 +38,10 @@ class SurveyListForm extends Component {
             </Col>
           </Row>
           
-          <Field name="survey_type" label="Enter text or upload pictures for a single set of response options" component={InputRadioField} select="single" />
-          <Field name="survey_type" label="Specify order for multiple presentations of text or picture response options" component={InputRadioField} select="order" />
+          <Field name="mode" label="Enter text or upload pictures for a single set of response options" component={InputRadioField} select="single" />
+          <Field name="mode" label="Specify order for multiple presentations of text or picture response options" component={InputRadioField} select="order" />
           <div className="wizard-footer">
-            <Button color="primary" onClick={this.onNextPage}>Next</Button>
+            <Button color="primary" type="submit">Next</Button>
           </div>
         </div>
       </form>
@@ -59,5 +50,6 @@ class SurveyListForm extends Component {
 }
 export default reduxForm({
   // a unique name for the form
-  form: 'survey-list-form'
-})(SurveyListForm);
+  form: 'survey-list-form',
+  destoryOnUnmount: false,
+})(SurveyListTypeForm);

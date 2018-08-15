@@ -4,6 +4,7 @@ import {FormGroup, Button,Row, Col} from 'react-bootstrap'
 import { InputField, InputCheckField, InputRadioField } from '../../../forms/FormItems'
 import {isRequired} from '../../../forms/validation'
 import PadBlock from '../../../layout/PadBlock';
+import InputFileField from '../../../forms/InputFileField';
 
 class ScreenForm extends Component {
   render() {
@@ -20,7 +21,7 @@ class ScreenForm extends Component {
           <Col md={9}>
             <Field name="display_video" label="Display picture/video at the top of the screen:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display_video_file" label="Upload picture/video" component={InputField} type="file" />
+              <Field name="display_video_file" label="Upload picture/video" component={InputFileField}/>
               <Field name="display_playback" label="Show video playback icon and allow replay" component={InputCheckField} />
               <br/>
               <Field name="display_autoplay_video" label="Autoplay video" component={InputCheckField} />
@@ -35,7 +36,7 @@ class ScreenForm extends Component {
           <Col md={9}>
             <Field name="display_audio" label="Play audio file:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display_audio_file" label="Upload file:" component={InputField} type="file" />
+              <Field name="display_audio_file" label="Upload file:" component={InputFileField} />
               <Field name="display_playback" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
               <br/>
               <Field name="display_autoplay_audio" label="Autoplay audio" component={InputCheckField} />

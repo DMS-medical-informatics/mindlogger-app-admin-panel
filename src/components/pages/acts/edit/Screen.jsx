@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import {
-  Row,
-  Col,
   Button,
   Modal,
 } from "react-bootstrap";
 
 import ScreenForm from './ScreenForm';
-import SurveyListForm from './survey/SurveyListForm';
+import SurveyListForm from './survey/survey-list';
 
 const mapStateToProps = (state) => ({
   survey_type: formValueSelector('screen-form')(state, 'survey_type')
