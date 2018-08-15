@@ -10,7 +10,7 @@ import ScreenForm from './ScreenForm';
 import SurveyListForm from './survey/survey-list';
 
 const mapStateToProps = (state) => ({
-  survey_type: formValueSelector('screen-form')(state, 'survey_type')
+  body: formValueSelector('screen-form')(state, 'survey_type', 'canvas_type'),
 })
 
 class Screen extends Component {
@@ -20,25 +20,43 @@ class Screen extends Component {
   close = () => {
     this.setState({form: false});
   }
+
+  onSurveyForm = (body) => {
+    this.close();
+  }
+
+  renderSurveyForm(survey_type) {
+    switch(survey_type) {
+      case 'list':
+        return <SurveyListForm onSubmit={this.onSurveyForm} />
+      case 'table':
+      case 'slider':
+      case 'audio':
+    }
+  }
   renderModal() {
-    const {survey_type} = this.props;
+    const {body: {survey_type, canvas_type}} = this.props;
     return (
-      <Modal show={this.state.form} onHide={this.close}>
+      <Modal show={this.state.form !== false } onHide={this.close}>
         <Modal.Header closeButton>
           <Modal.Title>{survey_type}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <SurveyListForm onSubmit={this.onSurveyList}/>
+         { this.state.form === 'survey' ?
+          this.renderSurveyForm(survey_type) : this.renderCanvasForm(canvas_type)
+         }
         </Modal.Body>
       </Modal>
     )
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    if(nextProps.survey_type != this.props.survey_type) {
-      this.setState({form: true});
+  showModal = (type) => {
+    if (type === 'survey') {
+      this.setState({form: type})
+    } else if (type === 'canvas') {
+      this.setState({form: type})
     }
+
   }
   
   render() {
@@ -49,8 +67,8 @@ class Screen extends Component {
         <a href="#survey">Survey</a>
         <br/>
         <a href="#canvas">Canvas</a>
-        <ScreenForm onSubmit={this.onScreen} />
-        {this.renderModal()}
+        <ScreenForm onSubmit={this.onScreen} showModal={this.showModal} body={this.props.body || {}}/>
+        {this.state.form && this.renderModal()}
       </div>
     );
   }

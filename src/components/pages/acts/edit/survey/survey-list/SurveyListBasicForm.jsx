@@ -3,9 +3,11 @@ import { Field, reduxForm } from 'redux-form';
 import { Button } from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
 
-import { InputField, InputRadioField } from '../../../../../forms/FormItems';
+import { InputField } from '../../../../../forms/FormItems';
+import {InputRow, InputTextField, InputRadioField} from '../../../../../forms/Material';
 import InputFileField from '../../../../../forms/InputFileField';
-
+import PadBlock from '../../../../../layout/PadBlock';
+import validate from './validate';
 
 class SurvyeListBasicForm extends Component {
   renderOptions() {
@@ -43,17 +45,28 @@ class SurvyeListBasicForm extends Component {
     const {options_count} = this.props.body;
     for(let i=0; i < options_count ; i++) {
       items.push((
-        <Grid container key={i+1} alignItems="baseline">
-          <Grid item xs={10}>
+        <InputRow key={i+1}>
+          <Grid item xs={6}>
             Option {i+1}:
           </Grid>
-          <Grid item xs={2}>
-            <Field name={`options[${i}].screen`} component={InputField} type="number" inline/>
-          </Grid>
-        </Grid>
+          <PadBlock>
+            <Field name={`options[${i}].screen`} component={InputTextField} type="number" placeholder={`${i+2}`}/>
+          </PadBlock>
+        </InputRow>
       ))
     }
-    return items;
+    return (<div>
+      <p>Optionaly set screen to advance to, depending on which option is selected (default is next screen)</p>
+      <Grid container alignItems="baseline">
+        <Grid item xs={6}>
+          If select
+        </Grid>
+        <Grid item xs={6}>
+          Go to Screen #:
+        </Grid>
+      </Grid>
+      {items}
+    </div>);
   }
   render() {
     const {handleSubmit, submitting, body:{options_max_count}, previousPage} = this.props;
@@ -62,18 +75,7 @@ class SurvyeListBasicForm extends Component {
         <div className="wizard">
           Enter text or upload pictures for the 2 response options
           { this.renderOptions() }
-          { options_max_count === '1' && <div>
-            <p>Optionaly set screen to advance to, depending on which option is selected (default is next screen)</p>
-            <Grid container alignItems="baseline">
-              <Grid item xs={9}>
-                If select
-              </Grid>
-              <Grid item xs={3}>
-                Go to Screen #:
-              </Grid>
-            </Grid>
-          {this.renderAdvanceScreen()}
-          </div> }
+          { options_max_count === '1' && this.renderAdvanceScreen()}
           <div className="wizard-footer">
             <Button color="secondary" onClick={previousPage}>Back</Button>
             <Button color="primary" type="submit" disabled={submitting}>Submit</Button>
@@ -86,5 +88,7 @@ class SurvyeListBasicForm extends Component {
 export default reduxForm({
   // a unique name for the form
   form: 'survey-list-form',
-  destoryOnUnmount: false,
+  destroyOnUnmount: false,
+  forceUnregisterOnUnmount: true,
+  validate,
 })(SurvyeListBasicForm);

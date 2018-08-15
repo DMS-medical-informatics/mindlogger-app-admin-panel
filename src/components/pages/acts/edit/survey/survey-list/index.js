@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import { destroy } from 'redux-form';
 
 import SurveyListTypeForm from './SurveyListTypeForm';
 import SurveyListBasicForm from './SurveyListBasicForm';
@@ -19,12 +21,14 @@ class SurveyListForm extends Component {
     this.setState({page:this.state.page - 1});
   }
   onSubmit = (body) => {
-    console.log(body);
+    const {onSubmit, destroy} = this.props;
+    onSubmit(body);
+    destroy('survey-list-form');
   }
   render() {
-    const {onSubmit} = this.props;
     const {body, page} = this.state;
     const { mode } = body;
+    
     return (
       <div className="p-3">
         {page === 1 && <SurveyListTypeForm onSubmit={this.nextPage}/>}
@@ -36,7 +40,15 @@ class SurveyListForm extends Component {
 }
 
 SurveyListForm.propTypes = {
-
+  onSubmit: PropTypes.func,
 };
 
-export default SurveyListForm;
+const mapStateToProps = (state) => ({
+
+});
+
+const mapDispatchToProps = {
+  destroy
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyListForm);

@@ -3,7 +3,8 @@ import { Field, reduxForm } from 'redux-form';
 import {Button,Row, Col} from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
 
-import { InputField, InputCheckField, InputRadioField } from '../../../forms/FormItems';
+import { InputField } from '../../../forms/FormItems';
+import {InputCheckField, InputRadioField} from '../../../forms/Material';
 import InputTimeField from '../../../forms/InputTimeField';
 import {isRequired} from '../../../forms/validation';
 import InputWeekdayField from './InputWeekdayField';

@@ -1,8 +1,6 @@
-import React, {Component} from 'react'
-import { FormGroup, FormControl,Row, Col, ControlLabel, HelpBlock, InputGroup, Button, Glyphicon } from 'react-bootstrap'
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Radio from '@material-ui/core/Radio';
+import React, {Component} from 'react';
+import { FormGroup, FormControl,Row, Col, ControlLabel, HelpBlock, InputGroup, Button, Glyphicon } from 'react-bootstrap';
+
 
 export class InputField extends Component {
   renderLabel() {
@@ -82,53 +80,6 @@ export const InputFieldWithButton = ({
     {touched && error && <HelpBlock>{error}</HelpBlock>}
   </FormGroup>
 )
-
-export const InputCheckField = ({
-  input,
-  label,
-  inline,
-  required,
-  meta: { touched, error, warning }
-}) => 
-  { 
-    return (<FormControlLabel
-      classes={{
-        label: "form-label"
-      }}
-      control={
-        <Checkbox
-          onChange={() => input.onChange(input.value != true)}
-          checked={input.value === true}
-          color="default"
-        />
-      }
-      label={label}
-    />)
-  }
-
-
-export const InputRadioField = ({
-  input,
-  label,
-  select,
-  required,
-  meta: { touched, error, warning }
-}) => {
-  return (<FormControlLabel
-    classes={{
-      label: "form-label"
-    }}
-    control={
-      <Radio
-        onChange={() => input.onChange(select)}
-        checked={input.value === select}
-        color="default"
-        value={select}
-      />
-    }
-    label={label}
-  />)
-}
 // export const DateTimeField = ({
 //   input,
 //   label,
