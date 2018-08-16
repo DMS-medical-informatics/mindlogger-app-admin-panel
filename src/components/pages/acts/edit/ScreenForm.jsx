@@ -25,12 +25,12 @@ class ScreenForm extends Component {
             <a>Picture / Video</a>
           </Col>
           <Col md={9}>
-            <Field name="display_video" label="Display picture/video at the top of the screen:" component={InputCheckField} />
+            <Field name="display[video]" label="Display picture/video at the top of the screen:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display_video_file" label="Upload picture/video" component={InputFileField}/>
-              <Field name="display_playback" label="Show video playback icon and allow replay" component={InputCheckField} />
+              <Field name="display[video_file]" label="Upload picture/video" component={InputFileField}/>
+              <Field name="display[video_playback]" label="Show video playback icon and allow replay" component={InputCheckField} />
               <br/>
-              <Field name="display_autoplay_video" label="Autoplay video" component={InputCheckField} />
+              <Field name="display[video_autoplay]" label="Autoplay video" component={InputCheckField} />
             </PadBlock>
           </Col>
         </Row>
@@ -40,12 +40,12 @@ class ScreenForm extends Component {
             <a>Audio</a>
           </Col>
           <Col md={9}>
-            <Field name="display_audio" label="Play audio file:" component={InputCheckField} />
+            <Field name="display[audio]" label="Play audio file:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display_audio_file" label="Upload file:" component={InputFileField} />
-              <Field name="display_playback" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
+              <Field name="display[audio_file]" label="Upload file:" component={InputFileField} />
+              <Field name="display[audio_playback]" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
               <br/>
-              <Field name="display_autoplay_audio" label="Autoplay audio" component={InputCheckField} />
+              <Field name="display[audio_autoplay]" label="Autoplay audio" component={InputCheckField} />
             </PadBlock>
           </Col>
         </Row>
@@ -55,7 +55,7 @@ class ScreenForm extends Component {
             <a>Text</a>
           </Col>
           <Col md={9}>
-            <Field name="display_text" label="Display text (instructions/question) below picture/video/drawing or above survey:" component={InputField} componentClass="textarea" vertical />
+            <Field name="display[text]" label="Display text (instructions/question) below picture/video/drawing or above survey:" component={InputField} componentClass="textarea" vertical />
           </Col>
         </Row>
 
@@ -64,9 +64,9 @@ class ScreenForm extends Component {
             <a>Text entry</a>
           </Col>
           <Col md={9}>
-            <Field name="display_text_entry" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
+            <Field name="display[text_entry]" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
             <PadBlock>
-              <Field name="display_text_entry_label" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
+              <Field name="display[text_entry_label]" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
             </PadBlock>
           </Col>
         </Row>
@@ -151,8 +151,8 @@ class ScreenForm extends Component {
               { canvas_type === 'draw' && this.renderModalButton('canvas') }
             </InputRow>
             <InputRow>
-            <Field name="canvas_type" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
-            { canvas_type === 'sort_picture' &&  this.renderModalButton('canvas') }
+              <Field name="canvas_type" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
+              { canvas_type === 'sort_picture' &&  this.renderModalButton('canvas') }
             </InputRow>
           </Col>
         </Row>

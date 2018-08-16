@@ -43,7 +43,7 @@ class EditAct extends Component {
     // ]
     return (
       <section className="edit-act">
-      <Tabs id="edit-act-tabs" defaultActiveKey={1}>
+      <Tabs id="edit-act-tabs" defaultActiveKey={2}>
         <Tab eventKey={1} title="Settings">
           <ActSetting />
         </Tab>

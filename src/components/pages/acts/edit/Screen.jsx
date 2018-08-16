@@ -5,9 +5,11 @@ import {
   Button,
   Modal,
 } from "react-bootstrap";
+import Sugar from 'sugar';
 
 import ScreenForm from './ScreenForm';
 import SurveyListForm from './survey/survey-list';
+import SurveyTableForm from './survey/survey-table';
 
 const mapStateToProps = (state) => ({
   body: formValueSelector('screen-form')(state, 'survey_type', 'canvas_type'),
@@ -30,8 +32,10 @@ class Screen extends Component {
       case 'list':
         return <SurveyListForm onSubmit={this.onSurveyForm} />
       case 'table':
+        return <SurveyTableForm onSubmit={this.onSurveyForm} />
       case 'slider':
       case 'audio':
+      default:
     }
   }
   renderModal() {
@@ -39,7 +43,7 @@ class Screen extends Component {
     return (
       <Modal show={this.state.form !== false } onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>{survey_type}</Modal.Title>
+          <Modal.Title>{Sugar.String.capitalize(survey_type)}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
          { this.state.form === 'survey' ?

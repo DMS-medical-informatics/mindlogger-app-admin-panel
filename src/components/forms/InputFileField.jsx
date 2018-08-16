@@ -1,5 +1,4 @@
 import React from 'react';
-import { reduxForm, Field } from 'redux-form';
 import Dropzone from 'react-dropzone';
 const dropzoneStyle = {
   position: 'relative',

@@ -30,16 +30,11 @@ class SettingForm extends Component {
             <Col sm={6}>
               <a name="user-notification">User notifications</a>
             </Col>
-            <Col sm={6}>
-              User can reset
-            </Col>
           </Row>
         </div>
         <div className="section-body">
           Day of the week, month, or specific dates;
           <PadBlock>
-            <Field name="notification[reset_time]" label="User can reset" component={InputCheckField} />
-            <br/>
             <Grid container alignItems="baseline">
               <Field name="notification[mode_week]" label="Weekly:" component={InputCheckField} select="weekly"/>
               <Field name="notification[week_day]" component={InputWeekdayField} bordered/>
