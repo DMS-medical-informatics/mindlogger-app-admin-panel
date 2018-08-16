@@ -25,10 +25,10 @@ class SurvyeListBasicForm extends Component {
               
             </InputRow>
             
-            <Grid container alignItems="center">
+            <InputRow>
               <Field name={`options[${i}].type`} label="File" component={InputRadioField} select="file" />
               <Field name={`options[${i}].file`} component={InputFileField} />
-            </Grid>
+            </InputRow>
           </Grid>
         </Grid>
       ))

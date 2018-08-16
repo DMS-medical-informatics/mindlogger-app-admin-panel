@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import Button from '@material-ui/core/Button';
 
-import { InputField } from '../../../../../forms/FormItems';
 import {InputTextField, InputRadioField, InputRow} from '../../../../../forms/Material';
 import {isRequired} from '../../../../../forms/validation'
 import validate from './validate';
