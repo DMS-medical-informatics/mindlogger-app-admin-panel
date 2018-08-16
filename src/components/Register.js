@@ -7,6 +7,7 @@ import { withRouter } from "react-router"
 import { signup } from "../actions/api"
 import {InputField} from './forms/FormItems'
 import { isValidEmail, isRequired } from "../helpers"
+import { InputCheckField } from './forms/Material';
 
 function setErrorMsg(error) {
   return {
@@ -18,7 +19,7 @@ class Register extends Component {
   state = { registerError: null }
   submit = (values) => {
     const {history, signup} = this.props
-    signup(values)
+    signup({...values, admin: false})
     .then(res => {
       history.push('/users')
     })
@@ -30,8 +31,12 @@ class Register extends Component {
       <div className="col-sm-6 col-sm-offset-3">
         <h1>Register</h1>
         <form onSubmit={handleSubmit(this.submit)}>
+        <Field name="login" type="text" component={InputField} label="Username" placeholder="Username" validate={isRequired} />
         <Field name="email" type="text" component={InputField} label="Email" placeholder="Email" validate={isValidEmail} />
+        <Field name="firstName" type="text" component={InputField} label="First name" placeholder="" validate={isRequired} />
+        <Field name="lastName" type="text" component={InputField} label="Last name" placeholder="" validate={isRequired} />
         <Field name="password" type="password" component={InputField} label="Password" placeholder="Email" validate={isRequired} />
+        
           {
             this.state.registerError &&
             <div className="alert alert-danger" role="alert">

@@ -1,14 +1,16 @@
 import { API_HOST } from '../constants';
+import * as types from '../constants/actionTypes';
+import objectToFormData from 'object-to-formdata';
 
 export default store => next => action => {
     if ((!action.method && !action.path) || action.status) return next(action)
 
     let { path } = action;
-    const { method, type, body, isMultipartUpload } = action;
+    const { method, type, body } = action;
     const state = store.getState();
     let accessToken;
     if (state.entities.auth) {
-        accessToken = state.entities.auth.access_token;
+        accessToken = state.entities.auth.token;
     }
 
     if (!path || !method || !type) {
@@ -18,7 +20,6 @@ export default store => next => action => {
     if (typeof path === 'function') {
         path = path(state);
     }
-
     // replace endpoint generics such as 'user/me'
     path = endpointGenerics(state, path);
 
@@ -26,7 +27,7 @@ export default store => next => action => {
     next({...action, status: 'REQUESTED' });
 
     // make the request
-    return makeRequest(method, path, body, accessToken, isMultipartUpload)
+    return makeRequest(method, path, body, accessToken, action)
         .then(response => {
             store.dispatch({...action, response, status: 'COMPLETE' });
             return Promise.resolve(response);
@@ -37,34 +38,37 @@ export default store => next => action => {
         });
 }
 
-export const makeRequest = (method, path, body, accessToken, isMultipartUpload) => {
-    const headers = new Headers({
-        "access_token": accessToken,
-    });
-    if (!isMultipartUpload) {
-        headers.set("Content-Type", "application/json; charset=utf-8");
+export const makeRequest = (method, path, data, accessToken, {isMultipartUpload, isJson, extraHeaders}) => {
+    let headers = new Headers(extraHeaders || {});
+    if (accessToken) {
+        headers.set("Girder-Token", accessToken);
     }
+    let body = data;
+    if (!isMultipartUpload && isJson) {
+        headers.set("Content-Type", "application/json; charset=utf-8");
+        body = JSON.stringify(data);
+    }
+    if (isJson) {
+        body = objectToFormData(data);
+    }
+    
     return fetch(`${API_HOST}${path}`, {
             mode: 'cors',
-            body: isMultipartUpload ? body : JSON.stringify(body),
+            body,
             method,
             headers
         })
         .then(response => {
             const status = response.status;
-            if (status !== 200){
-                console.log(status);
-                return {};
-            }
+
             try {
-                return response.json();
+                return response.json().then(json => {
+                    return status === 200 ? Promise.resolve(json) : Promise.reject(json);
+                })
             } catch (error) {
-                return {};
+                Promise.reject(error);
             }
             
-        })
-        .then(json => {
-            return json.success ? Promise.resolve(json) : Promise.reject(json);
         });
 }
 

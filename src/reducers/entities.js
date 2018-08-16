@@ -1,6 +1,12 @@
 import * as types from '../constants/actionTypes';
 
 const entities = (state = {}, action) => {
+    if (action.type === types.SIGN_OUT) {
+        return {
+            ...state,
+            auth: false
+        }
+    }
     if(action.status === 'ERRORED' && action.error.error && action.error.error.status === 401) {
         return {}
     }
@@ -26,17 +32,13 @@ const entities = (state = {}, action) => {
             case types.SIGN_UP:
                 return {
                     ...state,
-                    auth: action.response.user
+                    auth: action.response.authToken,
+                    self: action.response.user,
                 }
             case types.CHANGE_PROFILE:
                 return {
                     ...state,
                     auth: {...state.auth, ...action.response.user}
-                }
-            case types.SIGN_OUT:
-                return {
-                    ...state,
-                    auth: false
                 }
             case types.POST_FILE:
                 return {

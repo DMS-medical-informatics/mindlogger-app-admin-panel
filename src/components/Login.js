@@ -37,7 +37,7 @@ class Login extends Component {
       <div className="col-sm-6 col-sm-offset-3">
         <h1> Login </h1>
         <form onSubmit={handleSubmit(this.submit)}>
-        <Field name="email" type="text" component={InputField} label="Email" placeholder="Email" validate={isRequired} />
+        <Field name="user" type="text" component={InputField} label="Username" placeholder="Username" validate={isRequired} />
         <Field name="password" type="password" component={InputField} label="Password" placeholder="Email" validate={isRequired} />
           {
             this.state.loginMessage &&

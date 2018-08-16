@@ -45,11 +45,11 @@ export const resetPassword = (body) => ({
   body,
 });
 
-export const signin = (body) => ({
+export const signin = ({user, password}) => ({
   type: types.SIGN_IN,
-  method: 'POST',
-  path: '/login',
-  body,
+  method: 'GET',
+  path: '/user/authentication',
+  extraHeaders: { 'Girder-Authorization': `Basic ${btoa(user + ":" + password)}` }
 });
 
 export const getUsers = (offset, limit) => ({
@@ -60,8 +60,6 @@ export const getUsers = (offset, limit) => ({
 
 export const signout = (body) => ({
   type: types.SIGN_OUT,
-  method: 'DELETE',
-  path: '/logout',
 })
 
 export const inviteUser = (body) => ({

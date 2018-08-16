@@ -25,13 +25,12 @@ class Header extends Component {
     onSignout = () => {
       let {signout} = this.props
       const {history} = this.props
-      signout().then(res => {
-        history.push('/')
-      })
+      signout();
+      history.push('/');
     }
     render () {
-      let {auth, pageTitle} = this.props
-      let authed = auth && auth.access_token ? true : false
+      let {auth, user, pageTitle} = this.props
+      let authed = auth && auth.token ? true : false
       
       // let data = [
       //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
@@ -57,12 +56,12 @@ class Header extends Component {
                 <LinkContainer eventKey="6" to="/managers"><NavItem>&nbsp; Managers</NavItem></LinkContainer>
               </NavDropdown>
             </Nav>
-            {false && authed &&
+            {authed &&
             <Nav pullRight>
               <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to="/take"><NavItem>Take</NavItem></LinkContainer>
               <NavDropdown id="manageId" title="Manage">
-                { auth.role === 'super_admin' && (<LinkContainer eventKey="1" to="/organizations"><NavItem>Organizations</NavItem></LinkContainer>)}
+                { user.role === 'super_admin' && (<LinkContainer eventKey="1" to="/organizations"><NavItem>Organizations</NavItem></LinkContainer>)}
                 <LinkContainer eventKey="2" to="/users"><NavItem>Users</NavItem></LinkContainer>
               </NavDropdown>
               <NavDropdown id="resourceId" title="Resource">
@@ -70,7 +69,7 @@ class Header extends Component {
                 <LinkContainer eventKey="2" to="/images"><NavItem>Images</NavItem></LinkContainer>
               </NavDropdown>
               
-              <NavDropdown id="dropdownId" title={`Hi, ${auth.first_name}`}>
+              <NavDropdown id="dropdownId" title={`Hi, ${user.firstName}`}>
                 <LinkContainer eventKey="1" to="/profile"><NavItem>Profile</NavItem></LinkContainer>
                 <NavItem eventKey="2" onClick={this.onSignout}>Logout</NavItem>
               </NavDropdown>
@@ -100,6 +99,7 @@ const mapDispatchToProps = {
   
 const mapStateToProps = (state) => ({
     auth: state.entities.auth,
+    user: state.entities.self,
     pageTitle: state.entities.pageTitle,
 })
 
