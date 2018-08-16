@@ -11,6 +11,7 @@ import ScreenForm from './ScreenForm';
 import SurveyListForm from './survey/survey-list';
 import SurveyTableForm from './survey/survey-table';
 import SurveySliderForm from './survey/slider';
+import SurveyCanvasDrawForm from './survey/draw';
 
 const mapStateToProps = (state) => ({
   body: formValueSelector('screen-form')(state, 'survey_type', 'canvas_type'),
@@ -40,12 +41,20 @@ class Screen extends Component {
       default:
     }
   }
+  renderCanvasForm(canvas_type) {
+    switch(canvas_type) {
+      case 'draw':
+        return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} />
+      case 'sort_picture':
+        return '';
+    }
+  }
   renderModal() {
     const {body: {survey_type, canvas_type}} = this.props;
     return (
       <Modal show={this.state.form !== false } onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>{Sugar.String.capitalize(survey_type)}</Modal.Title>
+          <Modal.Title>{ this.state.form === 'survey' ? Sugar.String.capitalize(survey_type) : Sugar.String.capitalize(canvas_type)}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
          { this.state.form === 'survey' ?

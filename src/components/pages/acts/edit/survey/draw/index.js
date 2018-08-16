@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import { destroy } from 'redux-form';
+import SurveyDrawForm from './SurveyDrawForm';
 
-import SurveySliderFirstForm from './SurveySliderFirstForm';
-import SurveySliderSecondForm from './SurveySliderSecondForm';
 
-class SurveySliderForm extends Component {
+
+class SurveyCanvasDrawForm extends Component {
   componentWillMount() {
     this.setState({page:1, body: {}});
   }
@@ -22,20 +22,19 @@ class SurveySliderForm extends Component {
   onSubmit = (body) => {
     const {onSubmit, destroy} = this.props;
     onSubmit(body);
-    destroy('survey-list-form');
+    destroy('survey-draw-form');
   }
   render() {
-    const {body, page} = this.state;
+    
     return (
       <div className="p-3">
-        {page === 1 && <SurveySliderFirstForm onSubmit={this.nextPage}/>}
-        {page === 2  && <SurveySliderSecondForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
+        <SurveyDrawForm onSubmit={this.onSubmit} />
       </div>
     );
   }
 }
 
-SurveySliderForm.propTypes = {
+SurveyCanvasDrawForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
@@ -47,4 +46,4 @@ const mapDispatchToProps = {
   destroy
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveySliderForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyCanvasDrawForm);

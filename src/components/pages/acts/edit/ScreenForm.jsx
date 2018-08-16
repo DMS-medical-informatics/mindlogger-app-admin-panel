@@ -107,54 +107,44 @@ class ScreenForm extends Component {
         </Row>
 
         <div className="section-title"><a name="survey">Survey</a></div>
-        <Row>
-          <Col md={1}>
-          </Col>
-          <Col md={10}>
-            <Field name="survey_type" component={InputRadioField} label="None" select="none" />
-            <br/>
-            <InputRow>
-              <Field name="survey_type" component={InputRadioField} label="Survey list" select="list"/>
-              { survey_type === 'list' && this.renderModalButton('survey')}
-            </InputRow>
-            <InputRow>
-              <Field name="survey_type" component={InputRadioField} label="Survey table" select="table"/>
-              { survey_type === 'table' && this.renderModalButton('survey')}
-            </InputRow>
-            <InputRow>
-              <Field name="survey_type" component={InputRadioField} label="Slider bar" select="slider"/>
-              { survey_type === 'slider' && this.renderModalButton('survey')}
-            </InputRow>
-            <InputRow>
-              <Field name="survey_type" component={InputRadioField} label="Record audio" select="audio"/>
-            </InputRow>
-          </Col>
-        </Row>
+        <PadBlock>
+          <Field name="survey_type" component={InputRadioField} label="None" select="none" />
+          <br/>
+          <InputRow>
+            <Field name="survey_type" component={InputRadioField} label="Survey list" select="list"/>
+            { survey_type === 'list' && this.renderModalButton('survey')}
+          </InputRow>
+          <InputRow>
+            <Field name="survey_type" component={InputRadioField} label="Survey table" select="table"/>
+            { survey_type === 'table' && this.renderModalButton('survey')}
+          </InputRow>
+          <InputRow>
+            <Field name="survey_type" component={InputRadioField} label="Slider bar" select="slider"/>
+            { survey_type === 'slider' && this.renderModalButton('survey')}
+          </InputRow>
+          <InputRow>
+            <Field name="survey_type" component={InputRadioField} label="Record audio" select="audio"/>
+          </InputRow>
+        </PadBlock>
 
         <div className="section-title"><a name="survey">Canvas (if no picture/video display)</a></div>
-        <Row>
-          <Col md={1}>
-          </Col>
-          <Col md={10}>
-            <Field name="canvas_type" component={InputRadioField} label="None" select="none" />
-            <InputRow>
-              <Field name="canvas_type" component={InputRadioField} label="Take camera photo" select="camera"/>
-              { canvas_type === 'camera' && this.renderModalButton('canvas') }
-            </InputRow>
-            <InputRow>
-              <Field name="canvas_type" component={InputRadioField} label="Take camera video" select="video"/>
-              { canvas_type === 'video' && this.renderModalButton('canvas') }
-            </InputRow>
-            <InputRow>
-              <Field name="canvas_type" component={InputRadioField} label="Draw" select="draw"/>
-              { canvas_type === 'draw' && this.renderModalButton('canvas') }
-            </InputRow>
-            <InputRow>
-              <Field name="canvas_type" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
-              { canvas_type === 'sort_picture' &&  this.renderModalButton('canvas') }
-            </InputRow>
-          </Col>
-        </Row>
+        <PadBlock>
+          <Field name="canvas_type" component={InputRadioField} label="None" select="none" />
+          <InputRow>
+            <Field name="canvas_type" component={InputRadioField} label="Take camera photo" select="camera"/>
+          </InputRow>
+          <InputRow>
+            <Field name="canvas_type" component={InputRadioField} label="Take camera video" select="video"/>
+          </InputRow>
+          <InputRow>
+            <Field name="canvas_type" component={InputRadioField} label="Draw" select="draw"/>
+            { canvas_type === 'draw' && this.renderModalButton('canvas') }
+          </InputRow>
+          <InputRow>
+            <Field name="canvas_type" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
+            { canvas_type === 'sort_picture' &&  this.renderModalButton('canvas') }
+          </InputRow>
+        </PadBlock>
         <Button type="submit" disabled={submitting}>Submit</Button>
       </form>
     );

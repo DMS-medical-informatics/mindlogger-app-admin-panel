@@ -15,7 +15,7 @@ class SurveyTableSelectForm extends Component {
     const {rows_count} = this.props.body;
     for(let i=0; i < rows_count ; i++) {
       options.push((
-        <InputRow label={`Row ${i+1}:`} key={i}>
+        <InputRow label={`Row ${i+1}:`} key={i} row={6}>
           <Field name={`rows[${i}]`} label="Text" component={InputTextField} placeholder="Label" />
         </InputRow>
       ));
@@ -28,7 +28,7 @@ class SurveyTableSelectForm extends Component {
     const {cols_count} = this.props.body;
     for(let i=0; i < cols_count ; i++) {
       options.push((
-        <InputRow label={`Col ${i+1}:`} key={i}>
+        <InputRow label={`Col ${i+1}:`} key={i} row={6}>
           <Field name={`cols[${i}]`} label="Text" component={InputTextField} placeholder="Label" />
         </InputRow>
       ));

@@ -3,8 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import {InputRow, InputTextField, InputRadioField} from '../../../../../forms/Material';
-import InputFileField from '../../../../../forms/InputFileField';
+import {InputRow, InputTextField} from '../../../../../forms/Material';
 import PadBlock from '../../../../../layout/PadBlock';
 import validate from './validate';
 
