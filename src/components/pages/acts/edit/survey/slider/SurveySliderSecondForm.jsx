@@ -8,48 +8,46 @@ import InputFileField from '../../../../../forms/InputFileField';
 import PadBlock from '../../../../../layout/PadBlock';
 import validate from './validate';
 
-class SurvyeListBasicForm extends Component {
+class SurveySliderSecondForm extends Component {
   renderOptions() {
     let options = [];
     const {options_count} = this.props.body;
     for(let i=0; i < options_count ; i++) {
-      options.push((
-        <Grid container key={i+1} alignItems="baseline">
-          <Grid item sm={2}>
-            Option {i+1}:
-          </Grid>
-          <Grid item>
-            <InputRow>
-              <Field name={`options[${i}].type`} label="Text" component={InputRadioField} select="text" />
-              <Field name={`options[${i}].text`} component={InputTextField} type="text" placeholder="Text"/>
-              
-            </InputRow>
-            
-            <InputRow>
-              <Field name={`options[${i}].type`} label="File" component={InputRadioField} select="file" />
-              <Field name={`options[${i}].file`} component={InputFileField} />
-            </InputRow>
-          </Grid>
-        </Grid>
-      ))
+      options.push(
+        <InputRow label={`Label ${i+1}:`} key={i+1}>
+          <Field name={`options[${i}].text`} component={InputTextField} type="text"/>
+        </InputRow>);
     }
     return options;
   }
 
   renderAdvanceScreen() {
     let items = [];
-    const {options_count} = this.props.body;
+    const {options_count, increments} = this.props.body;
     for(let i=0; i < options_count ; i++) {
       items.push((
-        <InputRow key={i+1}>
+        <InputRow key={i*2}>
           <Grid item xs={6}>
-            Option {i+1}:
+            Label {i+1}:
           </Grid>
           <PadBlock>
-            <Field name={`options[${i}].screen`} component={InputTextField} type="number" placeholder={`${i+2}`}/>
+            <Field name={`options[${i}].screen`} component={InputTextField} type="number" placeholder="1"/>
           </PadBlock>
         </InputRow>
-      ))
+      ));
+      if (increments === 'smooth' && i < options_count-1) {
+        items.push((
+          <InputRow key={i*2+1}>
+          <Grid item xs={6}>
+            between Label {i+1} & Label {i+2}:
+          </Grid>
+          <PadBlock>
+            <Field name={`options[${i}].screen2`} component={InputTextField} type="number" placeholder="1"/>
+          </PadBlock>
+          </InputRow>
+        ));
+      }
+      
     }
     return (<div>
       <p>Optionaly set screen to advance to, depending on which option is selected (default is next screen)</p>
@@ -65,13 +63,15 @@ class SurvyeListBasicForm extends Component {
     </div>);
   }
   render() {
-    const {handleSubmit, submitting, body:{options_max_count}, previousPage} = this.props;
+    const {handleSubmit, submitting, previousPage} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <div className="wizard">
-          Enter text or upload pictures for the 2 response options
+          Labels for the 3 tick marks
+          <br/>
+          (from left/bottom to right/top):
           { this.renderOptions() }
-          { options_max_count === 1 && this.renderAdvanceScreen()}
+          { this.renderAdvanceScreen()}
           <div className="wizard-footer">
             <Button variant="contained" onClick={previousPage}>Back</Button>
             <Button variant="contained" color="primary" type="submit" disabled={submitting}>Submit</Button>
@@ -83,8 +83,8 @@ class SurvyeListBasicForm extends Component {
 }
 export default reduxForm({
   // a unique name for the form
-  form: 'survey-list-form',
+  form: 'survey-slider-form',
   destroyOnUnmount: false,
   forceUnregisterOnUnmount: true,
   validate,
-})(SurvyeListBasicForm);
+})(SurveySliderSecondForm);

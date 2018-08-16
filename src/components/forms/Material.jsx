@@ -16,7 +16,7 @@ export const InputRow = ({
   <Grid container alignItems="center">
     {
       label &&
-            <Grid item xs={row || 6}>
+            <Grid item xs={row}>
               {label}
             </Grid>
     }
@@ -36,7 +36,21 @@ export const InputTextField = ({
   meta: { touched, error, warning }
 }) => (
   <FormControl error={touched && error && true} className={className}>
-    <Input type={type} value={input.value} readOnly={readOnly} onChange={value => input.onChange((type === 'number' && !isNaN(value)) ? Number(value) : value )} placeholder={placeholder} required={required} className={`form-input form-control-${type}`} />
+    <Input
+      type={type}
+      value={input.value}
+      readOnly={readOnly}
+      onChange={e => {
+        let value = e.target.value;
+        if (type === 'number' && !isNaN(value)) {
+          input.onChange(Number(value));
+        } else {
+          input.onChange(value)
+        }
+      }}
+      placeholder={placeholder}
+      required={required}
+      className={`form-input form-control-${type}`} />
     {touched && error && <FormHelperText>{error}</FormHelperText>}
   </FormControl>);
 export const InputCheckField = ({

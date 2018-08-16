@@ -56,7 +56,7 @@ class SurveyListOrderForm extends Component {
             <Field name="picture_file" label="Upload picture file" component={InputFileField} validate={isRequired}/>
           </PadBlock>
           <br/>
-          { options_max_count === '1' && 
+          { options_max_count === 1 && 
             this.renderAdvanceScreen()
            }
           <div className="wizard-footer">

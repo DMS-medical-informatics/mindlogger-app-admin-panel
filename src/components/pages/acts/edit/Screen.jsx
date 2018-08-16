@@ -10,6 +10,7 @@ import Sugar from 'sugar';
 import ScreenForm from './ScreenForm';
 import SurveyListForm from './survey/survey-list';
 import SurveyTableForm from './survey/survey-table';
+import SurveySliderForm from './survey/slider';
 
 const mapStateToProps = (state) => ({
   body: formValueSelector('screen-form')(state, 'survey_type', 'canvas_type'),
@@ -34,6 +35,7 @@ class Screen extends Component {
       case 'table':
         return <SurveyTableForm onSubmit={this.onSurveyForm} />
       case 'slider':
+        return <SurveySliderForm onSubmit={this.onSurveyForm} />
       case 'audio':
       default:
     }
