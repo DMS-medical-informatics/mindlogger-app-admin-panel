@@ -3,26 +3,19 @@ import PropTypes from "prop-types"
 import { connect } from "react-redux"
 import { Route, Redirect } from "react-router-dom"
 
-export const pathsByRole = {
-  admin: ["/users", "/answers"],
-  user: ["/profile", "/take"],
-  viewer: ["/dashboard", "/users"]
-}
 
 class AuthRoute extends React.Component {
   static propTypes = {
     user: PropTypes.object,
   }
   renderByRole = (props) => {
-    const { user, component: Component } = this.props
+    const { auth, user, component: Component } = this.props
     let role = user.role || 'user'
     let redirectPath
-    
-    if (role.includes('admin')) {
+    if (user.admin) {
 
     } else if (role === 'user' || role === 'viewer') {
-      let paths = pathsByRole[role]
-      redirectPath = (paths && paths.some(item => props.location.pathname.startsWith(item))) ? false : '/'
+      
     } else {
       redirectPath = '/login'
     }
@@ -41,7 +34,8 @@ class AuthRoute extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.entities.auth || {},
+  auth: state.entities.auth || {},
+  user: state.entities.self || {},
 })
 
 const mapDispatchToProps = {

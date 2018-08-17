@@ -48,7 +48,7 @@ export const makeRequest = (method, path, data, accessToken, {isMultipartUpload,
         headers.set("Content-Type", "application/json; charset=utf-8");
         body = JSON.stringify(data);
     }
-    if (isJson) {
+    if (!isJson && method !== 'GET') {
         body = objectToFormData(data);
     }
     

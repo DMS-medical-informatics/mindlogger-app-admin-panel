@@ -184,3 +184,48 @@ export const deleteFile = (path) => ({
   method: 'DELETE',
   path: `/files?${generateQuery({path})}`,
 })
+
+// Volumes
+export const getCollection = (name) => ({
+  type: types.GET_COLLECTION,
+  method: 'GET',
+  name,
+  path: `/collection?text=${name}`,
+});
+
+export const getFolders = (parentId, name, parentType='collection') => ({
+  type: types.GET_FOLDER,
+  method: 'GET',
+  name,
+  path: `/folder?${generateQuery({parentId, parentType})}`,
+});
+
+export const addFolder = (name, meta, parentId, parentType) => ({
+  type: types.ADD_FOLDER,
+  method: 'POST',
+  path: '/folder',
+  body: {
+    name,
+    metadata:JSON.stringify(meta),
+    parentId,
+    parentType,
+    reuseExisting: true,
+  },
+});
+
+export const updateFolder = (name, meta, id) => ({
+  type: types.UPDATE_FOLDER,
+  method: 'PUT',
+  path: `/folder/${id}`,
+  body: {
+    name,
+    metadata:JSON.stringify(meta),
+  },
+});
+
+export const getObject = (name) => ({
+  type: types.GET_OBJECT,
+  method: 'GET',
+  name,
+  path: `/collection?text=${name}`,
+})

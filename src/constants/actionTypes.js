@@ -29,3 +29,16 @@ export const DELETE_FILE = 'DELETE_FILE';
 export const ADD_ORGANIZATION = 'ADD_ORGANIZATION';
 // ANSWER
 export const SAVE_ANSWER = 'SAVE_ANSWER';
+
+// GET OBJECTS
+export const LIST_OBJECTS = 'LIST_OBJECTS';
+export const GET_OBJECT = 'GET_OBJECT';
+export const CREATE_OBJECT = 'CREATE_OBJECT';
+export const DELETE_OBJECT = 'DELETE_OBJECT';
+export const GET_COLLECTION = 'GET_COLLECTION';
+
+// FOLDER
+export const GET_FOLDER = 'GET_FOLDER';
+export const ADD_FOLDER = 'ADD_FOLDER';
+export const UPDATE_FOLDER = 'UPDATE_FOLDER';
+export const DELETE_FOLDER = 'DELETE_FOLDER';

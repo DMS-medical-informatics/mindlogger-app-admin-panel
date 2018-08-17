@@ -29,7 +29,7 @@ class Header extends Component {
       history.push('/');
     }
     render () {
-      let {auth, user, pageTitle} = this.props
+      let {auth, user, pageTitle, volume} = this.props
       let authed = auth && auth.token ? true : false
       
       // let data = [
@@ -45,8 +45,9 @@ class Header extends Component {
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
+            {volume && 
             <Nav>
-              <NavDropdown id="resourceId" title="HBN Menu">
+              <NavDropdown id="resourceId" title={`${volume.meta.shortName} Menu`}>
                 <LinkContainer eventKey="1" to="/take-acts"><NavItem>Go to Web App</NavItem></LinkContainer>
                 <LinkContainer eventKey="2" to="/user-data"><NavItem>View User Data</NavItem></LinkContainer>
                 <LinkContainer eventKey="3" to="/acts"><NavItem>Edit Activities</NavItem></LinkContainer>
@@ -56,9 +57,10 @@ class Header extends Component {
                 <LinkContainer eventKey="6" to="/managers"><NavItem>&nbsp; Managers</NavItem></LinkContainer>
               </NavDropdown>
             </Nav>
+            }
             {authed &&
             <Nav pullRight>
-              <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
+              {/* <LinkContainer to="/dashboard"><NavItem>Dashboard</NavItem></LinkContainer>
               <LinkContainer to="/take"><NavItem>Take</NavItem></LinkContainer>
               <NavDropdown id="manageId" title="Manage">
                 { user.role === 'super_admin' && (<LinkContainer eventKey="1" to="/organizations"><NavItem>Organizations</NavItem></LinkContainer>)}
@@ -67,7 +69,7 @@ class Header extends Component {
               <NavDropdown id="resourceId" title="Resource">
                 <LinkContainer eventKey="1" to="/acts"><NavItem>Activities</NavItem></LinkContainer>
                 <LinkContainer eventKey="2" to="/images"><NavItem>Images</NavItem></LinkContainer>
-              </NavDropdown>
+              </NavDropdown> */}
               
               <NavDropdown id="dropdownId" title={`Hi, ${user.firstName}`}>
                 <LinkContainer eventKey="1" to="/profile"><NavItem>Profile</NavItem></LinkContainer>
@@ -100,6 +102,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
     auth: state.entities.auth,
     user: state.entities.self,
+    volume: state.entities.volume,
     pageTitle: state.entities.pageTitle,
 })
 

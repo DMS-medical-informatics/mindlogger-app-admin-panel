@@ -9,3 +9,8 @@ export const setAnswer = (answer) => ({
     type: types.SET_DATA,
     data: { answer },
 })
+
+export const setVolume = (volume) => ({
+    type: types.SET_DATA,
+    data: { volume }
+})

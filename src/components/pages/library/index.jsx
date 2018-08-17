@@ -12,18 +12,21 @@ import {
 } from "react-bootstrap";
 
 import { InputField } from "../../forms/FormItems";
+import InputFileField from "../../forms/InputFileField";
 import { isRequired } from "../../forms/validation";
 
-//import { getVolumes, addVolume } from "../../../actions/api"
+import { getObject, getCollection, getFolders, addFolder } from "../../../actions/api";
 
 import plus from './plus.svg';
 
 const AddVolumeForm = reduxForm({
-  form: "add-organization-form"
+  form: "add-volume-form"
 })(({ handleSubmit, pristine, submitting }) => (
-  <Form onSubmit={handleSubmit} horizontal>
+  <div>
+  <p>Create a new Volume of Activities. Mindlogger will create a cross-platform app with these Activities.</p>
+  <Form onSubmit={handleSubmit}>
     <Field
-      name="short_name"
+      name="shortName"
       type="text"
       component={InputField}
       label="Short Name"
@@ -50,10 +53,9 @@ const AddVolumeForm = reduxForm({
     <Field
       name="logo"
       type="file"
-      component={InputField}
+      component={InputFileField}
       label="Logo"
       placeholder=""
-      validate={isRequired}
     />
     <center>
     <Button
@@ -64,12 +66,16 @@ const AddVolumeForm = reduxForm({
     </Button>
     </center>
   </Form>
+  </div>
 ));
 
 class Home extends Component {
   componentWillMount() {
-    //this.props.getOrganizations(0, 10)
-    this.setState({ page: 1 });
+    const {getCollection, getFolders} = this.props;
+    getCollection('Volumes').then(res => {
+      getFolders(res[0]._id, 'volumes');
+    });
+    this.setState({});
   }
 
   selectPage = page => {
@@ -77,15 +83,16 @@ class Home extends Component {
     this.props.getOrganizations((page - 1) * 10, 10);
   };
 
-  onAddOrganization = body => {
-    return this.props.addOrganization(body).then(res => {
+  onAddVolume = ({name, ...data}) => {
+    const {addFolder, collection, getFolders} = this.props;
+    return addFolder(name, data, collection._id, 'collection').then(res => {
+      getFolders(collection._id, 'volumes');
       this.close();
-      return this.props.getOrganizations(0, 10);
     });
   };
 
   close = e => {
-    this.setState({ form: "" });
+    this.setState({ form: false });
   };
 
   renderAddVolumeModal = () => {
@@ -95,23 +102,28 @@ class Home extends Component {
           <Modal.Title>Add Volume</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Create a new Volume of Activities. Mindlogger will create a cross-platform app with these Activities.</p>
-          <AddVolumeForm onSubmit={this.onAddOrganization} />
+          <AddVolumeForm onSubmit={this.onAddVolume} />
         </Modal.Body>
       </Modal>
     );
   };
 
+  selectVolume(index) {
+    this.props.history.push(`/volumes/${index}`);
+  }
+
   render() {
+    const {volumes} = this.props;
     return (
       <div>
         <div className="volumes">
-          <div className="volume">
-            <span>TEST</span>
-          </div>
-          <div className="volume">
-            <span>HBN</span>
-          </div>
+          {
+            volumes && volumes.map((volume, i) => 
+              (<div className="volume" key={i} onClick={() => this.selectVolume(i)}>
+                <span>{volume.name}</span>
+              </div>)
+            )
+          }
           <div className="plus-button" onClick={() => this.setState({form: true})}>
             <img src={plus} alt="plus"/>
           </div>
@@ -126,11 +138,17 @@ class Home extends Component {
   }
 }
 const mapDispatchToProps = {
+  getObject,
+  getCollection,
+  getFolders,
+  addFolder,
   //getVolumes, addVolume, submit
 };
 
 const mapStateToProps = state => ({
   organizations: state.entities.organizations,
+  collection: state.entities.collection && state.entities.collection.volumes,
+  volumes: state.entities.folder && state.entities.folder.volumes,
   total_count: (state.entities.paging && state.entities.paging.total) || 0,
   user: state.entities.auth || {}
 });

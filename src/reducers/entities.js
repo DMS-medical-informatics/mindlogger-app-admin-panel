@@ -3,7 +3,6 @@ import * as types from '../constants/actionTypes';
 const entities = (state = {}, action) => {
     if (action.type === types.SIGN_OUT) {
         return {
-            ...state,
             auth: false
         }
     }
@@ -44,11 +43,29 @@ const entities = (state = {}, action) => {
                 return {
                     ...state
                 }
+            case types.GET_COLLECTION:
+                {
+                    let collection = state.collection || {};
+                    collection[action.name.toLowerCase()] = action.response[0];
+                    return {
+                        ...state,
+                        collection,
+                    }
+                }
+                break;
+            case types.GET_FOLDER:
+                {
+                    let folder = state.folder || {};
+                    folder[action.name.toLowerCase()] = action.response;
+                    return {
+                        ...state,
+                        folder,
+                    }
+                }
             
             default:
               return {
                   ...state,
-                  ...action.response
               }
 
         }

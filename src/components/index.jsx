@@ -21,6 +21,7 @@ import EditSurvey from './modules/survey/EditSurvey';
 import Profile from './protected/Profile';
 import Organizations from './protected/Organizations';
 import Library from './pages/library';
+import Volume from './pages/library/Volume';
 import EditAct from './pages/acts/edit';
 
 export default class App extends Component {
@@ -39,7 +40,7 @@ export default class App extends Component {
           <div className="container">
             <div className="row">
               <Switch>
-                <Route path='/' exact component={Home} />
+                <AuthRoute path='/' exact component={Library} />
                 <Route path='/login' component={Login} />
                 <Route path='/register' component={Register} />
                 <AuthRoute path='/dashboard' component={Dashboard} />
@@ -53,7 +54,8 @@ export default class App extends Component {
                 <AuthRoute path='/take' component={TakeActs} />
                 <AuthRoute path='/surveys/:id' component={EditSurvey} />
                 <AuthRoute path='/organizations' component={Organizations} />
-                <Route path='/library' component={Library}/>
+                <AuthRoute path='/library' component={Library}/>
+                <AuthRoute path='/volumes/:id' component={Volume}/>
                 <Route path='/acts/new' component={EditAct}/>
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
