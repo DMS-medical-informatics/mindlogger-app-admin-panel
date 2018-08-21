@@ -8,9 +8,19 @@ export const setAct = (act) => ({
 export const setAnswer = (answer) => ({
     type: types.SET_DATA,
     data: { answer },
-})
+});
 
 export const setVolume = (volume) => ({
     type: types.SET_DATA,
     data: { volume }
+});
+
+export const setDataObject = (object) => ({
+    type: types.SET_DATA_OBJECT,
+    object
+});
+
+export const setActChanged = (actChanged) => ({
+    type: types.SET_DATA,
+    data: { actChanged }
 })

@@ -22,6 +22,8 @@ import Profile from './protected/Profile';
 import Organizations from './protected/Organizations';
 import Library from './pages/library';
 import Volume from './pages/library/Volume';
+
+import Acts from './pages/acts';
 import EditAct from './pages/acts/edit';
 
 export default class App extends Component {
@@ -37,7 +39,7 @@ export default class App extends Component {
       <BrowserRouter>
         <div>
           <Header />
-          <div className="container">
+          <div className="container content">
             <div className="row">
               <Switch>
                 <AuthRoute path='/' exact component={Library} />
@@ -56,7 +58,9 @@ export default class App extends Component {
                 <AuthRoute path='/organizations' component={Organizations} />
                 <AuthRoute path='/library' component={Library}/>
                 <AuthRoute path='/volumes/:id' component={Volume}/>
-                <Route path='/acts/new' component={EditAct}/>
+                <AuthRoute path='/acts/:id/edit' component={EditAct}/>
+                <AuthRoute path='/acts/new' component={EditAct}/>
+                <AuthRoute path='/acts' component={Acts}/>
                 <Route render={() => <h3>No Match</h3>} />
               </Switch>
             </div>

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
+import { Prompt } from 'react-router-dom';
 import {
   Button,
   Modal,
@@ -10,60 +11,69 @@ import {
 
 import Screens from './Screens';
 import ActSetting from "./ActSetting";
-//import { getVolumes, addVolume } from "../../../actions/api"
+import { getItems, getObject } from "../../../../actions/api";
+import { setActChanged } from "../../../../actions/core";
 
 class EditAct extends Component {
   componentWillMount() {
+    const {actId, getObject} = this.props;
+    getObject('folder', actId).then(act => {
+      this.decodeData(act);
+    });
+    this.setState({data: {}})
+  }
 
+  componentDidMount() {
+    const {router, route, setActChanged} = this.props;
+    setActChanged(true);
+  }
+
+  componentWillUnmount() {
+    this.props.setActChanged(false);
+  }
+
+  decodeData(act) {
+    const {name, meta:{abbreviation, screens}} = act;
+    this.setState({setting: {name, abbreviation}, screens });
   }
 
   close = e => {
     this.setState({ form: "" });
   };
 
-  renderAddVolumeModal = () => {
-    return (
-      <Modal show={this.state.form} onHide={this.close}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Volume</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>Create a new Volume of Activities. Mindlogger will create a cross-platform app with these Activities.</p>
-          
-        </Modal.Body>
-      </Modal>
-    );
-  };
+  onSubmit = () => {
+    const {setActChanged} = this.props;
+    setActChanged(false);
+  }
 
   render() {
-
-    // let data = [
-    //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
-    //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
-    // ]
+    const {setting, screens} = this.state;
     return (
       <section className="edit-act">
-      <Tabs id="edit-act-tabs" defaultActiveKey={2}>
-        <Tab eventKey={1} title="Settings">
-          <ActSetting />
-        </Tab>
-        <Tab eventKey={2} title="Screens">
-          <Screens/>
-        </Tab>
-        <Button>Submit</Button>
-      </Tabs>
+        <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
+        <Tabs id="edit-act-tabs"  defaultActiveKey={2}>
+          <Tab eventKey={1} title="Settings">
+            <ActSetting setting={setting} onSetting/>
+          </Tab>
+          <Tab eventKey={2} title="Screens">
+            <Screens screens={screens} ref={ref => this.screensRef = ref}/>
+          </Tab>
+          <Button bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Button>
+        </Tabs>
       </section>
     );
   }
 }
 const mapDispatchToProps = {
-  //getVolumes, addVolume, submit
+  getItems, getObject, setActChanged
 };
 
-const mapStateToProps = state => ({
-  organizations: state.entities.organizations,
-  total_count: (state.entities.paging && state.entities.paging.total) || 0,
-  user: state.entities.auth || {}
+const mapStateToProps = (state, ownProps) => ({
+  act: state.entities.data && state.entities.data[ownProps.match.params.id],
+  actId: ownProps.match.params.id,
+  changed: state.entities.actChanged,
+  actIndex: ownProps.match.params.id,
+  user: state.entities.auth || {},
 });
 
 export default compose(

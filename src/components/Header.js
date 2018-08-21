@@ -47,7 +47,7 @@ class Header extends Component {
           <Navbar.Collapse>
             {volume && 
             <Nav>
-              <NavDropdown id="resourceId" title={`${volume.meta.shortName} Menu`}>
+              <NavDropdown id="resourceId" title={`${volume.meta && volume.meta.shortName} Menu`}>
                 <LinkContainer eventKey="1" to="/take-acts"><NavItem>Go to Web App</NavItem></LinkContainer>
                 <LinkContainer eventKey="2" to="/user-data"><NavItem>View User Data</NavItem></LinkContainer>
                 <LinkContainer eventKey="3" to="/acts"><NavItem>Edit Activities</NavItem></LinkContainer>

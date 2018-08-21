@@ -21,6 +21,15 @@ const entities = (state = {}, action) => {
                 ...state,
                 ...action.data,
             }
+        case types.SET_DATA_OBJECT:
+        {
+            let data = state.data || {};
+            data[action.object._id] = action.object;
+            return {
+                ...state,
+                data,
+            }
+        }
         default:
             break;
     }
@@ -53,16 +62,25 @@ const entities = (state = {}, action) => {
                     }
                 }
                 break;
-            case types.GET_FOLDER:
+            case types.LIST_OBJECTS:
                 {
-                    let folder = state.folder || {};
-                    folder[action.name.toLowerCase()] = action.response;
+                    let data = state[action.objectType] || {};
+                    data[action.name] = action.response;
+                    let newState = {
+                        ...state,
+                    }
+                    newState[action.objectType] = data;
+                    return newState;
+                }
+            case types.GET_OBJECT:
+                {
+                    let data = state.data || {};
+                    data[action.response._id] = action.response;
                     return {
                         ...state,
-                        folder,
+                        data,
                     }
                 }
-            
             default:
               return {
                   ...state,

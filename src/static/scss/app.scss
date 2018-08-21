@@ -1,4 +1,7 @@
-@import 'components/volume';
-@import 'components/acts';
-@import 'components/layout';
 @import 'components/typography';
+@import 'components/layout';
+.content {
+  @import 'components/volume';
+  @import 'components/acts';
+  @import 'components/form';
+}

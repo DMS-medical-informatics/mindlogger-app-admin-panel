@@ -183,7 +183,23 @@ export const deleteFile = (path) => ({
   type: types.DELETE_FILE,
   method: 'DELETE',
   path: `/files?${generateQuery({path})}`,
-})
+});
+
+
+export const listObjects = (parentId, parentType, name, objectType) => ({
+  type: types.LIST_OBJECTS,
+  method: 'GET',
+  objectType,
+  name,
+  path: `/${objectType}?${generateQuery({parentId, parentType})}`,
+});
+
+export const getObject = (name, id) => ({
+  type: types.GET_OBJECT,
+  method: 'GET',
+  name,
+  path: `/${name}/${id}`,
+});
 
 // Volumes
 export const getCollection = (name) => ({
@@ -194,16 +210,18 @@ export const getCollection = (name) => ({
 });
 
 export const getFolders = (parentId, name, parentType='collection') => ({
-  type: types.GET_FOLDER,
+  type: types.LIST_OBJECTS,
   method: 'GET',
+  objectType: 'folder',
   name,
   path: `/folder?${generateQuery({parentId, parentType})}`,
 });
 
 export const addFolder = (name, meta, parentId, parentType) => ({
-  type: types.ADD_FOLDER,
+  type: types.ADD_OBJECT,
   method: 'POST',
   path: '/folder',
+  objectType: 'folder',
   body: {
     name,
     metadata:JSON.stringify(meta),
@@ -214,8 +232,9 @@ export const addFolder = (name, meta, parentId, parentType) => ({
 });
 
 export const updateFolder = (name, meta, id) => ({
-  type: types.UPDATE_FOLDER,
+  type: types.UPDATE_OBJECT,
   method: 'PUT',
+  objectType: 'folder',
   path: `/folder/${id}`,
   body: {
     name,
@@ -223,9 +242,5 @@ export const updateFolder = (name, meta, id) => ({
   },
 });
 
-export const getObject = (name) => ({
-  type: types.GET_OBJECT,
-  method: 'GET',
-  name,
-  path: `/collection?text=${name}`,
-})
+export const getItems = (parentId, name, parentType='folder') => (listObjects(parentId, parentType, 'item', 'item' ));
+

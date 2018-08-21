@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form'
 import {FormGroup, Row, Col} from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 import { InputField } from '../../../forms/FormItems';
 import {InputCheckField, InputRadioField, InputRow} from '../../../forms/Material';
@@ -10,30 +11,33 @@ import PadBlock from '../../../layout/PadBlock';
 import InputFileField from '../../../forms/InputFileField';
 
 class ScreenForm extends Component {
+  componentWillMount() {
+    
+  }
   renderModalButton(type) {
     return (<Button variant="contained" onClick={() => this.props.showModal(type)}>Edit</Button>);
   }
   render() {
-    const {handleSubmit, submitting, index, body: {survey_type, canvas_type}} = this.props
+    const {handleSubmit, submitting, index, body: {surveyType, canvasType}} = this.props;
     return (
       <form onSubmit={ handleSubmit }>
-        <Field name="name" type="text" label={`Screen ${index} name`} validate={isRequired} component={InputField} className="form-control-auto" />
+        <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} />
         <div className="section-title"><a name="display">Screen display</a></div>
         
-        <Row>
-          <Col md={3}>
+        <Grid container>
+          <Grid item md={3}>
             <a>Picture / Video</a>
-          </Col>
-          <Col md={9}>
+          </Grid>
+          <Grid item md={9}>
             <Field name="display[video]" label="Display picture/video at the top of the screen:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display[video_file]" label="Upload picture/video" component={InputFileField}/>
-              <Field name="display[video_playback]" label="Show video playback icon and allow replay" component={InputCheckField} />
+              <Field name="display[videoFile]" label="Upload picture/video" component={InputFileField}/>
+              <Field name="display[videoPlayback]" label="Show video playback icon and allow replay" component={InputCheckField} />
               <br/>
-              <Field name="display[video_autoplay]" label="Autoplay video" component={InputCheckField} />
+              <Field name="display[videoAutoplay]" label="Autoplay video" component={InputCheckField} />
             </PadBlock>
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
 
         <Row>
           <Col md={3}>
@@ -42,10 +46,10 @@ class ScreenForm extends Component {
           <Col md={9}>
             <Field name="display[audio]" label="Play audio file:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display[audio_file]" label="Upload file:" component={InputFileField} />
-              <Field name="display[audio_playback]" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
+              <Field name="display[audioFile]" label="Upload file:" component={InputFileField} />
+              <Field name="display[audioPlayback]" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
               <br/>
-              <Field name="display[audio_autoplay]" label="Autoplay audio" component={InputCheckField} />
+              <Field name="display[audioAutoplay]" label="Autoplay audio" component={InputCheckField} />
             </PadBlock>
           </Col>
         </Row>
@@ -64,9 +68,9 @@ class ScreenForm extends Component {
             <a>Text entry</a>
           </Col>
           <Col md={9}>
-            <Field name="display[text_entry]" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
+            <Field name="display[textEntry]" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
             <PadBlock>
-              <Field name="display[text_entry_label]" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
+              <Field name="display[textEntryLabel]" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
             </PadBlock>
           </Col>
         </Row>
@@ -76,31 +80,31 @@ class ScreenForm extends Component {
             <a>Other</a>
           </Col>
           <Col md={9}>
-            <Field name="background_color" label="Background color:" component={InputField} componentClass="select" options={[{value: '#fff', label: 'white'}, {value: '#000', label: 'black'}, {value:'#ff0', label: 'yelllow'}]} />
+            <Field name="backgroundColor" label="Background color:" component={InputField} componentClass="select" options={[{value: '#fff', label: 'white'}, {value: '#000', label: 'black'}, {value:'#ff0', label: 'yelllow'}]} />
             <Field name="timer" label="Timer:" component={InputCheckField} />
             <div className="num-input-wrapper inline-block">
-              <Field name="timer_duration" component={InputField} type="number" inline/>
+              <Field name="timerDuration" component={InputField} type="number" inline/>
               seconds
             </div>
             <PadBlock>
-              <Field name="show_timer_bar" label="Show timer bar" component={InputCheckField} />
+              <Field name="timerBarVisible" label="Show timer bar" component={InputCheckField} />
               <br/>
-              <Field name="hide_nav_arrow" label="Hide previous / next screen arrow buttons" component={InputCheckField} />
+              <Field name="navArrowHidden" label="Hide previous / next screen arrow buttons" component={InputCheckField} />
             </PadBlock>
             <div className="num-input-wrapper inline-block">
               Response delay(seconds):
-              <Field name="response_delay"component={InputField} type="number" inline/>
+              <Field name="responseDelay"component={InputField} type="number" inline/>
               seconds
             </div>
-            <Field name="allow_skip" label="Allow skipping screen (override Activity setting)" component={InputCheckField} />
+            <Field name="skipAllowed" label="Allow skipping screen (override Activity setting)" component={InputCheckField} />
             <div className="num-input-wrapper">
               If SKIP screen go to screen #:
-              <Field name="skip_to" component={InputField} type="number" inline/>
+              <Field name="skipToScreen" component={InputField} type="number" inline/>
             </div>
             <FormGroup>
-              <Field name="redo_limit" label="Maximum times User can redo audio/camera/draw:" component={InputCheckField} inline/>
+              <Field name="redoLimit" label="Maximum times User can redo audio/camera/draw:" component={InputCheckField} inline/>
               <div className="num-input-wrapper inline-block">
-                <Field name="redo_limit_count" component={InputField} type="number" inline/>
+                <Field name="redoLimitCount" component={InputField} type="number" inline/>
               </div>
             </FormGroup>
           </Col>
@@ -108,41 +112,41 @@ class ScreenForm extends Component {
 
         <div className="section-title"><a name="survey">Survey</a></div>
         <PadBlock>
-          <Field name="survey_type" component={InputRadioField} label="None" select="none" />
+          <Field name="surveyType" component={InputRadioField} label="None" select="none" />
           <br/>
           <InputRow>
-            <Field name="survey_type" component={InputRadioField} label="Survey list" select="list"/>
-            { survey_type === 'list' && this.renderModalButton('survey')}
+            <Field name="surveyType" component={InputRadioField} label="Survey list" select="list"/>
+            { surveyType === 'list' && this.renderModalButton('survey')}
           </InputRow>
           <InputRow>
-            <Field name="survey_type" component={InputRadioField} label="Survey table" select="table"/>
-            { survey_type === 'table' && this.renderModalButton('survey')}
+            <Field name="surveyType" component={InputRadioField} label="Survey table" select="table"/>
+            { surveyType === 'table' && this.renderModalButton('survey')}
           </InputRow>
           <InputRow>
-            <Field name="survey_type" component={InputRadioField} label="Slider bar" select="slider"/>
-            { survey_type === 'slider' && this.renderModalButton('survey')}
+            <Field name="surveyType" component={InputRadioField} label="Slider bar" select="slider"/>
+            { surveyType === 'slider' && this.renderModalButton('survey')}
           </InputRow>
           <InputRow>
-            <Field name="survey_type" component={InputRadioField} label="Record audio" select="audio"/>
+            <Field name="surveyType" component={InputRadioField} label="Record audio" select="audio"/>
           </InputRow>
         </PadBlock>
 
         <div className="section-title"><a name="survey">Canvas (if no picture/video display)</a></div>
         <PadBlock>
-          <Field name="canvas_type" component={InputRadioField} label="None" select="none" />
+          <Field name="canvasType" component={InputRadioField} label="None" select="none" />
           <InputRow>
-            <Field name="canvas_type" component={InputRadioField} label="Take camera photo" select="camera"/>
+            <Field name="canvasType" component={InputRadioField} label="Take camera photo" select="camera"/>
           </InputRow>
           <InputRow>
-            <Field name="canvas_type" component={InputRadioField} label="Take camera video" select="video"/>
+            <Field name="canvasType" component={InputRadioField} label="Take camera video" select="video"/>
           </InputRow>
           <InputRow>
-            <Field name="canvas_type" component={InputRadioField} label="Draw" select="draw"/>
-            { canvas_type === 'draw' && this.renderModalButton('canvas') }
+            <Field name="canvasType" component={InputRadioField} label="Draw" select="draw"/>
+            { canvasType === 'draw' && this.renderModalButton('canvas') }
           </InputRow>
           <InputRow>
-            <Field name="canvas_type" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
-            { canvas_type === 'sort_picture' &&  this.renderModalButton('canvas') }
+            <Field name="canvasType" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
+            { canvasType === 'sort_pictures' &&  this.renderModalButton('canvas') }
           </InputRow>
         </PadBlock>
         <Button type="submit" disabled={submitting}>Submit</Button>
@@ -153,5 +157,6 @@ class ScreenForm extends Component {
 
 export default reduxForm({
   // a unique name for the form
-  form: 'screen-form'
+  form: 'screen-form',
+  enableReinitialize: true,
 })(ScreenForm);

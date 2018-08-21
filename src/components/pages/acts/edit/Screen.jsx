@@ -14,7 +14,7 @@ import SurveySliderForm from './survey/slider';
 import SurveyCanvasDrawForm from './survey/draw';
 
 const mapStateToProps = (state) => ({
-  body: formValueSelector('screen-form')(state, 'survey_type', 'canvas_type'),
+  body: formValueSelector('screen-form')(state, 'surveyType', 'canvasType'),
 })
 
 class Screen extends Component {
@@ -29,8 +29,8 @@ class Screen extends Component {
     this.close();
   }
 
-  renderSurveyForm(survey_type) {
-    switch(survey_type) {
+  renderSurveyForm(surveyType) {
+    switch(surveyType) {
       case 'list':
         return <SurveyListForm onSubmit={this.onSurveyForm} />
       case 'table':
@@ -41,8 +41,8 @@ class Screen extends Component {
       default:
     }
   }
-  renderCanvasForm(canvas_type) {
-    switch(canvas_type) {
+  renderCanvasForm(canvasType) {
+    switch(canvasType) {
       case 'draw':
         return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} />
       case 'sort_picture':
@@ -50,15 +50,15 @@ class Screen extends Component {
     }
   }
   renderModal() {
-    const {body: {survey_type, canvas_type}} = this.props;
+    const {body: {surveyType, canvasType}} = this.props;
     return (
       <Modal show={this.state.form !== false } onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>{ this.state.form === 'survey' ? Sugar.String.capitalize(survey_type) : Sugar.String.capitalize(canvas_type)}</Modal.Title>
+          <Modal.Title>{ this.state.form === 'survey' ? Sugar.String.capitalize(surveyType) : Sugar.String.capitalize(canvasType)}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
          { this.state.form === 'survey' ?
-          this.renderSurveyForm(survey_type) : this.renderCanvasForm(canvas_type)
+          this.renderSurveyForm(surveyType) : this.renderCanvasForm(canvasType)
          }
         </Modal.Body>
       </Modal>
@@ -75,6 +75,7 @@ class Screen extends Component {
   }
   
   render() {
+    const {index, screen, onFormRef, onSaveScreen} = this.props;
     return (
       <div className="screen">
         <a href="#display">Screen display</a>
@@ -82,7 +83,10 @@ class Screen extends Component {
         <a href="#survey">Survey</a>
         <br/>
         <a href="#canvas">Canvas</a>
-        <ScreenForm onSubmit={this.onScreen} showModal={this.showModal} body={this.props.body || {}}/>
+        { screen && <ScreenForm ref={ref => {
+          ref && onFormRef(ref);
+          }
+        } index={index} onSubmit={onSaveScreen} showModal={this.showModal} body={this.props.body || {}} initialValues={screen}/> }
         {this.state.form && this.renderModal()}
       </div>
     );

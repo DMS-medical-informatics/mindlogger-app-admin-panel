@@ -142,7 +142,6 @@ const mapDispatchToProps = {
   getCollection,
   getFolders,
   addFolder,
-  //getVolumes, addVolume, submit
 };
 
 const mapStateToProps = state => ({
