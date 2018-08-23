@@ -5,3 +5,36 @@
   @import 'components/acts';
   @import 'components/form';
 }
+.wizard {
+  .wizard-footer {
+    margin-top: 30px;
+    text-align: center;
+    button {
+      margin-left: 30px;
+      margin-right: 30px;
+    }
+  }
+  .table-grid {
+    margin: 0 auto;
+    .table-row {
+      display: flex;
+      .cell {
+        max-width: 30px;
+        height: 30px;
+        border: 1px solid black;
+        flex: 1;
+        &:not(:first-child) {
+          border-left: none;
+        }
+        &.selected {
+          background-color: #aad;
+        }
+      }
+      &:not(:first-child) {
+        .cell {
+          border-top: none;
+        }
+      }
+    }
+  }
+}

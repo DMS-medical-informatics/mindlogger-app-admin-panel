@@ -194,11 +194,24 @@ export const listObjects = (parentId, parentType, name, objectType) => ({
   path: `/${objectType}?${generateQuery({parentId, parentType})}`,
 });
 
-export const getObject = (name, id) => ({
+export const getObject = (type, id) => ({
   type: types.GET_OBJECT,
   method: 'GET',
-  name,
-  path: `/${name}/${id}`,
+  type,
+  path: `/${type}/${id}`,
+});
+
+export const addObject = (type, name, meta, parentId, parentType) => ({
+  type: types.ADD_OBJECT,
+  method: 'POST',
+  path: `/${type}`,
+  objectType: type,
+  body: {
+    name,
+    metadata:JSON.stringify(meta),
+    parentId,
+    parentType,
+  },
 });
 
 // Volumes

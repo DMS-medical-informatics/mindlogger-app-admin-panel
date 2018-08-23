@@ -13,7 +13,7 @@ import PadBlock from '../../../layout/PadBlock';
 
 class SettingForm extends Component {
   render() {
-    const {handleSubmit, submitting, act} = this.props
+    const {handleSubmit, submitting} = this.props
     return (
       <form onSubmit={ handleSubmit }>
         <div className="section-title"><a name="information">Information</a></div>

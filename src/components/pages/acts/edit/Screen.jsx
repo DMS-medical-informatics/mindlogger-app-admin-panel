@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import {
-  Button,
   Modal,
 } from "react-bootstrap";
 import Sugar from 'sugar';
@@ -46,6 +45,8 @@ class Screen extends Component {
       case 'draw':
         return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} />
       case 'sort_picture':
+        return '';
+      default:
         return '';
     }
   }

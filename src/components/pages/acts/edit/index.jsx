@@ -1,15 +1,14 @@
 import React, { Component } from "react";
-import { compose } from "redux";
+import { compose, bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Prompt } from 'react-router-dom';
 import {
   Button,
-  Modal,
   Tab, Tabs
 } from "react-bootstrap";
 
-import { getItems, getObject } from "../../../../actions/api";
+import { getItems, getObject, addObject } from "../../../../actions/api";
 import { setActChanged } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmarks from './Bookmarks';
@@ -30,37 +29,65 @@ class EditAct extends Component {
     }
     const {getObject} = this.props;
     if (screens && screens[index]) {
-      const id = screens[index]['@id'].split("/")[1];
-      
       if (screensData[index] === undefined) {
+        const id = screens[index]['@id'].split("/")[1];
         console.log("loading..", id);
         getObject('item', id).then(res => {
           let screensData = [...this.state.screensData];
           screensData[index] = {name: res.name, ...res.meta};
-          this.setState({index, screensData});
+          this.setState({index, screensData}, () => {
+            this.formRef.reset();
+          });
         })
       } else {
-        this.setState({index});
+        this.setState({index}, () => {
+          this.formRef.reset();
+        });
       }
     }
   }
 
+  addScreen = () => {
+    let {screens} = this.state;
+    let screensData = [...this.state.screensData];
+    screensData.push({name:''});
+    if (screens && screens.length > 0) {
+      let formErrors = this.formRef.submit();
+      if (formErrors) {
+        return;
+      }
+    } else {
+      screens = [];
+    }
+    screens.push({})
+    this.setState({screens, screensData}, () => {
+      this.loadScreen(screens.length-1);
+    });
+    
+    // const {volume, addObject} = this.props;
+    // addObject('item', 'screen',{}, volume._id, 'collection').then(res => {
+
+    // });
+  }
+
   selectScreen = (index) => {
-    if (this.formRef) {
-      let errors = this.formRef.submit();
-      if (errors === undefined) {
+    if (this.state.index === undefined ) {
+      this.loadScreen(index);
+    } else {
+      let formErrors = this.formRef.submit();
+      if (formErrors === undefined) {
         this.loadScreen(index);
       } else {
         window.alert("Please fix valdiation errors");
       }
-    } else {
-      this.loadScreen(index);
     }
+    
   }
 
   onSaveScreen = (body) => {
-    const {index,screensData, screens} = this.state;
-    screensData[index] = body;
+    const {index,screensData} = this.state;
+    screensData[index] = {...body};
+    console.log(body);
     this.setState({screensData});
   }
   componentWillMount() {
@@ -71,7 +98,7 @@ class EditAct extends Component {
   }
 
   componentDidMount() {
-    const {router, route, setActChanged} = this.props;
+    const {setActChanged} = this.props;
     setActChanged(true);
   }
 
@@ -80,7 +107,8 @@ class EditAct extends Component {
   }
 
   decodeData(act) {
-    const {name, meta:{abbreviation, screens}} = act;
+    const {name} = act;
+    const {abbreviation, screens} = act.meta || {};
     this.setState({setting: {name, abbreviation}, screens });
     this.loadScreen(0, screens);
   }
@@ -96,7 +124,8 @@ class EditAct extends Component {
 
   render() {
     const {screensData, index, setting, screens} = this.state;
-    const screen = screensData[index];
+    let screen = screensData[index];
+    console.log(screen);
     return (
       <section className="edit-act">
         <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
@@ -106,7 +135,7 @@ class EditAct extends Component {
           </Tab>
           <Tab eventKey={2} title="Screens">
             <div className="screens">
-              <Bookmarks screens={screens} index={index} onSelect={this.selectScreen} />
+              <Bookmarks screens={screens} index={index} onSelect={this.selectScreen} onAdd={this.addScreen}/>
               <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen}/>
             </div>
           </Tab>
@@ -116,9 +145,9 @@ class EditAct extends Component {
     );
   }
 }
-const mapDispatchToProps = {
-  getItems, getObject, setActChanged
-};
+const mapDispatchToProps = (dispatch) => ({
+  ...bindActionCreators({getItems, getObject, setActChanged, addObject}, dispatch)
+});
 
 const mapStateToProps = (state, ownProps) => ({
   act: state.entities.data && state.entities.data[ownProps.match.params.id],
@@ -126,6 +155,7 @@ const mapStateToProps = (state, ownProps) => ({
   changed: state.entities.actChanged,
   actIndex: ownProps.match.params.id,
   user: state.entities.auth || {},
+  volume: state.entities.volume,
 });
 
 export default compose(
