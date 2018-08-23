@@ -9,18 +9,65 @@ import {
   Tab, Tabs
 } from "react-bootstrap";
 
-import Screens from './Screens';
-import ActSetting from "./ActSetting";
 import { getItems, getObject } from "../../../../actions/api";
 import { setActChanged } from "../../../../actions/core";
+import ActSetting from "./ActSetting";
+import Bookmarks from './Bookmarks';
+import Screen from './Screen';
 
 class EditAct extends Component {
+
+  state = {
+    settings: {},
+    screens: [],
+    screensData: [],
+  }
+
+  loadScreen(index, screens) {
+    let {screensData} = this.state;
+    if (!screens) {
+      screens = this.state.screens;
+    }
+    const {getObject} = this.props;
+    if (screens && screens[index]) {
+      const id = screens[index]['@id'].split("/")[1];
+      
+      if (screensData[index] === undefined) {
+        console.log("loading..", id);
+        getObject('item', id).then(res => {
+          let screensData = [...this.state.screensData];
+          screensData[index] = {name: res.name, ...res.meta};
+          this.setState({index, screensData});
+        })
+      } else {
+        this.setState({index});
+      }
+    }
+  }
+
+  selectScreen = (index) => {
+    if (this.formRef) {
+      let errors = this.formRef.submit();
+      if (errors === undefined) {
+        this.loadScreen(index);
+      } else {
+        window.alert("Please fix valdiation errors");
+      }
+    } else {
+      this.loadScreen(index);
+    }
+  }
+
+  onSaveScreen = (body) => {
+    const {index,screensData, screens} = this.state;
+    screensData[index] = body;
+    this.setState({screensData});
+  }
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject('folder', actId).then(act => {
       this.decodeData(act);
     });
-    this.setState({data: {}})
   }
 
   componentDidMount() {
@@ -35,6 +82,7 @@ class EditAct extends Component {
   decodeData(act) {
     const {name, meta:{abbreviation, screens}} = act;
     this.setState({setting: {name, abbreviation}, screens });
+    this.loadScreen(0, screens);
   }
 
   close = e => {
@@ -47,7 +95,8 @@ class EditAct extends Component {
   }
 
   render() {
-    const {setting, screens} = this.state;
+    const {screensData, index, setting, screens} = this.state;
+    const screen = screensData[index];
     return (
       <section className="edit-act">
         <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
@@ -56,7 +105,10 @@ class EditAct extends Component {
             <ActSetting setting={setting} onSetting/>
           </Tab>
           <Tab eventKey={2} title="Screens">
-            <Screens screens={screens} ref={ref => this.screensRef = ref}/>
+            <div className="screens">
+              <Bookmarks screens={screens} index={index} onSelect={this.selectScreen} />
+              <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen}/>
+            </div>
           </Tab>
           <Button bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Button>
         </Tabs>

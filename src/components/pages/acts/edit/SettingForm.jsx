@@ -116,9 +116,9 @@ class SettingForm extends Component {
           <a name="display-settings">Display settings</a>
         </div>
         <div className="section-body">
-          <Field name="permission[skipScreen]" label="Allow skipping screens" component={InputCheckField} />
+          <Field name="permission[skip]" label="Allow skipping screens" component={InputCheckField} />
           <br/>
-          <Field name="permission[prevScreen]" label="Allow returning to previous screens" component={InputCheckField} />
+          <Field name="permission[prev]" label="Allow returning to previous screens" component={InputCheckField} />
           <br/>
           <Field name="display[progress]" label="Show progress bar on top (for survey screens)" component={InputCheckField} />
         </div>
