@@ -88,7 +88,7 @@ class Acts extends Component {
     this.setState({open: 'select'});
     this.groupId = folder._id;
     getFolders(folder._id, 'acts', 'folder').then(res => {
-      
+
     });
   }
 
@@ -144,11 +144,10 @@ class Acts extends Component {
     return (
       <div>
       <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap [+] to add an entry, and tap any entry to edit or delete.</p>
-      <InputRow label="Search Activities"><TextField type="search" className="search-text"/> </InputRow>
       <Grid container spacing={8} justify="space-between">
         {
-          groups.map((group,idx) => 
-          <ActGroup group={group} key={group._id} onEdit={this.onEdit} onAdd={this.onAddAct}/>) 
+          groups.map((group,idx) =>
+          <ActGroup group={group} key={group._id} onEdit={this.onEdit} onAdd={this.onAddAct} vol={volume}/>)
         }
       </Grid>
       { this.renderSelectDialog(acts) }
