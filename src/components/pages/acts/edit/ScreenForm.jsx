@@ -23,18 +23,17 @@ class ScreenForm extends Component {
       <form onSubmit={ handleSubmit }>
         <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} />
         <div className="section-title"><a name="display">Screen display</a></div>
-        
         <Grid container>
           <Grid item md={3}>
             <a>Picture / Video</a>
           </Grid>
           <Grid item md={9}>
-            <Field name="display[video]" label="Display picture/video at the top of the screen:" component={InputCheckField} />
+            <Field name="pictureVideo[display]" label="Display picture/video at the top of the screen:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display[videoFile]" label="Upload picture/video" component={InputFileField}/>
-              <Field name="display[videoPlayback]" label="Show video playback icon and allow replay" component={InputCheckField} />
+              <Field name="pictureVideo[files]" label="Upload picture/video" component={InputFileField}/>
+              <Field name="pictureVideo[playbackIcon]" label="Show video playback icon and allow replay" component={InputCheckField} />
               <br/>
-              <Field name="display[videoAutoplay]" label="Autoplay video" component={InputCheckField} />
+              <Field name="pictureVideo[autoplay]" label="Autoplay video" component={InputCheckField} />
             </PadBlock>
           </Grid>
         </Grid>
@@ -44,12 +43,12 @@ class ScreenForm extends Component {
             <a>Audio</a>
           </Col>
           <Col md={9}>
-            <Field name="display[audio]" label="Play audio file:" component={InputCheckField} />
+            <Field name="audio[display]" label="Play audio file:" component={InputCheckField} />
             <PadBlock>
-              <Field name="display[audioFile]" label="Upload file:" component={InputFileField} />
-              <Field name="display[audioPlayback]" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
+              <Field name="audio[files]" label="Upload file:" component={InputFileField} />
+              <Field name="audio[playbackIcon]" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
               <br/>
-              <Field name="display[audioAutoplay]" label="Autoplay audio" component={InputCheckField} />
+              <Field name="audio[autoplay]" label="Autoplay audio" component={InputCheckField} />
             </PadBlock>
           </Col>
         </Row>
@@ -68,9 +67,9 @@ class ScreenForm extends Component {
             <a>Text entry</a>
           </Col>
           <Col md={9}>
-            <Field name="display[textEntry]" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
+            <Field name="text[display]" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
             <PadBlock>
-              <Field name="display[textEntryLabel]" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
+              <Field name="text[label]" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
             </PadBlock>
           </Col>
         </Row>
@@ -80,23 +79,23 @@ class ScreenForm extends Component {
             <a>Other</a>
           </Col>
           <Col md={9}>
-            <Field name="backgroundColor" label="Background color:" component={InputField} componentClass="select" options={[{value: '#fff', label: 'white'}, {value: '#000', label: 'black'}, {value:'#ff0', label: 'yelllow'}]} />
-            <Field name="timer" label="Timer:" component={InputCheckField} />
+            <Field name="bgColor" label="Background color:" component={InputField} componentClass="select" options={[{value: '#fff', label: 'white'}, {value: '#000', label: 'black'}, {value:'#ff0', label: 'yelllow'}]} />
+            <Field name="timer[enabled]" label="Timer:" component={InputCheckField} />
             <div className="num-input-wrapper inline-block">
-              <Field name="timerDuration" component={InputField} type="number" inline/>
+              <Field name="timer[duration]" component={InputField} type="number" inline/>
               seconds
             </div>
             <PadBlock>
-              <Field name="timerBarVisible" label="Show timer bar" component={InputCheckField} />
+              <Field name="timer[display]" label="Show timer bar" component={InputCheckField} />
               <br/>
-              <Field name="navArrowHidden" label="Hide previous / next screen arrow buttons" component={InputCheckField} />
+              <Field name="timer[hideNavigation]" label="Hide previous / next screen arrow buttons" component={InputCheckField} />
             </PadBlock>
             <div className="num-input-wrapper inline-block">
               Response delay(seconds):
               <Field name="responseDelay"component={InputField} type="number" inline/>
               seconds
             </div>
-            <Field name="skipAllowed" label="Allow skipping screen (override Activity setting)" component={InputCheckField} />
+            <Field name="skippable" label="Allow skipping screen (override Activity setting)" component={InputCheckField} />
             <div className="num-input-wrapper">
               If SKIP screen go to screen #:
               <Field name="skipToScreen" component={InputField} type="number" inline/>
@@ -104,7 +103,7 @@ class ScreenForm extends Component {
             <FormGroup>
               <Field name="redoLimit" label="Maximum times User can redo audio/camera/draw:" component={InputCheckField} inline/>
               <div className="num-input-wrapper inline-block">
-                <Field name="redoLimitCount" component={InputField} type="number" inline/>
+                <Field name="attemptLimit" component={InputField} type="number" inline/>
               </div>
             </FormGroup>
           </Col>

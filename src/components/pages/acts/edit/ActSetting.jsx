@@ -3,7 +3,7 @@ import SettingForm from './SettingForm';
 
 class ActSetting extends Component {
   render() {
-    const {setting, onSetting} = this.props;
+    const {setting, onSetting, onFormRef} = this.props;
     return (
       <div className="setting">
         <ul>
@@ -12,7 +12,10 @@ class ActSetting extends Component {
           <li><a href="#user-settings">User settings</a></li>
           <li><a href="#display-settings">Display Settings</a></li>
         </ul>
-        <SettingForm initialValues={setting} onSubmit={onSetting}/>
+        <SettingForm initialValues={setting} onSubmit={onSetting} ref={ref => {
+          ref && onFormRef(ref);
+          }
+        }/>
       </div>
     );
   }

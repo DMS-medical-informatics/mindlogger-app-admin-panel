@@ -120,7 +120,7 @@ class Home extends Component {
           {
             volumes && volumes.map((volume, i) => 
               (<div className="volume" key={i} onClick={() => this.selectVolume(i)}>
-                <span>{volume.name}</span>
+                <span>{volume.meta.shortName}</span>
               </div>)
             )
           }

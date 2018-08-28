@@ -24,26 +24,44 @@ class Screen extends Component {
     this.setState({form: false});
   }
 
-  onSurveyForm = (body) => {
+  onSurveyForm = (survey) => {
+    this.setState({survey});
     this.close();
   }
 
+  onCanvasForm = (canvas) => {
+    this.setState({canvas});
+    this.close();
+  }
+
+  componentWillReceiveProps = (nextProps) => {
+    if(nextProps.screen) {
+      const { screen: {survey, canvas }} = nextProps;
+      this.setState({survey, canvas});
+    }
+    
+  }
+  
+
   renderSurveyForm(surveyType) {
+    const {survey} = this.state;
+    console.log("Survey:", survey);
     switch(surveyType) {
       case 'list':
-        return <SurveyListForm onSubmit={this.onSurveyForm} />
+        return <SurveyListForm onSubmit={this.onSurveyForm} data={survey}/>
       case 'table':
-        return <SurveyTableForm onSubmit={this.onSurveyForm} />
+        return <SurveyTableForm onSubmit={this.onSurveyForm} data={survey}/>
       case 'slider':
-        return <SurveySliderForm onSubmit={this.onSurveyForm} />
+        return <SurveySliderForm onSubmit={this.onSurveyForm} data={survey}/>
       case 'audio':
       default:
     }
   }
   renderCanvasForm(canvasType) {
+    const {canvas} = this.state;
     switch(canvasType) {
       case 'draw':
-        return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} />
+        return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} initialValues={canvas}/>
       case 'sort_picture':
         return '';
       default:
@@ -72,11 +90,15 @@ class Screen extends Component {
     } else if (type === 'canvas') {
       this.setState({form: type})
     }
+  }
 
+  onFormSubmit = (body) => {
+    const {survey, canvas} = this.state;
+    this.props.onSaveScreen({...body, canvas, survey});
   }
   
   render() {
-    const {index, screen, onFormRef, onSaveScreen} = this.props;
+    const {index, screen, onFormRef} = this.props;
     return (
       <div className="screen">
         <a href="#display">Screen display</a>
@@ -87,7 +109,7 @@ class Screen extends Component {
         { screen && <ScreenForm ref={ref => {
           ref && onFormRef(ref);
           }
-        } index={index} onSubmit={onSaveScreen} showModal={this.showModal} body={this.props.body || {}} initialValues={screen}/> }
+        } index={index} onSubmit={this.onFormSubmit} showModal={this.showModal} body={this.props.body || {}} initialValues={screen}/> }
         {this.state.form && this.renderModal()}
       </div>
     );

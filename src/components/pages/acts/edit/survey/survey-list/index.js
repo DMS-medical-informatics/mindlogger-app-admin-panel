@@ -31,7 +31,7 @@ class SurveyListForm extends Component {
     
     return (
       <div className="p-3">
-        {page === 1 && <SurveyListTypeForm onSubmit={this.nextPage}/>}
+        {page === 1 && <SurveyListTypeForm onSubmit={this.nextPage} initialValues={this.props.data}/>}
         {page === 2 && mode === 'single' && <SurveyListBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
         {page === 2 && mode === 'order' && <SurveyListOrderForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
       </div>

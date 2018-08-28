@@ -28,7 +28,7 @@ class SurveyCanvasDrawForm extends Component {
     
     return (
       <div className="p-3">
-        <SurveyDrawForm onSubmit={this.onSubmit} />
+        <SurveyDrawForm onSubmit={this.onSubmit} initialValues={this.props.data}/>
       </div>
     );
   }

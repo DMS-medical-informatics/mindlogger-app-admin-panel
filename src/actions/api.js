@@ -197,11 +197,10 @@ export const listObjects = (parentId, parentType, name, objectType) => ({
 export const getObject = (type, id) => ({
   type: types.GET_OBJECT,
   method: 'GET',
-  type,
   path: `/${type}/${id}`,
 });
 
-export const addObject = (type, name, meta, parentId, parentType) => ({
+export const addObject = (type, name, meta, options) => ({
   type: types.ADD_OBJECT,
   method: 'POST',
   path: `/${type}`,
@@ -209,10 +208,11 @@ export const addObject = (type, name, meta, parentId, parentType) => ({
   body: {
     name,
     metadata:JSON.stringify(meta),
-    parentId,
-    parentType,
+    ...options,
   },
 });
+
+export const addItem = (name, meta, folderId) => (addObject('item', name, meta, {folderId}));
 
 // Volumes
 export const getCollection = (name) => ({

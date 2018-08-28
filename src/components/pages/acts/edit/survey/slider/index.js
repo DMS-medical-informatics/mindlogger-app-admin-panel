@@ -28,7 +28,7 @@ class SurveySliderForm extends Component {
     const {body, page} = this.state;
     return (
       <div className="p-3">
-        {page === 1 && <SurveySliderFirstForm onSubmit={this.nextPage}/>}
+        {page === 1 && <SurveySliderFirstForm onSubmit={this.nextPage} initialValues={this.props.data}/>}
         {page === 2  && <SurveySliderSecondForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
       </div>
     );

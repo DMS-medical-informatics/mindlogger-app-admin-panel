@@ -7,6 +7,14 @@ class InputWeekdayField extends Component {
     let days = input.value || [];
     this.setState({days})
   }
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps.input.value !== this.props.input.value) {
+      let days = nextProps.input.value || [];
+      this.setState({days})
+    }
+  }
+  
   onCheck(day) {
     let {days} = this.state;
     let index = days.indexOf(day);

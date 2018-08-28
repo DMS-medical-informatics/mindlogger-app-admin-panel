@@ -1,5 +1,6 @@
 .volumes {
   display: flex;
+  flex-flow: row wrap;
   align-content: center;
   justify-content: center;
   .plus-button, .volume {

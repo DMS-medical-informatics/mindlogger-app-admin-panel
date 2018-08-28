@@ -33,7 +33,7 @@ class SurveyTableForm extends Component {
     
     return (
       <div className="p-3">
-        {page === 1 && <SurveyTableTypeForm onSubmit={this.nextPage}/>}
+        {page === 1 && <SurveyTableTypeForm onSubmit={this.nextPage} initialValues={this.props.data}/>}
         {page === 2 && (mode === 'text' || mode === 'order') && <SurveyTableBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
         {page === 2 && mode === 'select' && <SurveyTableSelectForm body={body} previousPage={this.prevPage} onSubmit={this.nextPage}/>}
         {page === 3 && mode === 'select' && select_type === 'basic' && <SurveyTableSelectCellForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}

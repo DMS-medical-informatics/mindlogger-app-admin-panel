@@ -8,7 +8,7 @@ import {
   Tab, Tabs
 } from "react-bootstrap";
 
-import { getItems, getObject, addObject } from "../../../../actions/api";
+import { getItems, getObject, addItem, updateFolder } from "../../../../actions/api";
 import { setActChanged } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmarks from './Bookmarks';
@@ -64,8 +64,8 @@ class EditAct extends Component {
       this.loadScreen(screens.length-1);
     });
     
-    // const {volume, addObject} = this.props;
-    // addObject('item', 'screen',{}, volume._id, 'collection').then(res => {
+    // const {volume, addItem} = this.props;
+    // addItem('item', 'screen',{}, volume._id, 'collection').then(res => {
 
     // });
   }
@@ -108,8 +108,8 @@ class EditAct extends Component {
 
   decodeData(act) {
     const {name} = act;
-    const {abbreviation, screens} = act.meta || {};
-    this.setState({setting: {name, abbreviation}, screens });
+    const {screens, ...setting} = act.meta || {};
+    this.setState({setting: {name, ...setting}, screens });
     this.loadScreen(0, screens);
   }
 
@@ -117,9 +117,46 @@ class EditAct extends Component {
     this.setState({ form: "" });
   };
 
+  onSetting = (setting) => {
+    this.setState({setting});
+  }
+
   onSubmit = () => {
-    const {setActChanged} = this.props;
-    setActChanged(false);
+    const {setActChanged, addItem, act, updateFolder} = this.props;
+    let prArray = [];
+    let formErrors = this.formRef.submit();
+    if (formErrors) {
+      window.alert("Please fix valdiation errors in screens");
+      return;
+    }
+    formErrors = this.settingRef.submit();
+    if (formErrors) {
+      window.alert("Please fix valdiation errors in settings");
+      return;
+    }
+    const {screens, screensData} = this.state;
+    for (let i = 0; i < screens.length; i++) {
+      const idData = screens[i]['@id'];
+      const {name, ...screen} = screensData[i];
+      const index = i;
+      if (idData === undefined) {
+        prArray.push(addItem(name, screen, act._id).then(res => {
+          screens[index]= {'@id': `item/${res._id}`}
+        }));
+      }
+    }
+    if(prArray.length > 0) {
+      return Promise.all(prArray).then(() => {
+        const {name, ...setting} = this.state.setting;
+        this.setState({screens});
+        return updateFolder(name, {screens, ...setting}, act._id);
+      }).then(() => {
+        setActChanged(false);
+      });
+    } else {
+
+    }
+    
   }
 
   render() {
@@ -131,7 +168,7 @@ class EditAct extends Component {
         <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
         <Tabs id="edit-act-tabs"  defaultActiveKey={2}>
           <Tab eventKey={1} title="Settings">
-            <ActSetting setting={setting} onSetting/>
+            <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref }/>
           </Tab>
           <Tab eventKey={2} title="Screens">
             <div className="screens">
@@ -145,9 +182,13 @@ class EditAct extends Component {
     );
   }
 }
-const mapDispatchToProps = (dispatch) => ({
-  ...bindActionCreators({getItems, getObject, setActChanged, addObject}, dispatch)
-});
+const mapDispatchToProps = {
+  getItems,
+  getObject,
+  setActChanged,
+  addItem,
+  updateFolder,
+};
 
 const mapStateToProps = (state, ownProps) => ({
   act: state.entities.data && state.entities.data[ownProps.match.params.id],
