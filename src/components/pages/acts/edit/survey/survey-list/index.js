@@ -12,7 +12,6 @@ class SurveyListForm extends Component {
     this.setState({page:1, body: {}});
   }
   nextPage = (body) => {
-    console.log(body);
     let {page} = this.state;
     page = page + 1;
     this.setState({page, body});

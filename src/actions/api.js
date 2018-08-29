@@ -17,17 +17,17 @@ export const signup = (body) => ({
     body,
 });
 
-export const changeProfile = (body) => ({
+export const changeProfile = (id, body) => ({
   type: types.CHANGE_PROFILE,
   method: 'PUT',
-  path: '/user',
+  path: `/user/${id}`,
   body,
 });
 
-export const changePassword = (body) => ({
+export const changePassword = (id, body) => ({
     type: types.CHANGE_PASSWORD,
-    method: 'POST',
-    path: '/user/change-password',
+    method: 'PUT',
+    path: `/user/${id}/password`,
     body,
 });
 
