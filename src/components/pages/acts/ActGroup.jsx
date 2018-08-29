@@ -17,8 +17,8 @@ class ActGroup extends Component {
   }
   render() {
     const {acts, group, onAdd, onEdit, vol} = this.props;
-    const info = (vol.meta.information["@id"] ? <Button onClick={() => onAdd(group)}>{vol.meta.information["@id"]}</Button> : <Button onClick={() => onAdd(group)}>[+]</Button>);
-    const consent = (vol.meta.consent["@id"] ? <Button onClick={() => onAdd(group)}>{vol.meta.consent["@id"]}</Button> : <Button onClick={() => onAdd(group)}>[+]</Button>);
+    const info = (vol.info ? <Button onClick={() => onEdit(vol.info)}>{vol.info.name}</Button> : <Button onClick={() => onAdd(group)}>[+]</Button>);
+    const consent = (vol.consent ? <Button onClick={() => onEdit(vol.consent)}>{vol.consent.name}</Button> : <Button onClick={() => onAdd(group)}>[+]</Button>);
     return (
       <Grid item xs={12}>
         <Grid item>
@@ -27,7 +27,7 @@ class ActGroup extends Component {
         <Grid item>
           <h4><strong>{vol.name} consent:</strong> {consent}</h4>
         </Grid>
-        <Grid container xs={12}>
+        <Grid container>
           <Grid item xs={6}>
             <h4><strong>{vol.name} {group.name}</strong> <Button onClick={() => onAdd(group)}>[+]</Button><TextField type="search" className="search-text"/>&#128269;</h4>
           </Grid>
@@ -37,10 +37,12 @@ class ActGroup extends Component {
         </Grid>
         { acts.map((act, i) => (
           <div key={i}>
+            { ((!vol.info || (act._id != vol.info._id && act._id != vol.info.parentId)) && (!vol.consent || (act._id != vol.consent._id && act._id != vol.consent.parentId))) ?
             <Grid container>
               <Grid item xs={6}><Button onClick={() => onEdit(act)}>{act.name}</Button></Grid>
               <Grid item xs={6}><Button onClick={() => onAdd(group)}>[{(act.meta && act.meta.instructions && act.meta.instructions["@id"]) ? <Button onClick={() => onAdd(group)}>{act.meta.instructions["@id"]}</Button> : '+'}]</Button></Grid>
             </Grid>
+            : null }
           </div>
         )) }
       </Grid>

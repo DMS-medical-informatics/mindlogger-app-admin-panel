@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { compose, bindActionCreators } from "redux";
+import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Prompt } from 'react-router-dom';
@@ -63,7 +63,7 @@ class EditAct extends Component {
     this.setState({screens, screensData}, () => {
       this.loadScreen(screens.length-1);
     });
-    
+
     // const {volume, addItem} = this.props;
     // addItem('item', 'screen',{}, volume._id, 'collection').then(res => {
 
@@ -81,7 +81,7 @@ class EditAct extends Component {
         window.alert("Please fix valdiation errors");
       }
     }
-    
+
   }
 
   onSaveScreen = (body) => {
@@ -156,7 +156,7 @@ class EditAct extends Component {
     } else {
 
     }
-    
+
   }
 
   render() {

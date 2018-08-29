@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import { Modal } from 'react-bootstrap';
 
 import ActGroup from './ActGroup';
-import { getFolders, addFolder } from "../../../actions/api";
+import { getFolders, addFolder, getObject } from "../../../actions/api";
 import { setDataObject } from "../../../actions/core";
 import { InputRow } from '../../forms/Material';
 import AddActForm from './AddActForm';
@@ -22,13 +22,14 @@ import AddActForm from './AddActForm';
 const mapStateToProps = (state, ownProps) => ({
   volume: state.entities.volume,
   groups: state.entities.folder.groups || [],
-  acts: state.entities.folder.acts,
+  acts: state.entities.folder.acts
 });
 
 const mapDispatchToProps = {
   getFolders,
   addFolder,
   setDataObject,
+  getObject
 };
 
 class Acts extends Component {
@@ -36,12 +37,18 @@ class Acts extends Component {
     open: false,
   };
   componentWillMount() {
-    const {getFolders, volume} = this.props;
+    const {getFolders, volume, getObject, acts} = this.props;
     getFolders(volume._id, 'groups', 'folder').then(res => {
       if (res.length === 0) {
         return this.createDefaultGroups();
       }
     });
+    (volume.meta && volume.meta.information && volume.meta.information["@id"]) ? getObject(...volume.meta.information["@id"].split('/')).then(res => {
+      volume.info = res;
+    }) : null;
+    (volume.meta && volume.meta.consent && volume.meta.consent["@id"]) ? getObject(...volume.meta.consent["@id"].split('/')).then(res => {
+      volume.consent = res;
+    }) : null;
   }
 
   handleListItemClick(obj) {
