@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
-import { getFolders, getObject } from '../../../actions/api';
+import { getFolders } from '../../../actions/api';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField/TextField';
 

@@ -58,37 +58,12 @@ class Acts extends Component {
     this.setState({open: false});
   }
 
-  renderSelectDialog(array) {
-    return (<Modal show={this.state.open === 'select'} onHide={this.handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Select one</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <List>
-          {array && array.map(obj => (
-            <ListItem button onClick={() => this.handleListItemClick(obj)} key={obj._id}>
-              <ListItemText primary={obj.name} />
-            </ListItem>
-          ))}
-          <ListItem button onClick={() => this.handleAddClick('addAccount')}>
-            <ListItemAvatar>
-              <Avatar>
-                <AddIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Add new version" />
-          </ListItem>
-        </List>
-      </Modal.Body>
-    </Modal>)
-  }
-
   onEdit = (folder) => {
     const {getFolders} = this.props;
     this.setState({open: 'select'});
     this.groupId = folder._id;
     getFolders(folder._id, 'acts', 'folder').then(res => {
-
+       this.handleListItemClick(this.props.acts.latest);
     });
   }
 
@@ -141,6 +116,7 @@ class Acts extends Component {
   }
   render() {
     const {volume, groups, acts} = this.props;
+    acts.latest = acts.length ? acts.sort((a, b) => new Date(b.updated) - new Date(a.updated))[0] : null;
     return (
       <div>
       <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap [+] to add an entry, and tap any entry to edit or delete.</p>
@@ -150,7 +126,6 @@ class Acts extends Component {
           <ActGroup group={group} key={group._id} onEdit={this.onEdit} onAdd={this.onAddAct} vol={volume}/>)
         }
       </Grid>
-      { this.renderSelectDialog(acts) }
       { this.renderAddActDialog() }
       { this.renderAddActVariantDialog() }
       </div>
