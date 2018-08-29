@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import { InputRow, InputTextField } from '../../forms/Material';
 import { isRequired } from '../../forms/validation';
 
-class AddActForm extends Component {
+class AddObjectForm extends Component {
   static propTypes = {
     title: PropTypes.string
   }
@@ -28,5 +28,5 @@ class AddActForm extends Component {
 }
 export default reduxForm({
   // a unique name for the form
-  form: 'add-act-form'
-})(AddActForm);
+  form: 'add-object-form'
+})(AddObjectForm);

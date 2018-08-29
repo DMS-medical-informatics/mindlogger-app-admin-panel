@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import cn from 'classnames';
 
 import {InputRow, InputTextField, InputRadioField} from '../../../../../forms/Material';
-import InputFileField from '../../../../../forms/InputFileField';
+import InputFileField from '../../../../../forms/GInputFileField';
 import validate from './validate';
 
 class SurveyTableSelectCellForm extends Component {
@@ -12,12 +12,12 @@ class SurveyTableSelectCellForm extends Component {
     this.setState({row:0, col:0});
   }
   renderGrid() {
-    const { body:{rows_count, cols_count} } = this.props;
+    const { body:{rowsCount, colsCount} } = this.props;
     const {row, col} = this.state;
     let rows = [];
-    for(let i=0; i < rows_count ; i++) {
+    for(let i=0; i < rowsCount ; i++) {
       let cols = [];
-      for(let j=0; j < cols_count ; j++) {
+      for(let j=0; j < colsCount ; j++) {
         cols.push(<div className={cn('cell', {selected: row === i && col === j })} key={j} onClick={() => this.selectCell(i,j)}>
           
         </div>);
@@ -28,11 +28,12 @@ class SurveyTableSelectCellForm extends Component {
   }
 
   renderInputs() {
-    const { rows_count, cols_count } = this.props.body;
+    const { body: {rowsCount, colsCount}, screenId } = this.props;
+    const dataForFile = {parentType:'item', parentId: screenId};
     const {row, col} = this.state
     let inputs = [];
-    for(let i=0; i < rows_count ; i++) {
-      for(let j=0; j < cols_count ; j++) {
+    for(let i=0; i < rowsCount ; i++) {
+      for(let j=0; j < colsCount ; j++) {
         inputs.push(<div key={`${i}_${j}`} className={cn({hidden: (row !== i || col !== j) })}>
           <InputRow>
             <Field name={`options[${i}][${j}].type`} label="Text" component={InputRadioField} select="text" />
@@ -42,7 +43,7 @@ class SurveyTableSelectCellForm extends Component {
           
           <InputRow>
             <Field name={`options[${i}][${j}].type`} label="Picture" component={InputRadioField} select="file" />
-            <Field name={`options[${i}][${j}].file`} component={InputFileField} />
+            <Field name={`options[${i}][${j}].file`} component={InputFileField} data={dataForFile}/>
           </InputRow>
         </div>)
       }

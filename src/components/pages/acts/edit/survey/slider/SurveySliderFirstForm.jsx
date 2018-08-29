@@ -37,7 +37,7 @@ class SurveySliderFirstForm extends Component {
             </Grid>
           </Grid>
           <InputRow label="Number of tic marks dividing bar (including edges):">
-            <Field name="options_count" component={InputTextField} type="number" validate={isRequired} placeholder="1"/>
+            <Field name="optionsCount" component={InputTextField} type="number" validate={isRequired} placeholder="1"/>
           </InputRow>
 
           <div className="wizard-footer">

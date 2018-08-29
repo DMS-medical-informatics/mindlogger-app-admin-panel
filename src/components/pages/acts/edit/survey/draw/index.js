@@ -11,7 +11,6 @@ class SurveyCanvasDrawForm extends Component {
     this.setState({page:1, body: {}});
   }
   nextPage = (body) => {
-    console.log(body);
     let {page} = this.state;
     page = page + 1;
     this.setState({page, body});
@@ -28,7 +27,7 @@ class SurveyCanvasDrawForm extends Component {
     
     return (
       <div className="p-3">
-        <SurveyDrawForm onSubmit={this.onSubmit} initialValues={this.props.data}/>
+        <SurveyDrawForm onSubmit={this.onSubmit} nitialValues={this.props.data} screenId={this.props.screenId}/>
       </div>
     );
   }

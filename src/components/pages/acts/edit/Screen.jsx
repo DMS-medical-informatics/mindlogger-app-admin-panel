@@ -18,7 +18,13 @@ const mapStateToProps = (state) => ({
 
 class Screen extends Component {
   componentWillMount() {
-    this.setState({});
+    if(this.props.index && this.props.screen) {
+      const { screen: {survey, canvas }} = this.props;
+      this.setState({survey, canvas});
+    } else {
+      this.setState({});
+    }
+    
   }
   close = () => {
     this.setState({form: false});
@@ -35,7 +41,7 @@ class Screen extends Component {
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if(nextProps.screen) {
+    if(nextProps.screen && nextProps.screen !== this.props.screen) {
       const { screen: {survey, canvas }} = nextProps;
       this.setState({survey, canvas});
     }
@@ -45,23 +51,29 @@ class Screen extends Component {
 
   renderSurveyForm(surveyType) {
     const {survey} = this.state;
-    console.log("Survey:", survey);
+    const {screen} = this.props;
+    const formProps = {
+      onSubmit:this.onSurveyForm,
+      data: survey,
+      screenId: screen.id,
+    }
     switch(surveyType) {
       case 'list':
-        return <SurveyListForm onSubmit={this.onSurveyForm} data={survey}/>
+        return <SurveyListForm {...formProps}/>
       case 'table':
-        return <SurveyTableForm onSubmit={this.onSurveyForm} data={survey}/>
+        return <SurveyTableForm {...formProps}/>
       case 'slider':
-        return <SurveySliderForm onSubmit={this.onSurveyForm} data={survey}/>
+        return <SurveySliderForm {...formProps}/>
       case 'audio':
       default:
     }
   }
   renderCanvasForm(canvasType) {
+    const {screenId} = this.props;
     const {canvas} = this.state;
     switch(canvasType) {
       case 'draw':
-        return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} initialValues={canvas}/>
+        return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} initialValues={canvas} screenId={screenId}/>
       case 'sort_picture':
         return '';
       default:
@@ -98,7 +110,7 @@ class Screen extends Component {
   }
   
   render() {
-    const {index, screen, onFormRef} = this.props;
+    const {index, screen, onFormRef, actId} = this.props;
     return (
       <div className="screen">
         <a href="#display">Screen display</a>

@@ -17,7 +17,7 @@ import ActGroup from './ActGroup';
 import { getFolders, addFolder } from "../../../actions/api";
 import { setDataObject } from "../../../actions/core";
 import { InputRow } from '../../forms/Material';
-import AddActForm from './AddActForm';
+import AddActForm from './AddObjectForm';
 
 const mapStateToProps = (state, ownProps) => ({
   volume: state.entities.volume,
@@ -85,10 +85,11 @@ class Acts extends Component {
 
   onEdit = (folder) => {
     const {getFolders} = this.props;
-    this.setState({open: 'select'});
     this.groupId = folder._id;
     getFolders(folder._id, 'acts', 'folder').then(res => {
-      
+      let index = res.length - 1;
+      this.handleListItemClick(res[index]);
+
     });
   }
 
@@ -122,7 +123,9 @@ class Acts extends Component {
   handleSubmitAct = ({name}) => {
     const {addFolder} = this.props;
     return addFolder(name, {}, this.groupId, 'folder').then(res => {
-      this.handleClose();
+      return addFolder(name, {}, res._id, 'folder', false).then(obj => {
+        this.handleListItemClick(obj);
+      })
     });
   }
 

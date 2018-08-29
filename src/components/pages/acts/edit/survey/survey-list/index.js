@@ -26,14 +26,15 @@ class SurveyListForm extends Component {
     destroy('survey-list-form');
   }
   render() {
+    const {screenId} = this.props;
     const {body, page} = this.state;
     const { mode } = body;
     
     return (
       <div className="p-3">
-        {page === 1 && <SurveyListTypeForm onSubmit={this.nextPage} initialValues={this.props.data}/>}
-        {page === 2 && mode === 'single' && <SurveyListBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
-        {page === 2 && mode === 'order' && <SurveyListOrderForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
+        {page === 1 && <SurveyListTypeForm onSubmit={this.nextPage} initialValues={this.props.data} screenId={screenId}/>}
+        {page === 2 && mode === 'single' && <SurveyListBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
+        {page === 2 && mode === 'order' && <SurveyListOrderForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
       </div>
     );
   }

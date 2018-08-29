@@ -4,15 +4,15 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import {InputRow, InputTextField, InputRadioField} from '../../../../../forms/Material';
-import InputFileField from '../../../../../forms/InputFileField';
+import InputFileField from '../../../../../forms/GInputFileField';
 import PadBlock from '../../../../../layout/PadBlock';
 import validate from './validate';
 
 class SurvyeListBasicForm extends Component {
   renderOptions() {
     let options = [];
-    const {options_count} = this.props.body;
-    for(let i=0; i < options_count ; i++) {
+    const {body:{optionsCount}, screenId} = this.props;
+    for(let i=0; i < optionsCount ; i++) {
       options.push((
         <Grid container key={i+1} alignItems="baseline">
           <Grid item sm={2}>
@@ -27,7 +27,7 @@ class SurvyeListBasicForm extends Component {
             
             <InputRow>
               <Field name={`options[${i}].type`} label="File" component={InputRadioField} select="file" />
-              <Field name={`options[${i}].file`} component={InputFileField} />
+              <Field name={`options[${i}].file`} component={InputFileField} data={{parentType: 'item', parentId: screenId}}/>
             </InputRow>
           </Grid>
         </Grid>
@@ -38,8 +38,8 @@ class SurvyeListBasicForm extends Component {
 
   renderAdvanceScreen() {
     let items = [];
-    const {options_count} = this.props.body;
-    for(let i=0; i < options_count ; i++) {
+    const {optionsCount} = this.props.body;
+    for(let i=0; i < optionsCount ; i++) {
       items.push((
         <InputRow key={i+1}>
           <Grid item xs={6}>
@@ -65,13 +65,13 @@ class SurvyeListBasicForm extends Component {
     </div>);
   }
   render() {
-    const {handleSubmit, submitting, body:{options_max_count}, previousPage} = this.props;
+    const {handleSubmit, submitting, body:{optionsMax}, previousPage, screenId} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <div className="wizard">
           Enter text or upload pictures for the 2 response options
           { this.renderOptions() }
-          { options_max_count === 1 && this.renderAdvanceScreen()}
+          { optionsMax === 1 && this.renderAdvanceScreen()}
           <div className="wizard-footer">
             <Button variant="contained" onClick={previousPage}>Back</Button>
             <Button variant="contained" color="primary" type="submit" disabled={submitting}>Submit</Button>

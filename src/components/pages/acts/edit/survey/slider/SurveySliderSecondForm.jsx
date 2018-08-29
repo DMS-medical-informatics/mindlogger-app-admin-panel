@@ -10,8 +10,8 @@ import validate from './validate';
 class SurveySliderSecondForm extends Component {
   renderOptions() {
     let options = [];
-    const {options_count} = this.props.body;
-    for(let i=0; i < options_count ; i++) {
+    const {optionsCount} = this.props.body;
+    for(let i=0; i < optionsCount ; i++) {
       options.push(
         <InputRow label={`Label ${i+1}:`} key={i+1}>
           <Field name={`options[${i}].text`} component={InputTextField} type="text"/>
@@ -22,8 +22,8 @@ class SurveySliderSecondForm extends Component {
 
   renderAdvanceScreen() {
     let items = [];
-    const {options_count, increments} = this.props.body;
-    for(let i=0; i < options_count ; i++) {
+    const {optionsCount, increments} = this.props.body;
+    for(let i=0; i < optionsCount ; i++) {
       items.push((
         <InputRow key={i*2}>
           <Grid item xs={6}>
@@ -34,7 +34,7 @@ class SurveySliderSecondForm extends Component {
           </PadBlock>
         </InputRow>
       ));
-      if (increments === 'smooth' && i < options_count-1) {
+      if (increments === 'smooth' && i < optionsCount-1) {
         items.push((
           <InputRow key={i*2+1}>
           <Grid item xs={6}>

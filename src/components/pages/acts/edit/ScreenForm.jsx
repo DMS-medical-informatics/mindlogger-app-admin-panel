@@ -8,7 +8,7 @@ import { InputField } from '../../../forms/FormItems';
 import {InputCheckField, InputRadioField, InputRow} from '../../../forms/Material';
 import {isRequired} from '../../../forms/validation'
 import PadBlock from '../../../layout/PadBlock';
-import InputFileField from '../../../forms/InputFileField';
+import InputFileField from '../../../forms/GInputFileField';
 
 class ScreenForm extends Component {
   componentWillMount() {
@@ -18,7 +18,7 @@ class ScreenForm extends Component {
     return (<Button variant="contained" onClick={() => this.props.showModal(type)}>Edit</Button>);
   }
   render() {
-    const {handleSubmit, submitting, index, body: {surveyType, canvasType}} = this.props;
+    const {handleSubmit, submitting, index, body: {surveyType, canvasType}, initialValues: {id}} = this.props;
     return (
       <form onSubmit={ handleSubmit }>
         <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} />
@@ -30,7 +30,7 @@ class ScreenForm extends Component {
           <Grid item md={9}>
             <Field name="pictureVideo[display]" label="Display picture/video at the top of the screen:" component={InputCheckField} />
             <PadBlock>
-              <Field name="pictureVideo[files]" label="Upload picture/video" component={InputFileField}/>
+              <Field name="pictureVideo[files]" label="Upload picture/video" component={InputFileField} data={{parentType: 'item', parentId: id}}/>
               <Field name="pictureVideo[playbackIcon]" label="Show video playback icon and allow replay" component={InputCheckField} />
               <br/>
               <Field name="pictureVideo[autoplay]" label="Autoplay video" component={InputCheckField} />
@@ -45,7 +45,7 @@ class ScreenForm extends Component {
           <Col md={9}>
             <Field name="audio[display]" label="Play audio file:" component={InputCheckField} />
             <PadBlock>
-              <Field name="audio[files]" label="Upload file:" component={InputFileField} />
+              <Field name="audio[files]" label="Upload file:" component={InputFileField} data={{parentType: 'item', parentId: id}}/>
               <Field name="audio[playbackIcon]" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
               <br/>
               <Field name="audio[autoplay]" label="Autoplay audio" component={InputCheckField} />
@@ -148,7 +148,6 @@ class ScreenForm extends Component {
             { canvasType === 'sort_pictures' &&  this.renderModalButton('canvas') }
           </InputRow>
         </PadBlock>
-        <Button type="submit" disabled={submitting}>Submit</Button>
       </form>
     );
   }

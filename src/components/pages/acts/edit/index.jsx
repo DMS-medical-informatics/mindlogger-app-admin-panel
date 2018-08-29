@@ -5,14 +5,16 @@ import { withRouter } from "react-router";
 import { Prompt } from 'react-router-dom';
 import {
   Button,
-  Tab, Tabs
+  Tab, Tabs,
+  Modal
 } from "react-bootstrap";
 
-import { getItems, getObject, addItem, updateFolder } from "../../../../actions/api";
+import { getItems, getObject, addItem, updateItem, updateFolder } from "../../../../actions/api";
 import { setActChanged } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmarks from './Bookmarks';
 import Screen from './Screen';
+import AddObjectForm from '../AddObjectForm';
 
 class EditAct extends Component {
 
@@ -34,7 +36,7 @@ class EditAct extends Component {
         console.log("loading..", id);
         getObject('item', id).then(res => {
           let screensData = [...this.state.screensData];
-          screensData[index] = {name: res.name, ...res.meta};
+          screensData[index] = {name: res.name, ...res.meta, id: res._id};
           this.setState({index, screensData}, () => {
             this.formRef.reset();
           });
@@ -49,8 +51,6 @@ class EditAct extends Component {
 
   addScreen = () => {
     let {screens} = this.state;
-    let screensData = [...this.state.screensData];
-    screensData.push({name:''});
     if (screens && screens.length > 0) {
       let formErrors = this.formRef.submit();
       if (formErrors) {
@@ -59,10 +59,7 @@ class EditAct extends Component {
     } else {
       screens = [];
     }
-    screens.push({})
-    this.setState({screens, screensData}, () => {
-      this.loadScreen(screens.length-1);
-    });
+    this.setState({open: 'add'});
     
     // const {volume, addItem} = this.props;
     // addItem('item', 'screen',{}, volume._id, 'collection').then(res => {
@@ -121,8 +118,12 @@ class EditAct extends Component {
     this.setState({setting});
   }
 
+  handleClose = () => {
+    this.setState({open: false});
+  }
+
   onSubmit = () => {
-    const {setActChanged, addItem, act, updateFolder} = this.props;
+    const {setActChanged, addItem, updateItem, act, updateFolder, history} = this.props;
     let prArray = [];
     let formErrors = this.formRef.submit();
     if (formErrors) {
@@ -136,37 +137,56 @@ class EditAct extends Component {
     }
     const {screens, screensData} = this.state;
     for (let i = 0; i < screens.length; i++) {
+      if(screensData[i] === undefined)
+        continue;
       const idData = screens[i]['@id'];
-      const {name, ...screen} = screensData[i];
+      const {name, id, ...screen} = screensData[i];
       const index = i;
-      if (idData === undefined) {
-        prArray.push(addItem(name, screen, act._id).then(res => {
-          screens[index]= {'@id': `item/${res._id}`}
-        }));
-      }
+      prArray.push(updateItem(id, name, screen));
     }
-    if(prArray.length > 0) {
-      return Promise.all(prArray).then(() => {
-        const {name, ...setting} = this.state.setting;
-        this.setState({screens});
-        return updateFolder(name, {screens, ...setting}, act._id);
-      }).then(() => {
-        setActChanged(false);
-      });
-    } else {
+    return Promise.all(prArray).then(() => {
+      const {name, ...setting} = this.state.setting;
+      this.setState({screens});
+      return updateFolder(name, {screens, ...setting}, act._id);
+    }).then(() => {
+      setActChanged(false);
+      history.push('/acts');
+    });
+  }
 
-    }
+  handleAddScreen = ({name}) => {
+    const {addItem, act, updateFolder} = this.props;
+    let {screens, screensData} = this.state;
+    addItem(name, {}, act._id).then(res => {
+      screens.push({'@id': `item/${res._id}`});
+      screensData.push({name, id:res._id});
+      const {name: actName, ...setting} = this.state.setting;
+      return updateFolder(actName, {screens, ...setting}, act._id);
+    }).then(res => {
+      this.setState({screens, screensData});
+      this.handleClose();
+    });
     
+  }
+
+  renderAddScreenDialog() {
+    return (<Modal show={this.state.open === 'add'} onHide={this.handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Add screen</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddObjectForm onSubmit={this.handleAddScreen} />
+      </Modal.Body>
+    </Modal>)
   }
 
   render() {
     const {screensData, index, setting, screens} = this.state;
     let screen = screensData[index];
-    console.log(screen);
     return (
       <section className="edit-act">
         <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
-        <Tabs id="edit-act-tabs"  defaultActiveKey={2}>
+        <Tabs id="edit-act-tabs"  defaultActiveKey={1}>
           <Tab eventKey={1} title="Settings">
             <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref }/>
           </Tab>
@@ -178,6 +198,7 @@ class EditAct extends Component {
           </Tab>
           <Button bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Button>
         </Tabs>
+        { this.renderAddScreenDialog() }
       </section>
     );
   }
@@ -187,6 +208,7 @@ const mapDispatchToProps = {
   getObject,
   setActChanged,
   addItem,
+  updateItem,
   updateFolder,
 };
 

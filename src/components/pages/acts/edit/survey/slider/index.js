@@ -11,7 +11,6 @@ class SurveySliderForm extends Component {
     this.setState({page:1, body: {}});
   }
   nextPage = (body) => {
-    console.log(body);
     let {page} = this.state;
     page = page + 1;
     this.setState({page, body});
@@ -22,7 +21,7 @@ class SurveySliderForm extends Component {
   onSubmit = (body) => {
     const {onSubmit, destroy} = this.props;
     onSubmit(body);
-    destroy('survey-list-form');
+    destroy('survey-slider-form');
   }
   render() {
     const {body, page} = this.state;

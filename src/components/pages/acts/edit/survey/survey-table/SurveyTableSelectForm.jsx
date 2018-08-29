@@ -50,16 +50,16 @@ class SurveyTableSelectForm extends Component {
             <Grid item>
               Minimum number of options to select per row
             </Grid>
-            <Field name="min_select" type="number" component={InputTextField} placeholder="1" validate={isRequired}/>
+            <Field name="optionsMin" type="number" component={InputTextField} placeholder="1" validate={isRequired}/>
           </InputRow>
           <InputRow>
             <Grid item>
               Maximum number of options to select per row
             </Grid>
-            <Field name="max_select" type="number" component={InputTextField} placeholder="1" validate={isRequired} />
+            <Field name="optionsMax" type="number" component={InputTextField} placeholder="1" validate={isRequired} />
           </InputRow>
-          <Field name="select_type" label="Populate individual table cells with text/pictures" component={InputRadioField} select="basic" validate={isRequired}/>
-          <Field name="select_type" label="Specify the order for multiple presentations of text or pictures" component={InputRadioField} select="order" validate={isRequired}/>
+          <Field name="selectType" label="Populate individual table cells with text/pictures" component={InputRadioField} select="basic" validate={isRequired}/>
+          <Field name="selectType" label="Specify the order for multiple presentations of text or pictures" component={InputRadioField} select="order" validate={isRequired}/>
           <div className="wizard-footer">
           <Button variant="contained" onClick={previousPage}>Back</Button>
           <Button variant="contained" color="primary" type="submit" disabled={submitting}>Next</Button>
