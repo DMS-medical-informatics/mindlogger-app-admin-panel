@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { compose, bindActionCreators } from "redux";
+import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Prompt } from 'react-router-dom';
@@ -123,7 +123,7 @@ class EditAct extends Component {
   }
 
   onSubmit = () => {
-    const {setActChanged, addItem, updateItem, act, updateFolder, history} = this.props;
+    const {setActChanged, updateItem, act, updateFolder, history} = this.props;
     let prArray = [];
     let formErrors = this.formRef.submit();
     if (formErrors) {
@@ -139,15 +139,13 @@ class EditAct extends Component {
     for (let i = 0; i < screens.length; i++) {
       if(screensData[i] === undefined)
         continue;
-      const idData = screens[i]['@id'];
       const {name, id, ...screen} = screensData[i];
-      const index = i;
       prArray.push(updateItem(id, name, screen));
     }
     return Promise.all(prArray).then(() => {
       const {name, ...setting} = this.state.setting;
       this.setState({screens});
-      return updateFolder(name, {screens, ...setting}, act._id);
+      return updateFolder(act._id, name, {screens, ...setting});
     }).then(() => {
       setActChanged(false);
       history.push('/acts');
@@ -161,7 +159,7 @@ class EditAct extends Component {
       screens.push({'@id': `item/${res._id}`});
       screensData.push({name, id:res._id});
       const {name: actName, ...setting} = this.state.setting;
-      return updateFolder(actName, {screens, ...setting}, act._id);
+      return updateFolder(act._id, actName, {screens, ...setting});
     }).then(res => {
       this.setState({screens, screensData});
       this.handleClose();

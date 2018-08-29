@@ -1,81 +1,27 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
 import { withRouter } from "react-router";
 import {
   Row,
   Col,
-  Button,
   Modal,
-  Form,
 } from "react-bootstrap";
 
-import { InputField } from "../../forms/FormItems";
-import InputFileField from "../../forms/InputFileField";
-import { isRequired } from "../../forms/validation";
-
-import { getObject, getCollection, getFolders, addFolder } from "../../../actions/api";
-
+import { getObject, getCollection, getFolders, addFolder, updateFolder, uploadFile } from "../../../actions/api";
+import { setVolume } from "../../../actions/core";
+import VolumeForm from "./VolumeForm";
 import plus from './plus.svg';
 
-const AddVolumeForm = reduxForm({
-  form: "add-volume-form"
-})(({ handleSubmit, pristine, submitting }) => (
-  <div>
-  <p>Create a new Volume of Activities. Mindlogger will create a cross-platform app with these Activities.</p>
-  <Form onSubmit={handleSubmit}>
-    <Field
-      name="shortName"
-      type="text"
-      component={InputField}
-      label="Short Name"
-      placeholder=""
-      validate={isRequired}
-    />
-    <Field
-      name="name"
-      type="text"
-      component={InputField}
-      label="Full Name"
-      placeholder=""
-      validate={isRequired}
-    />
-    <Field
-      name="description"
-      type="text"
-      componentClass="textarea"
-      component={InputField}
-      label="Description"
-      placeholder=""
-      validate={isRequired}
-    />
-    <Field
-      name="logo"
-      type="file"
-      component={InputFileField}
-      label="Logo"
-      placeholder=""
-    />
-    <center>
-    <Button
-      bsStyle="primary"
-      type="submit"
-    >
-      Save
-    </Button>
-    </center>
-  </Form>
-  </div>
-));
 
 class Home extends Component {
   componentWillMount() {
-    const {getCollection, getFolders} = this.props;
+    const {getCollection, getFolders, setVolume} = this.props;
     getCollection('Volumes').then(res => {
       getFolders(res[0]._id, 'volumes');
     });
     this.setState({});
+    setVolume(undefined);
   }
 
   selectPage = page => {
@@ -83,11 +29,19 @@ class Home extends Component {
     this.props.getOrganizations((page - 1) * 10, 10);
   };
 
-  onAddVolume = ({name, ...data}) => {
-    const {addFolder, collection, getFolders} = this.props;
-    return addFolder(name, data, collection._id, 'collection').then(res => {
-      getFolders(collection._id, 'volumes');
+  onAddVolume = ({name, logo, ...data}) => {
+    const {addFolder, updateFolder, collection, getFolders, uploadFile} = this.props;
+    return addFolder(name, data, collection._id, 'collection').then(folder => {
+      if(logo && Array.isArray(logo) && logo.length > 0) {
+        let fileObject = logo[0];
+        return uploadFile(fileObject.name, fileObject, 'folder', folder._id).then(res => {
+          return updateFolder(folder._id, name, {...data, logoImage: {name: res.name, '@id': `file/${res._id}`} });
+        });
+      }
+      return true;
+    }).then(res => {
       this.close();
+      return getFolders(collection._id, 'volumes');
     });
   };
 
@@ -102,7 +56,7 @@ class Home extends Component {
           <Modal.Title>Add Volume</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddVolumeForm onSubmit={this.onAddVolume} />
+          <VolumeForm onSubmit={this.onAddVolume} />
         </Modal.Body>
       </Modal>
     );
@@ -142,6 +96,9 @@ const mapDispatchToProps = {
   getCollection,
   getFolders,
   addFolder,
+  uploadFile,
+  updateFolder,
+  setVolume,
 };
 
 const mapStateToProps = state => ({

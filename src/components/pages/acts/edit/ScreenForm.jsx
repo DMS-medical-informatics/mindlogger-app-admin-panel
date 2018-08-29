@@ -18,7 +18,7 @@ class ScreenForm extends Component {
     return (<Button variant="contained" onClick={() => this.props.showModal(type)}>Edit</Button>);
   }
   render() {
-    const {handleSubmit, submitting, index, body: {surveyType, canvasType}, initialValues: {id}} = this.props;
+    const {handleSubmit, index, body: {surveyType, canvasType}, initialValues: {id}} = this.props;
     return (
       <form onSubmit={ handleSubmit }>
         <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} />

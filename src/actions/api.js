@@ -257,7 +257,7 @@ export const addFolder = (name, meta, parentId, parentType, reuseExisting = true
   },
 });
 
-export const updateFolder = (name, meta, id) => ({
+export const updateFolder = (id, name, meta) => ({
   type: types.UPDATE_OBJECT,
   method: 'PUT',
   objectType: 'folder',
