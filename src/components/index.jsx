@@ -24,6 +24,7 @@ import Library from './pages/library';
 import Volume from './pages/library/Volume';
 
 import Acts from './pages/acts';
+import ActsSelect from './pages/acts/select';
 import EditAct from './pages/acts/edit';
 
 export default class App extends Component {
@@ -58,6 +59,7 @@ export default class App extends Component {
                 <AuthRoute path='/organizations' component={Organizations} />
                 <AuthRoute path='/library' component={Library}/>
                 <AuthRoute path='/volumes/:id' component={Volume}/>
+                <AuthRoute path='/acts/select' component={ActsSelect}/>
                 <AuthRoute path='/acts/:id/edit' component={EditAct}/>
                 <AuthRoute path='/acts/new' component={EditAct}/>
                 <AuthRoute path='/acts' component={Acts}/>
