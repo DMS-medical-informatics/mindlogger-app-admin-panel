@@ -11,12 +11,55 @@ class ActGroup extends Component {
     name: PropTypes.string,
     parentId: PropTypes.string
   }
-  componentWillMount() {
-    const {group:{_id:parentId, name}, getFolders} = this.props;
-    getFolders(parentId, name, 'folder');
+
+  constructor(props) {
+    super(props);
+    const {group:{_id:parentId, name}, getFolders, acts} = this.props;
+    this.state = {};
+    let tops = this;
+    let actInstructions = [];
+    getFolders(parentId, name, 'folder').then((res) => {
+      Promise.all(res.map(function(act, i) {
+        return getFolders(act._id, act.name, 'folder').then(act_res => {
+          return act_res.length ? act_res.sort((a, b) => new Date(b.updated) - new Date(a.updated))[0] : res[i];
+        });
+      })).then(function(val) {
+      let latestActs = acts.map(function(act) {
+        val.forEach(function(_act) {
+          if(_act.parentId==act._id){
+            _act.parentAct = act;
+            act = _act;
+            return act;
+          };
+        });
+        if (act.meta && act.meta.instructions && act.meta.instructions["@id"]) {
+          let instr = act.meta.instructions["@id"].split('/')[1];
+          actInstructions.push(instr);
+          acts.forEach(function(inner) {
+            if ((instr == inner._id) || (instr == inner.parentId)) {
+              act.instr = inner;
+            } else {
+              val.forEach(function(innerVal) {
+                if ((instr == innerVal._id) || (instr == innerVal.parentId)) {
+                  act.instr = innerVal;
+                }
+              });
+            }
+          });
+        }
+        return act;
+      });
+      tops.setState({latestActs:latestActs, actInstructions:actInstructions});
+      });
+    });
   }
+
   render() {
     const {acts, group, onAdd, onEdit, vol} = this.props;
+    if (!this.state.latestActs) {
+      return false;
+    }
+    const {latestActs, actInstructions} = this.state;
     const info = (vol.info ? <Button onClick={() => onEdit(vol.info)}>{vol.info.name}</Button> : <Button onClick={() => onAdd(group)}>[+]</Button>);
     const consent = (vol.consent ? <Button onClick={() => onEdit(vol.consent)}>{vol.consent.name}</Button> : <Button onClick={() => onAdd(group)}>[+]</Button>);
     return (
@@ -35,12 +78,12 @@ class ActGroup extends Component {
             <strong>&#128712; Activity information</strong>
           </Grid>
         </Grid>
-        { acts.map((act, i) => (
+        { latestActs.map((act, i) => (
           <div key={i}>
-            { ((!vol.info || (act._id != vol.info._id && act._id != vol.info.parentId)) && (!vol.consent || (act._id != vol.consent._id && act._id != vol.consent.parentId))) ?
+            { ((!vol.info || (act._id != vol.info._id && act._id != vol.info.parentId && (!act.parentAct || act.parentAct._id != vol.info._id && act.parentAct._id != vol.info.parentId))) && (!vol.consent || (act._id != vol.consent._id && act._id != vol.consent.parentId  &&  (!act.parentAct || act.parentAct._id != vol.consent._id && act.parentAct._id != vol.consent.parentId))) && (actInstructions.indexOf(act._id) == -1) && (actInstructions.indexOf(act.parentId) == -1)) ?
             <Grid container>
-              <Grid item xs={6}><Button onClick={() => onEdit(act)}>{act.name}</Button></Grid>
-              <Grid item xs={6}><Button onClick={() => onAdd(group)}>[{(act.meta && act.meta.instructions && act.meta.instructions["@id"]) ? <Button onClick={() => onAdd(group)}>{act.meta.instructions["@id"]}</Button> : '+'}]</Button></Grid>
+              <Grid item xs={6}><Button onClick={() => onEdit(act)}>{(act.meta && act.meta["schema:name"] && act.meta["schema:name"]["@value"]) ? act.meta["schema:name"]["@value"] : (act.parentAct) ? act.parentAct.name : act.name}</Button></Grid>
+              <Grid item xs={6}>{(act.instr) ? <Button onClick={() => onEdit(act.instr)}>{(act.instr.meta && act.instr.meta["schema:name"] && act.instr.meta["schema:name"]["@value"]) ? act.instr.meta["schema:name"]["@value"] : act.instr.parentAct ? act.instr.parentAct.name : act.instr.name}</Button> : <Button onClick={() => onAdd(group)}>[+]</Button>}</Grid>
             </Grid>
             : null }
           </div>
@@ -51,7 +94,8 @@ class ActGroup extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  acts: state.entities.folder[ownProps.group.name] || []
+  acts: state.entities.folder[ownProps.group.name] || [],
+  latestActs: state.latestActs
 })
 
 const mapDispatchToProps = {
