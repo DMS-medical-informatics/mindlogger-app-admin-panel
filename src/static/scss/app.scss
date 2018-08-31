@@ -1,6 +1,6 @@
 @import 'components/typography';
 @import 'components/layout';
-.content {
+body, .content {
   @import 'components/volume';
   @import 'components/acts';
   @import 'components/form';

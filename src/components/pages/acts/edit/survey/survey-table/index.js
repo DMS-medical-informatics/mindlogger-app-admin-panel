@@ -14,7 +14,6 @@ class SurveyTableForm extends Component {
     this.setState({page:1, body: {}});
   }
   nextPage = (body) => {
-    console.log(body);
     let {page} = this.state;
     page = page + 1;
     this.setState({page, body});
@@ -29,15 +28,16 @@ class SurveyTableForm extends Component {
   }
   render() {
     const {body, page} = this.state;
-    const { mode, select_type } = body;
-    
+    const { mode, selectType } = body;
+    const {screenId} = this.props;
+
     return (
       <div className="p-3">
-        {page === 1 && <SurveyTableTypeForm onSubmit={this.nextPage} initialValues={this.props.data}/>}
-        {page === 2 && (mode === 'text' || mode === 'order') && <SurveyTableBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
-        {page === 2 && mode === 'select' && <SurveyTableSelectForm body={body} previousPage={this.prevPage} onSubmit={this.nextPage}/>}
-        {page === 3 && mode === 'select' && select_type === 'basic' && <SurveyTableSelectCellForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
-        {page === 3 && mode === 'select' && select_type === 'order' && <SurveyTableOrderForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit}/>}
+        {page === 1 && <SurveyTableTypeForm onSubmit={this.nextPage} initialValues={this.props.data} screenId={screenId}/>}
+        {page === 2 && (mode === 'text' || mode === 'order') && <SurveyTableBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
+        {page === 2 && mode === 'select' && <SurveyTableSelectForm body={body} previousPage={this.prevPage} onSubmit={this.nextPage} screenId={screenId}/>}
+        {page === 3 && mode === 'select' && selectType === 'basic' && <SurveyTableSelectCellForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
+        {page === 3 && mode === 'select' && selectType === 'order' && <SurveyTableOrderForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
       </div>
     );
   }

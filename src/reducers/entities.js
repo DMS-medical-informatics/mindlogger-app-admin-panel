@@ -46,7 +46,7 @@ const entities = (state = {}, action) => {
             case types.CHANGE_PROFILE:
                 return {
                     ...state,
-                    auth: {...state.auth, ...action.response.user}
+                    self: action.response
                 }
             case types.POST_FILE:
                 return {

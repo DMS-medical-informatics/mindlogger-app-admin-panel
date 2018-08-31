@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
+import {reset} from 'redux-form';
 import {withRouter} from 'react-router';
 import { Panel } from 'react-bootstrap';
 
@@ -16,8 +17,8 @@ class ProfileForm extends Component {
         const {handleSubmit, pristine, submitting} = this.props
         return (
             <form onSubmit={ handleSubmit }>
-                <Field name="first_name" type="text" component={InputField} label="First Name" placeholder="" validate={isRequired} />
-                <Field name="last_name" type="text" component={InputField} label="Last Name" placeholder="" />
+                <Field name="firstName" type="text" component={InputField} label="First Name" placeholder="" validate={isRequired} />
+                <Field name="lastName" type="text" component={InputField} label="Last Name" placeholder="" />
                 <button className="btn btn-primary" type="submit" disabled={pristine || submitting}>Submit</button>
             </form>
         )
@@ -33,9 +34,8 @@ const PasswordForm = reduxForm({
     form: 'password-form'
 })(({handleSubmit, pristine, submitting}) => (
     <form onSubmit={ handleSubmit }>
-        <Field name="current_password" type="password" component={InputField} label="Current Password" placeholder="" validate={isRequired} />
-        <Field name="new_password" type="password" component={InputField} label="New password" placeholder="" validate={isRequired} />
-        <Field name="confirm_password" type="password" component={InputField} label="Confirm password" placeholder="" validate={isRequired} />
+        <Field name="password" type="password" component={InputField} label="New password" placeholder="" validate={isRequired} />
+        <Field name="confirmPassword" type="password" component={InputField} label="Confirm password" placeholder="" validate={isRequired} />
         <button className="btn btn-primary" type="submit" disabled={pristine || submitting}>Submit</button>
     </form>
 ));
@@ -49,26 +49,29 @@ class Profile extends Component {
     }
 
     updateProfile = (body) => {
-        return this.props.changeProfile(body).then(res => {
+        const {user, changeProfile} = this.props;
+        return changeProfile(user._id, body).then(res => {
             console.log(res);
         });
     }
 
-    updatePassword = ({current_password, new_password, confirm_password}) => {
-        if (new_password !== confirm_password) {
-            throw new SubmissionError({confirm_password: "New password does not match with confirm password"});
+    updatePassword = ({password, confirmPassword}) => {
+        const {user, changePassword, reset} = this.props;
+        if (password !== confirmPassword) {
+            throw new SubmissionError({confirmPassword: "New password does not match with confirm password"});
         }
-        return this.props.changePassword({new_password, current_password}).then(res => {
+        return changePassword(user._id, {password}).then(res => {
             console.log(res);
+            reset('password-form');
         }).catch(err => {
             console.log(err);
-            throw new SubmissionError({current_password: err.message});
+            throw new SubmissionError({password: err.message});
         });
     }
     
     render() {
         const {user} = this.props;
-        let profile = { first_name: user.first_name, last_name: user.last_name };
+        let profile = { firstName: user.firstName, lastName: user.lastName };
         return (
             <div>
                 <Panel header="Profile">
@@ -82,11 +85,12 @@ class Profile extends Component {
     }
 }
 const mapDispatchToProps = {
-    changePassword, changeProfile
+    changePassword, changeProfile, reset
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  user: state.entities.auth,
+  auth: state.entities.auth,
+  user: state.entities.self,
 });
 
 export default compose(connect(mapStateToProps, mapDispatchToProps), withRouter)(Profile)

@@ -22,11 +22,15 @@ export default ({
       {touched &&
         error &&
         <span className="error">{error}</span>}
-      {input.value && Array.isArray(input.value) && (
+      {input.value && (Array.isArray(input.value) ? (
         <ul>
           { input.value.map((file, i) => <li key={i}>{file.name}</li>) }
         </ul>
-      )}
+      ) : (
+        <ul>
+          <li>{input.value.name}</li>
+        </ul>
+      ))}
   </div>
   );
 }

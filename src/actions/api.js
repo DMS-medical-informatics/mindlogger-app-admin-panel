@@ -17,17 +17,17 @@ export const signup = (body) => ({
     body,
 });
 
-export const changeProfile = (body) => ({
+export const changeProfile = (id, body) => ({
   type: types.CHANGE_PROFILE,
   method: 'PUT',
-  path: '/user',
+  path: `/user/${id}`,
   body,
 });
 
-export const changePassword = (body) => ({
+export const changePassword = (id, body) => ({
     type: types.CHANGE_PASSWORD,
-    method: 'POST',
-    path: '/user/change-password',
+    method: 'PUT',
+    path: `/user/${id}/password`,
     body,
 });
 
@@ -212,7 +212,20 @@ export const addObject = (type, name, meta, options) => ({
   },
 });
 
+export const updateObject = (type, id, name, meta, options={}) => ({
+  type: types.UPDATE_OBJECT,
+  method: 'PUT',
+  objectType: type,
+  path: `/${type}/${id}`,
+  body: {
+    name,
+    metadata:JSON.stringify(meta),
+    ...options
+  },
+});
+
 export const addItem = (name, meta, folderId) => (addObject('item', name, meta, {folderId}));
+export const updateItem = (id, name, meta) => (updateObject('item', id, name, meta));
 
 // Volumes
 export const getCollection = (name) => ({
@@ -230,7 +243,7 @@ export const getFolders = (parentId, name, parentType='collection') => ({
   path: `/folder?${generateQuery({parentId, parentType})}`,
 });
 
-export const addFolder = (name, meta, parentId, parentType) => ({
+export const addFolder = (name, meta, parentId, parentType, reuseExisting = true) => ({
   type: types.ADD_OBJECT,
   method: 'POST',
   path: '/folder',
@@ -240,11 +253,11 @@ export const addFolder = (name, meta, parentId, parentType) => ({
     metadata:JSON.stringify(meta),
     parentId,
     parentType,
-    reuseExisting: true,
+    reuseExisting,
   },
 });
 
-export const updateFolder = (name, meta, id) => ({
+export const updateFolder = (id, name, meta) => ({
   type: types.UPDATE_OBJECT,
   method: 'PUT',
   objectType: 'folder',
@@ -254,6 +267,19 @@ export const updateFolder = (name, meta, id) => ({
     metadata:JSON.stringify(meta),
   },
 });
+
+export const uploadFile = (name, fileObject, parentType, parentId) => ({
+  type: types.ADD_OBJECT,
+  method: 'POST',
+  path: `/file?${generateQuery({
+    parentId,
+    parentType,
+    name,
+    size:fileObject.size,
+    mimeType: fileObject.type,
+  })}`,
+  body: fileObject,
+})
 
 export const getItems = (parentId, name, parentType='folder') => (listObjects(parentId, parentType, 'item', 'item' ));
 

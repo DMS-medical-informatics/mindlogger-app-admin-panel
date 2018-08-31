@@ -5,14 +5,15 @@ import Button from '@material-ui/core/Button';
 import {InputRadioField, InputRow} from '../../../../../forms/Material';
 import {isRequired} from '../../../../../forms/validation'
 import PadBlock from '../../../../../layout/PadBlock';
-import InputFileField from '../../../../../forms/InputFileField';
+import InputFileField from '../../../../../forms/GInputFileField';
 
 
 
 class SurveyDrawForm extends Component {
   
   render() {
-    const {handleSubmit} = this.props;
+    const {handleSubmit, screenId} = this.props;
+    const dataForFile = {parentType:'item', parentId: screenId};
     return (
       <form onSubmit={handleSubmit}>
         <div className="wizard">
@@ -21,8 +22,7 @@ class SurveyDrawForm extends Component {
           <Field name="mode" label="Draw on a picture" component={InputRadioField} select="picture" />
           <PadBlock>
             <InputRow>
-              <Field name="picture_mode" label="Upload single picture" component={InputRadioField} select="single" />
-              <Field name="picture_file" component={InputFileField} />
+              <Field name="pictureFiles" component={InputFileField} data={dataForFile}/>
             </InputRow>
           </PadBlock>
           <Field name="mode" label="Draw on a camera photo" component={InputRadioField} select="camera" />

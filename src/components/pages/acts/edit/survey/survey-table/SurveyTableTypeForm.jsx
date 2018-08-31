@@ -14,10 +14,10 @@ class SurveyTableTypeForm extends Component {
     return (
       <form onSubmit={handleSubmit}>
         <div className="wizard">
-          <InputRow label="TableShap:" row={4}>
-            <Field name="rows_count" component={InputTextField} type="number" validate={isRequired} placeholder="2"/>
+          <InputRow label="Table Shape:" row={4}>
+            <Field name="rowsCount" component={InputTextField} type="number" validate={isRequired} placeholder="2"/>
             rows,
-            <Field name="cols_count" component={InputTextField} type="number" validate={isRequired} placeholder="2"/>
+            <Field name="colsCount" component={InputTextField} type="number" validate={isRequired} placeholder="2"/>
             columns
           </InputRow>
           Response type:

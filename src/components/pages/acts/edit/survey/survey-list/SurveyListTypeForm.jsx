@@ -15,13 +15,13 @@ class SurveyListTypeForm extends Component {
       <form onSubmit={handleSubmit}>
         <div className="wizard">
           <InputRow label="Number of response options:" row={8}>
-            <Field name="options_count" component={InputTextField} type="number" validate={isRequired} placeholder="2"/>
+            <Field name="optionsCount" component={InputTextField} type="number" validate={isRequired} placeholder="2"/>
           </InputRow>
           <InputRow label="Maximum number of options to select:" row={8}>
-            <Field name="options_max_count" component={InputTextField} type="number" validate={isRequired} placeholder="1"/>
+            <Field name="optionsMax" component={InputTextField} type="number" validate={isRequired} placeholder="1"/>
           </InputRow>
           <InputRow label="Minimum number of options to select:" row={8}>
-          <Field name="options_min_count" component={InputTextField} type="number" inline validate={isRequired} placeholder="1"/>
+          <Field name="optionsMin" component={InputTextField} type="number" inline validate={isRequired} placeholder="1"/>
           </InputRow>
           
           <Field name="mode" label="Enter text or upload pictures for a single set of response options" component={InputRadioField} select="single" />

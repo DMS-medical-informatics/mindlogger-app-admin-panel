@@ -17,7 +17,7 @@ import ActGroup from './ActGroup';
 import { getFolders, addFolder, getObject } from "../../../actions/api";
 import { setDataObject } from "../../../actions/core";
 import { InputRow } from '../../forms/Material';
-import AddActForm from './AddActForm';
+import AddActForm from './AddObjectForm';
 
 const mapStateToProps = (state, ownProps) => ({
   volume: state.entities.volume,
@@ -37,7 +37,7 @@ class Acts extends Component {
     open: false,
   };
   componentWillMount() {
-    const {getFolders, volume, getObject, acts} = this.props;
+    const {getFolders, volume} = this.props;
     getFolders(volume._id, 'groups', 'folder').then(res => {
       if (res.length === 0) {
         return this.createDefaultGroups();
@@ -65,12 +65,39 @@ class Acts extends Component {
     this.setState({open: false});
   }
 
+  renderSelectDialog(array) {
+    return (<Modal show={this.state.open === 'select'} onHide={this.handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Select one</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <List>
+          {array && array.map(obj => (
+            <ListItem button onClick={() => this.handleListItemClick(obj)} key={obj._id}>
+              <ListItemText primary={obj.name} />
+            </ListItem>
+          ))}
+          <ListItem button onClick={() => this.handleAddClick('addAccount')}>
+            <ListItemAvatar>
+              <Avatar>
+                <AddIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Add new version" />
+          </ListItem>
+        </List>
+      </Modal.Body>
+    </Modal>)
+  }
+
   onEdit = (folder) => {
     const {getFolders} = this.props;
     this.setState({open: 'select'});
     this.groupId = folder._id;
     getFolders(folder._id, 'acts', 'folder').then(res => {
-       this.handleListItemClick(this.props.acts.latest);
+      let index = res.length - 1;
+      this.handleListItemClick(res[index]);
+
     });
   }
 
@@ -104,7 +131,9 @@ class Acts extends Component {
   handleSubmitAct = ({name}) => {
     const {addFolder} = this.props;
     return addFolder(name, {}, this.groupId, 'folder').then(res => {
-      this.handleClose();
+      return addFolder(name, {}, res._id, 'folder', false).then(obj => {
+        this.handleListItemClick(obj);
+      })
     });
   }
 
@@ -127,10 +156,11 @@ class Acts extends Component {
     return (
       <div>
       <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap [+] to add an entry, and tap any entry to edit or delete.</p>
+      <InputRow label="Search Activities"><TextField type="search" className="search-text"/> </InputRow>
       <Grid container spacing={8} justify="space-between">
         {
-          groups.map((group,idx) =>
-          <ActGroup group={group} key={group._id} onEdit={this.onEdit} onAdd={this.onAddAct} vol={volume}/>)
+          groups.map((group,idx) => 
+          <ActGroup group={group} key={group._id} onEdit={this.onEdit} onAdd={this.onAddAct}/>) 
         }
       </Grid>
       { this.renderAddActDialog() }
