@@ -52,7 +52,6 @@ export default class App extends Component {
                 <AuthRoute path='/users/:id/setup' component={SetupActs} />
                 <AuthRoute path='/users' component={Users} />
                 <AuthRoute path='/profile' component={Profile} />
-                {/* <AuthRoute path='/acts' component={Acts} /> */}
                 <AuthRoute path='/take/:actId' component={TakeAct} />
                 <AuthRoute path='/take' component={TakeActs} />
                 <AuthRoute path='/surveys/:id' component={EditSurvey} />

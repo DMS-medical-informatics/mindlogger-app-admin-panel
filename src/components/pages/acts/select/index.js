@@ -11,8 +11,11 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
-import Select from '@material-ui/core/Select';
+
 import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import MultipleSelect from './MultipleSelect';
+
 import { Modal } from 'react-bootstrap';
 
 import ActGroup from '../ActGroup';
@@ -24,7 +27,8 @@ import AddActForm from '../AddObjectForm';
 const mapStateToProps = (state, ownProps) => ({
   volume: state.entities.volume,
   groups: state.entities.folder.groups || [],
-  acts: state.entities.folder.acts
+  acts: state.entities.folder.acts,
+  volumes: state.entities.folder.volumes
 });
 
 const mapDispatchToProps = {
@@ -123,7 +127,8 @@ class ActsSelect extends Component {
   }
 
   render() {
-    const {volume, groups, acts} = this.props;
+    const {volume, groups, acts, volumes} = this.props;
+    console.log(volumes);
     return (
       <div>
       <Grid item>
@@ -145,9 +150,7 @@ class ActsSelect extends Component {
         <Grid item xs={3}>
           <center>
             <h4>Volume</h4>
-            <Select value="">
-              <MenuItem value=""></MenuItem>
-            </Select>
+              <MultipleSelect menu={{"name": "Volume", "items": volumes.map((vol) => vol._id != volume._id ? (vol.meta && vol.meta.shortName && vol.meta.shortName != vol.name ? Object.assign(vol, {'name': vol.meta.shortName + " (" + vol.name + ")"}) : vol) : null)}}></MultipleSelect>
           </center>
         </Grid>
         <Grid item xs={3}>
