@@ -20,9 +20,9 @@ class GInputFileField extends Component {
       let values = input.value || [];
       let filesToAdd = resArray.map(res => ({
         '@id': `file/${res._id}`,
-        name: res.name
+        name: res.name,
       }));
-      values = values.concat(filesToAdd);
+      values = filesToAdd
       input.onChange(values);
     });
   }

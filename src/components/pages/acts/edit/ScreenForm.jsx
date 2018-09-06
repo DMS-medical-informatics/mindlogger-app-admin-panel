@@ -58,7 +58,7 @@ class ScreenForm extends Component {
             <a>Text</a>
           </Col>
           <Col md={9}>
-            <Field name="display[text]" label="Display text (instructions/question) below picture/video/drawing or above survey:" component={InputField} componentClass="textarea" vertical />
+            <Field name="text" label="Display text (instructions/question) below picture/video/drawing or above survey:" component={InputField} componentClass="textarea" vertical />
           </Col>
         </Row>
 
@@ -67,9 +67,9 @@ class ScreenForm extends Component {
             <a>Text entry</a>
           </Col>
           <Col md={9}>
-            <Field name="text[display]" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
+            <Field name="textEntry[display]" label="Display a box to enter text (at the bottom of the screen above navigation buttons)" component={InputCheckField} />
             <PadBlock>
-              <Field name="text[label]" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
+              <Field name="textEntry[label]" label="Text above text entry box:" component={InputField} componentClass="textarea" vertical/>
             </PadBlock>
           </Col>
         </Row>

@@ -11,10 +11,10 @@ function generateQuery(params) {
 }
 
 export const signup = (body) => ({
-    type: types.SIGN_UP,
-    method: 'POST',
-    path: '/user',
-    body,
+  type: types.SIGN_UP,
+  method: 'POST',
+  path: '/user',
+  body,
 });
 
 export const changeProfile = (id, body) => ({
@@ -25,10 +25,10 @@ export const changeProfile = (id, body) => ({
 });
 
 export const changePassword = (id, body) => ({
-    type: types.CHANGE_PASSWORD,
-    method: 'PUT',
-    path: `/user/${id}/password`,
-    body,
+  type: types.CHANGE_PASSWORD,
+  method: 'PUT',
+  path: `/user/${id}/password`,
+  body,
 });
 
 export const forgotPassword = (body) => ({
@@ -278,7 +278,9 @@ export const uploadFile = (name, fileObject, parentType, parentId) => ({
     size:fileObject.size,
     mimeType: fileObject.type,
   })}`,
+  isUpload: true, 
   body: fileObject,
+  extraHeaders: { 'Content-Type': fileObject.type }
 })
 
 export const getItems = (parentId, name, parentType='folder') => (listObjects(parentId, parentType, 'item', 'item' ));

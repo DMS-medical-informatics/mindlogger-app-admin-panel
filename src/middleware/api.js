@@ -38,19 +38,22 @@ export default store => next => action => {
         });
 }
 
-export const makeRequest = (method, path, data, accessToken, {isMultipartUpload, isJson, extraHeaders}) => {
+export const makeRequest = (method, path, data, accessToken, {isMultipartUpload, isJson, extraHeaders, isUpload}) => {
     let headers = new Headers(extraHeaders || {});
     if (accessToken) {
         headers.set("Girder-Token", accessToken);
     }
     let body = data;
-    if (!isMultipartUpload && isJson) {
-        headers.set("Content-Type", "application/json; charset=utf-8");
-        body = JSON.stringify(data);
+    if (!isUpload) {
+        if (!isMultipartUpload && isJson) {
+            headers.set("Content-Type", "application/json; charset=utf-8");
+            body = JSON.stringify(data);
+        } else if (!isJson && method !== 'GET') {
+            body = objectToFormData(data);
+        }
     }
-    if (!isJson && method !== 'GET') {
-        body = objectToFormData(data);
-    }
+
+    console.log(headers);
     
     return fetch(`${API_HOST}${path}`, {
             mode: 'cors',
@@ -60,7 +63,6 @@ export const makeRequest = (method, path, data, accessToken, {isMultipartUpload,
         })
         .then(response => {
             const status = response.status;
-
             try {
                 return response.json().then(json => {
                     return status === 200 ? Promise.resolve(json) : Promise.reject(json);

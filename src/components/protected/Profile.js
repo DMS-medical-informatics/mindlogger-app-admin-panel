@@ -77,7 +77,7 @@ class Profile extends Component {
                 <Panel header="Profile">
                 <ProfileReduxForm initialValues={profile} onSubmit={this.updateProfile} />
                 </Panel>
-                <Panel header="Password" >
+                <Panel header="Password">
                 <PasswordForm onSubmit={this.updatePassword}/>
                 </Panel>
             </div>
