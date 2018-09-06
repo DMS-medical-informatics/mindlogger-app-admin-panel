@@ -9,9 +9,12 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 
 class MultipleSelect extends React.Component {
-  state = {
-    name: [],
-  };
+  constructor(){
+    super();
+    this.state = {
+      name: []
+    };
+  }
 
   handleChange = event => {
     this.setState({ name: event.target.value });
@@ -30,12 +33,12 @@ class MultipleSelect extends React.Component {
             input={<Input id="select-multiple-checkbox" />}
             renderValue={selected => selected.join(', ')}
           >
-            {menu.items.map(item => (item &&
-              <MenuItem key={item.name} value={item.name}>
+            {menu.items ? menu.items.map(item => (item &&
+              <MenuItem key={item._id} value={item.name}>
                 <Checkbox checked={this.state.name.indexOf(item.name) > -1} />
-                <ListItemText primary={item.name} />
+                <ListItemText primary={(item.meta && item.meta.shortName && item.meta.shortName != item.name) ? item.meta.shortName + " (" + item.name + ")" : item.name} />
               </MenuItem>
-            ))}
+            )) : []}
           </Select>
         </FormControl>
       </div>

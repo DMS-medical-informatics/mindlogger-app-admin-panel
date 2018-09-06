@@ -12,14 +12,12 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
 
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import MultipleSelect from './MultipleSelect';
 
 import { Modal } from 'react-bootstrap';
 
 import ActGroup from '../ActGroup';
-import { getFolders, addFolder, getObject } from "../../../../actions/api";
+import { getFolders, addFolder, getObject, getOrganizations } from "../../../../actions/api";
 import { setDataObject } from "../../../../actions/core";
 import { InputRow } from '../../../forms/Material';
 import AddActForm from '../AddObjectForm';
@@ -35,7 +33,8 @@ const mapDispatchToProps = {
   getFolders,
   addFolder,
   setDataObject,
-  getObject
+  getObject,
+  getOrganizations
 };
 
 class ActsSelect extends Component {
@@ -45,7 +44,12 @@ class ActsSelect extends Component {
 
   constructor(props) {
     super(props);
-    const {getFolders, volume, getObject, acts} = this.props;
+    this.state = {};
+    let tops = this;
+    const {getFolders, volume, getObject, acts, getOrganizations} = this.props;
+    getOrganizations().then(function(o){
+      tops.setState({'organizations': o});
+    });
   }
 
   componentWillMount() {
@@ -128,7 +132,7 @@ class ActsSelect extends Component {
 
   render() {
     const {volume, groups, acts, volumes} = this.props;
-    console.log(volumes);
+    const {organizations} = this.state;
     return (
       <div>
       <Grid item>
@@ -150,23 +154,19 @@ class ActsSelect extends Component {
         <Grid item xs={3}>
           <center>
             <h4>Volume</h4>
-              <MultipleSelect menu={{"name": "Volume", "items": volumes.map((vol) => vol._id != volume._id ? (vol.meta && vol.meta.shortName && vol.meta.shortName != vol.name ? Object.assign(vol, {'name': vol.meta.shortName + " (" + vol.name + ")"}) : vol) : null)}}></MultipleSelect>
+              <MultipleSelect menu={{"name": "Volume", "items": volumes.map((vol) => vol._id != volume._id ? vol : null)}}></MultipleSelect>
           </center>
         </Grid>
         <Grid item xs={3}>
           <center>
             <h4>Organization</h4>
-            <Select value="">
-              <MenuItem value=""></MenuItem>
-            </Select>
+              <MultipleSelect menu={{"name": "Organization", "items": organizations}}></MultipleSelect>
           </center>
         </Grid>
         <Grid item xs={3}>
           <center>
             <h4>Category</h4>
-            <Select value="">
-              <MenuItem value=""></MenuItem>
-            </Select>
+            <MultipleSelect menu={{"name": "Category", "items": []}}></MultipleSelect>
           </center>
         </Grid>
         <Grid item xs={1}>

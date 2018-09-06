@@ -4,7 +4,7 @@ function generateQuery(params) {
   let result = []
   Object.keys(params)
     .forEach(k => {
-      if(params[k]) 
+      if(params[k])
         result.push(esc(k) + '=' + esc(params[k]))
     })
   return result.join('&')
@@ -153,13 +153,13 @@ export const saveAnswer = (actId, actData, answerData) => ({
 export const getOrganizations = (offset, limit) => ({
   type: types.GET_LIST,
   method: 'GET',
-  path: `/organizations?${generateQuery({offset, limit})}`
+  path: `/group?${generateQuery({offset, limit})}`
 })
 
 export const addOrganization = (body) => ({
   type: types.ADD_ORGANIZATION,
   method: 'POST',
-  path: '/organizations',
+  path: '/group',
   body,
 })
 
@@ -282,4 +282,3 @@ export const uploadFile = (name, fileObject, parentType, parentId) => ({
 })
 
 export const getItems = (parentId, name, parentType='folder') => (listObjects(parentId, parentType, 'item', 'item' ));
-
