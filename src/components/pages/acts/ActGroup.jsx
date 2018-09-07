@@ -94,8 +94,7 @@ class ActGroup extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  acts: state.entities.folder[ownProps.group.name] || [],
-  latestActs: state.latestActs
+  acts: state.entities.folder[ownProps.group.name] || []
 })
 
 const mapDispatchToProps = {
