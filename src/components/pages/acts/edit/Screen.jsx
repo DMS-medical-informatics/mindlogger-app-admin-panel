@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+import { formValueSelector, destroy } from 'redux-form';
 import {
   Modal,
 } from "react-bootstrap";
@@ -27,6 +27,9 @@ class Screen extends Component {
     
   }
   close = () => {
+    const {body: {surveyType, canvasType}, destroy} = this.props;
+    const {form} = this.state;
+    destroy(`${form}-${form === 'survey' ? surveyType : canvasType}-form`);
     this.setState({form: false});
   }
 
@@ -42,7 +45,7 @@ class Screen extends Component {
 
   componentWillReceiveProps = (nextProps) => {
     if(nextProps.screen && nextProps.screen !== this.props.screen) {
-      const { screen: {survey, canvas }} = nextProps;
+      let { screen: {survey, canvas }} = nextProps;
       this.setState({survey, canvas});
     }
     
@@ -130,4 +133,5 @@ class Screen extends Component {
 
 export default connect(
   mapStateToProps,
+  {destroy}
 )(Screen);

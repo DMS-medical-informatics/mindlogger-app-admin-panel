@@ -84,7 +84,6 @@ class EditAct extends Component {
   onSaveScreen = (body) => {
     const {index,screensData} = this.state;
     screensData[index] = {...body};
-    console.log(body);
     this.setState({screensData});
   }
   componentWillMount() {

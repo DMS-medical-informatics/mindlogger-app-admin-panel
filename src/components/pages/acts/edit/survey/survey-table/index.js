@@ -34,7 +34,7 @@ class SurveyTableForm extends Component {
     return (
       <div className="p-3">
         {page === 1 && <SurveyTableTypeForm onSubmit={this.nextPage} initialValues={this.props.data} screenId={screenId}/>}
-        {page === 2 && (mode === 'text' || mode === 'order') && <SurveyTableBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
+        {page === 2 && (mode === 'text' || mode === 'number') && <SurveyTableBasicForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
         {page === 2 && mode === 'select' && <SurveyTableSelectForm body={body} previousPage={this.prevPage} onSubmit={this.nextPage} screenId={screenId}/>}
         {page === 3 && mode === 'select' && selectType === 'basic' && <SurveyTableSelectCellForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
         {page === 3 && mode === 'select' && selectType === 'order' && <SurveyTableOrderForm body={body} previousPage={this.prevPage} onSubmit={this.onSubmit} screenId={screenId}/>}
