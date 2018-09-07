@@ -111,7 +111,7 @@ class ScreenForm extends Component {
 
         <div className="section-title"><a name="survey">Survey</a></div>
         <PadBlock>
-          <Field name="surveyType" component={InputRadioField} label="None" select="none" />
+          <Field name="surveyType" component={InputRadioField} label="None" select={false} />
           <br/>
           <InputRow>
             <Field name="surveyType" component={InputRadioField} label="Survey list" select="list"/>
@@ -132,7 +132,7 @@ class ScreenForm extends Component {
 
         <div className="section-title"><a name="survey">Canvas (if no picture/video display)</a></div>
         <PadBlock>
-          <Field name="canvasType" component={InputRadioField} label="None" select="none" />
+          <Field name="canvasType" component={InputRadioField} label="None" select={false} />
           <InputRow>
             <Field name="canvasType" component={InputRadioField} label="Take camera photo" select="camera"/>
           </InputRow>

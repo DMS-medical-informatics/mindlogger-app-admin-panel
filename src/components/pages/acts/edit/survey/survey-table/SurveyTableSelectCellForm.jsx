@@ -36,14 +36,12 @@ class SurveyTableSelectCellForm extends Component {
       for(let j=0; j < colsCount ; j++) {
         inputs.push(<div key={`${i}_${j}`} className={cn({hidden: (row !== i || col !== j) })}>
           <InputRow>
-            <Field name={`options[${i}][${j}].type`} label="Text" component={InputRadioField} select="text" />
-            <Field name={`options[${i}][${j}].text`} component={InputTextField} type="text" placeholder="Text"/>
-            
+            <Field name={`rows[${i}][${j}].type`} label="Text" component={InputRadioField} select="text" />
+            <Field name={`rows[${i}][${j}].text`} component={InputTextField} type="text" placeholder="Text"/>
           </InputRow>
-          
           <InputRow>
-            <Field name={`options[${i}][${j}].type`} label="Picture" component={InputRadioField} select="file" />
-            <Field name={`options[${i}][${j}].file`} component={InputFileField} data={dataForFile}/>
+            <Field name={`rows[${i}][${j}].type`} label="Picture" component={InputRadioField} select="file" />
+            <Field name={`rows[${i}][${j}].file`} component={InputFileField} data={dataForFile}/>
           </InputRow>
         </div>)
       }

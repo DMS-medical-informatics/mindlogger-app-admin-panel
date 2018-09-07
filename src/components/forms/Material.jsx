@@ -96,7 +96,7 @@ export const InputRadioField = ({
             onChange={() => input.onChange(select)}
             checked={input.value === select}
             color="default"
-            value={select}
+            value={String(select)}
           />
         }
         label={label}
