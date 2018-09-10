@@ -132,7 +132,7 @@ class ActsSelect extends Component {
 
   render() {
     const {volume, groups, acts, volumes} = this.props;
-    const {organizations} = this.state;
+    const {organizations, results} = this.state;
     return (
       <div>
       <Grid item>
@@ -148,7 +148,7 @@ class ActsSelect extends Component {
         <Grid item xs={2}>
           <center>
             <h4>Activity</h4>
-            <TextField></TextField>
+            <TextField className="searchText"></TextField>
           </center>
         </Grid>
         <Grid item xs={3}>
@@ -173,6 +173,31 @@ class ActsSelect extends Component {
           <center>
             <br/>
             <h4>&#128269;</h4>
+          </center>
+        </Grid>
+      </Grid>
+      <Grid container spacing={8} justify="space-between">
+        <Grid item xs={2}>
+          <center>
+            <h4><strong>{results ? results.length + " Activities:" : ""}</strong></h4>
+          </center>
+        </Grid>
+      </Grid>
+      <Grid container spacing={8} justify="space-between">
+        <Grid item xs={2}>
+          <center>
+          </center>
+        </Grid>
+        <Grid item xs={3}>
+          <center>
+          </center>
+        </Grid>
+        <Grid item xs={3}>
+          <center>
+          </center>
+        </Grid>
+        <Grid item xs={3}>
+          <center>
           </center>
         </Grid>
       </Grid>

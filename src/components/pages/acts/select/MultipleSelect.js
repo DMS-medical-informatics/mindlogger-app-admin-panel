@@ -23,8 +23,8 @@ class MultipleSelect extends React.Component {
   render() {
     const { menu } = this.props;
     return (
-      <div className={menu.name + "-class"}>
-        <FormControl className={menu.name + "-class"}>
+      <div className={menu.name + "-class multipleSelectRoot"}>
+        <FormControl className={menu.name + "-class multipleSelectSelect"}>
           <Select
             multiple
             value={this.state.name}
@@ -41,6 +41,7 @@ class MultipleSelect extends React.Component {
             )) : []}
           </Select>
         </FormControl>
+        <div className="greyTriangleDown"></div>
       </div>
     );
   }

@@ -89,3 +89,26 @@
     border: solid 1px black;
   }
 }
+
+.greyTriangleDown {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 40px 0 40px;
+  border-color: lightgrey transparent transparent transparent;
+}
+
+.multipleSelectRoot {
+  width: 100%;
+  overflow: auto;
+}
+
+.multipleSelectSelect {
+  width: 85%;
+  overflow: auto;
+}
+
+.searchText {
+  width: 100%;
+  overflow: auto;
+}
