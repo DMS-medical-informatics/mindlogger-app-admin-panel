@@ -9,15 +9,23 @@ import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 
 class MultipleSelect extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
+    this.handler = this.props.handler.bind(this);
     this.state = {
       name: []
     };
   }
 
   handleChange = event => {
-    this.setState({ name: event.target.value });
+    const { menu } = this.props;
+    let thisName = event.target.value;
+    for (var i=0; i<menu.items.length; i++) {
+      thisName = ((menu.items && menu.items[i] && menu.items[i]._id && thisName==menu.items[i]._id) ? menu.items[i].name : thisName);
+    }
+    console.log(thisName);
+    this.setState({ name: thisName });
+    this.props.handler(event.target.value);
   };
 
   render() {
@@ -34,7 +42,7 @@ class MultipleSelect extends React.Component {
             renderValue={selected => selected.join(', ')}
           >
             {menu.items ? menu.items.map(item => (item &&
-              <MenuItem key={item._id} value={item.name}>
+              <MenuItem key={item._id} value={item._id}>
                 <Checkbox checked={this.state.name.indexOf(item.name) > -1} />
                 <ListItemText primary={(item.meta && item.meta.shortName && item.meta.shortName != item.name) ? item.meta.shortName + " (" + item.name + ")" : item.name} />
               </MenuItem>

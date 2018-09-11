@@ -42,13 +42,52 @@ class ActsSelect extends Component {
     open: false,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {};
+  componentDidMount() {
     let tops = this;
-    const {getFolders, volume, getObject, acts, getOrganizations} = this.props;
+    const {getFolders, volume, getObject, acts, getOrganizations, volumes} = this.props;
+    let theseActivities = [];
+    let numActs = 0;
     getOrganizations().then(function(o){
-      tops.setState({'organizations': o});
+      let theseVolumes = volumes.map((thisVolume) => {
+        getObject("folder", thisVolume._id + "/access").then(function(volumeAccess) {
+          for (var g=0; g<volumeAccess.groups.length; g++){
+            for (var og=0; og<o.length; og++) {
+              if (volumeAccess.groups[g].id == o[og]._id) {
+                let volGroup = o[og];
+                thisVolume.groups ? thisVolume.groups.push(volGroup) : thisVolume.groups=[volGroup];
+                volGroup.volumes ? volGroup.volumes.push(thisVolume) : volGroup.volumes=[thisVolume];
+                getFolders(thisVolume._id, thisVolume.name, "folder").then(function(volumeTop) {
+                  for (var volfol=0; volfol<volumeTop.length; volfol++){
+                    if (volumeTop[0].name=="Activities"){
+                      getFolders(volumeTop[0]._id, "Activities", "folder").then(function(thisVolumeActivities){
+                        let actfol = thisVolumeActivities.map((thisAct)=> {
+                          let thisActLatest = {"updated": null};
+                          getFolders(thisAct._id, thisAct.name, "folder").then(function(thisActivityVersions){
+                            for (var actV=0; actV<thisActivityVersions.length; actV++) {
+                              thisActLatest = (thisActivityVersions[actV].updated > thisActLatest.updated || thisActLatest.updated == null ? thisActivityVersions[actV] : thisActLatest);
+                            }
+                            var inArray = theseActivities.map((x)=> {return x._id; }).indexOf(thisActLatest._id);
+                            thisActLatest.parentName = thisAct.name;
+                            thisActLatest.groups = thisVolume.groups;
+                            thisActLatest.volume = thisVolume;
+                            thisActLatest.displayName = thisActLatest.meta && thisActLatest.meta["schema:name"] ? thisActLatest.meta["schema:name"]["@value"] : thisActLatest.parentName;
+                            if (thisActLatest.updated !== null) {
+                              inArray == -1 ? theseActivities.push(thisActLatest) : theseActivities[inArray] = thisActLatest;
+                            }
+                            theseActivities.sort((a, b) => a.displayName.localeCompare(b.displayName));
+                            numActs === theseActivities.length ? (tops.setState({'organizations': o, 'activities': theseActivities})) : numActs = theseActivities.length;
+                            console.log(theseActivities);
+                          });
+                        });
+                      });
+                    }
+                  }
+                });
+              }
+            }
+          }
+        });
+      });
     });
   }
 
@@ -130,9 +169,17 @@ class ActsSelect extends Component {
     });
   }
 
+  updateResults(results) {
+    console.log(results);
+  }
+
   render() {
     const {volume, groups, acts, volumes} = this.props;
-    const {organizations, results} = this.state;
+    const {organizations, activities} = this.state;
+    if (!activities) {
+      return(false);
+    }
+    let results = activities.filter((act)=> act.volume._id !== volume._id);
     return (
       <div>
       <Grid item>
@@ -154,19 +201,19 @@ class ActsSelect extends Component {
         <Grid item xs={3}>
           <center>
             <h4>Volume</h4>
-              <MultipleSelect menu={{"name": "Volume", "items": volumes.map((vol) => vol._id != volume._id ? vol : null)}}></MultipleSelect>
+              <MultipleSelect handler={this.updateResults} menu={{"name": "Volume", "items": volumes.map((vol) => vol._id != volume._id ? vol : null)}}></MultipleSelect>
           </center>
         </Grid>
         <Grid item xs={3}>
           <center>
             <h4>Organization</h4>
-              <MultipleSelect menu={{"name": "Organization", "items": organizations}}></MultipleSelect>
+              <MultipleSelect handler={this.updateResults} menu={{"name": "Organization", "items": organizations}}></MultipleSelect>
           </center>
         </Grid>
         <Grid item xs={3}>
           <center>
             <h4>Category</h4>
-            <MultipleSelect menu={{"name": "Category", "items": []}}></MultipleSelect>
+            <MultipleSelect handler={this.updateResults} menu={{"name": "Category", "items": []}}></MultipleSelect>
           </center>
         </Grid>
         <Grid item xs={1}>
@@ -183,24 +230,35 @@ class ActsSelect extends Component {
           </center>
         </Grid>
       </Grid>
-      <Grid container spacing={8} justify="space-between">
-        <Grid item xs={2}>
-          <center>
-          </center>
+      { results.map((act)=>
+        <Grid container spacing={8} justify="space-between">
+          <Grid item xs={2}>
+            <center>
+              { act.displayName }
+            </center>
+          </Grid>
+          <Grid item xs={3}>
+            <center>
+              { act.volume.name }
+            </center>
+          </Grid>
+          <Grid item xs={3}>
+            <center>
+              { act.groups.map((group, i)=> <span key={act._id + "organizations"}> {group.name + (i+1 < act.groups.length ? ", " : "")} </span>) }
+            </center>
+          </Grid>
+          <Grid item xs={3}>
+            <center>
+            </center>
+          </Grid>
+          <Grid item xs={1}>
+            <center>
+              <br/>
+              <h4>&#129488;</h4>
+            </center>
+          </Grid>
         </Grid>
-        <Grid item xs={3}>
-          <center>
-          </center>
-        </Grid>
-        <Grid item xs={3}>
-          <center>
-          </center>
-        </Grid>
-        <Grid item xs={3}>
-          <center>
-          </center>
-        </Grid>
-      </Grid>
+      ) }
       { this.renderAddActDialog() }
       { this.renderAddActVariantDialog() }
       </div>
