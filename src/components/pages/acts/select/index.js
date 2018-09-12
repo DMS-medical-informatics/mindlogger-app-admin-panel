@@ -46,9 +46,8 @@ class ActsSelect extends Component {
     let tops = this;
     const {getFolders, volume, getObject, acts, getOrganizations, volumes} = this.props;
     let theseActivities = [];
-    let numActs = 0;
     getOrganizations().then(function(o){
-      let theseVolumes = volumes.map((thisVolume) => {
+      let theseVolumes = volumes.map((thisVolume, volNum) => {
         getObject("folder", thisVolume._id + "/access").then(function(volumeAccess) {
           for (var g=0; g<volumeAccess.groups.length; g++){
             for (var og=0; og<o.length; og++) {
@@ -60,12 +59,14 @@ class ActsSelect extends Component {
                   for (var volfol=0; volfol<volumeTop.length; volfol++){
                     if (volumeTop[0].name=="Activities"){
                       getFolders(volumeTop[0]._id, "Activities", "folder").then(function(thisVolumeActivities){
-                        let actfol = thisVolumeActivities.map((thisAct)=> {
+                        let actCounter = 0;
+                        thisVolumeActivities.map((thisAct, actfol)=> {
                           let thisActLatest = {"updated": null};
                           getFolders(thisAct._id, thisAct.name, "folder").then(function(thisActivityVersions){
                             for (var actV=0; actV<thisActivityVersions.length; actV++) {
                               thisActLatest = (thisActivityVersions[actV].updated > thisActLatest.updated || thisActLatest.updated == null ? thisActivityVersions[actV] : thisActLatest);
                             }
+                            actCounter++;
                             var inArray = theseActivities.map((x)=> {return x._id; }).indexOf(thisActLatest._id);
                             thisActLatest.parentName = thisAct.name;
                             thisActLatest.groups = thisVolume.groups;
@@ -75,8 +76,9 @@ class ActsSelect extends Component {
                               inArray == -1 ? theseActivities.push(thisActLatest) : theseActivities[inArray] = thisActLatest;
                             }
                             theseActivities.sort((a, b) => a.displayName.localeCompare(b.displayName));
-                            numActs === theseActivities.length ? (tops.setState({'organizations': o, 'activities': theseActivities})) : numActs = theseActivities.length;
-                            console.log(theseActivities);
+                            if (volNum+1===theseVolumes.length && g===volumeAccess.groups.length && og===o.length && volfol===volumeTop.length && actCounter==thisVolumeActivities.length) {
+                              tops.setState({'organizations': o, 'activities': theseActivities});
+                            }
                           });
                         });
                       });
@@ -180,6 +182,7 @@ class ActsSelect extends Component {
       return(false);
     }
     let results = activities.filter((act)=> act.volume._id !== volume._id);
+    console.log(this.state);
     return (
       <div>
       <Grid item>
@@ -231,27 +234,27 @@ class ActsSelect extends Component {
         </Grid>
       </Grid>
       { results.map((act)=>
-        <Grid container spacing={8} justify="space-between">
-          <Grid item xs={2}>
+        <Grid container spacing={8} justify="space-between" key={act._id + "∕activityrow"}>
+          <Grid item xs={2} key={act._id + "∕" + act.displayName}>
             <center>
               { act.displayName }
             </center>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3} key={act._id + "∕" + act.volume.name}>
             <center>
               { act.volume.name }
             </center>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3} key={act._id + "∕groups"}>
             <center>
-              { act.groups.map((group, i)=> <span key={act._id + "organizations"}> {group.name + (i+1 < act.groups.length ? ", " : "")} </span>) }
+              { act.groups.map((group, i)=> <span key={act._id + "∕" + group.name}> {group.name + (i+1 < act.groups.length ? ", " : "")} </span>) }
             </center>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3} key={act._id + "∕categories"}>
             <center>
             </center>
           </Grid>
-          <Grid item xs={1}>
+          <Grid item xs={1} key={act._id + "∕preview"}>
             <center>
               <br/>
               <h4>&#129488;</h4>
