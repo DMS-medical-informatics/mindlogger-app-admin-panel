@@ -77,7 +77,8 @@ class ActsSelect extends Component {
                             }
                             theseActivities.sort((a, b) => a.displayName.localeCompare(b.displayName));
                             if (volNum+1===theseVolumes.length && g===volumeAccess.groups.length && og===o.length && volfol===volumeTop.length && actCounter==thisVolumeActivities.length) {
-                              tops.setState({'organizations': o, 'activities': theseActivities});
+                              let results = theseActivities.filter((act)=> act.volume._id !== volume._id);
+                              tops.setState({'organizations': o, 'activities': theseActivities, 'results': results});
                             }
                           });
                         });
@@ -171,17 +172,36 @@ class ActsSelect extends Component {
     });
   }
 
-  updateResults(results) {
-    console.log(results);
+  updateResults = (filter) => {
+    const { volume } = this.props;
+    const { activities, results } = this.state;
+    let filteredResults = [];
+    switch (filter.filter) {
+      case "Activity":
+        break;
+      case "Volume":
+        filteredResults = filter.ids.length ? activities.filter((result)=>{
+          return filter.ids.indexOf(result.volume._id) !== -1;
+        }) : activities.filter((act)=> act.volume._id !== volume._id);
+        break;
+      case "Organization":
+        break;
+      case "Category":
+        break;
+      default:
+        break;
+    }
+    console.log(filteredResults);
+    this.setState({'results': filteredResults});
+    console.log(this.state);
   }
 
   render() {
     const {volume, groups, acts, volumes} = this.props;
-    const {organizations, activities} = this.state;
+    const {organizations, activities, results} = this.state;
     if (!activities) {
       return(false);
     }
-    let results = activities.filter((act)=> act.volume._id !== volume._id);
     console.log(this.state);
     return (
       <div>
