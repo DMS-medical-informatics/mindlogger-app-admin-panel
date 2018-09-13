@@ -75,11 +75,24 @@ const entities = (state = {}, action) => {
             case types.GET_OBJECT:
                 {
                     let data = state.data || {};
-                    data[action.response._id] = action.response;
+                    data[action.objectPath] = action.response;
                     return {
                         ...state,
                         data,
                     }
+                }
+            case types.GET_OBJECTS_HASH:
+                {
+                    let dict = state[action.group] || {};
+                    let arr = action.response;
+                    arr.forEach(obj => {
+                        dict[obj._id] = obj;
+                    });
+                    let newState = {
+                        ...state,
+                    }
+                    newState[action.group] = dict;
+                    return newState;
                 }
             default:
               return {

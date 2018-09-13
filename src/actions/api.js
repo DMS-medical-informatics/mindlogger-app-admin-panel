@@ -1,5 +1,6 @@
 import * as types from '../constants/actionTypes';
 function generateQuery(params) {
+  if (params == undefined) return ""
   var esc = encodeURIComponent;
   let result = []
   Object.keys(params)
@@ -51,12 +52,6 @@ export const signin = ({user, password}) => ({
   path: '/user/authentication',
   extraHeaders: { 'Girder-Authorization': `Basic ${btoa(user + ":" + password)}` }
 });
-
-export const getUsers = (offset, limit) => ({
-  type: types.GET_USERS,
-  method: 'GET',
-  path: `/users?offset=${offset}&limit=${limit}`
-})
 
 export const signout = (body) => ({
   type: types.SIGN_OUT,
@@ -194,10 +189,11 @@ export const listObjects = (parentId, parentType, name, objectType) => ({
   path: `/${objectType}?${generateQuery({parentId, parentType})}`,
 });
 
-export const getObject = (type, id) => ({
+export const getObject = (objectPath) => ({
   type: types.GET_OBJECT,
   method: 'GET',
-  path: `/${type}/${id}`,
+  objectPath,
+  path: `/${objectPath}`,
 });
 
 export const addObject = (type, name, meta, options) => ({
@@ -285,3 +281,9 @@ export const uploadFile = (name, fileObject, parentType, parentId) => ({
 
 export const getItems = (parentId, name, parentType='folder') => (listObjects(parentId, parentType, 'item', 'item' ));
 
+export const getUsers = (params) => ({
+  type: types.GET_OBJECTS_HASH,
+  method: 'GET',
+  group: 'users',
+  path: `/user?${generateQuery(params)}`,
+})

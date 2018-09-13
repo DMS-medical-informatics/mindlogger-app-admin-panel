@@ -25,6 +25,8 @@ import Volume from './pages/library/Volume';
 
 import Acts from './pages/acts';
 import EditAct from './pages/acts/edit';
+import Managers from './pages/users/Managers';
+import Editors from './pages/users/Editors';
 
 export default class App extends Component {
   componentDidMount () {
@@ -40,30 +42,30 @@ export default class App extends Component {
         <div>
           <Header />
           <div className="container content">
-            <div className="row">
-              <Switch>
-                <AuthRoute path='/' exact component={Library} />
-                <Route path='/login' component={Login} />
-                <Route path='/register' component={Register} />
-                <AuthRoute path='/dashboard' component={Dashboard} />
-                <AuthRoute path='/images' component={Images} />
-                <AuthRoute path='/users/:id/answers' component={Answers} />
-                <AuthRoute path='/users/:id/setup' component={SetupActs} />
-                <AuthRoute path='/users' component={Users} />
-                <AuthRoute path='/profile' component={Profile} />
-                {/* <AuthRoute path='/acts' component={Acts} /> */}
-                <AuthRoute path='/take/:actId' component={TakeAct} />
-                <AuthRoute path='/take' component={TakeActs} />
-                <AuthRoute path='/surveys/:id' component={EditSurvey} />
-                <AuthRoute path='/organizations' component={Organizations} />
-                <AuthRoute path='/library' component={Library}/>
-                <AuthRoute path='/volumes/:id' component={Volume}/>
-                <AuthRoute path='/acts/:id/edit' component={EditAct}/>
-                <AuthRoute path='/acts/new' component={EditAct}/>
-                <AuthRoute path='/acts' component={Acts}/>
-                <Route render={() => <h3>No Match</h3>} />
-              </Switch>
-            </div>
+            <Switch>
+              <AuthRoute path='/' exact component={Library} />
+              <Route path='/login' component={Login} />
+              <Route path='/register' component={Register} />
+              <AuthRoute path='/dashboard' component={Dashboard} />
+              <AuthRoute path='/images' component={Images} />
+              <AuthRoute path='/users/:id/answers' component={Answers} />
+              <AuthRoute path='/users/:id/setup' component={SetupActs} />
+              <AuthRoute path='/users' component={Users} />
+              <AuthRoute path='/editors' component={Editors} />
+              <AuthRoute path='/managers' component={Managers} />
+              <AuthRoute path='/profile' component={Profile} />
+              {/* <AuthRoute path='/acts' component={Acts} /> */}
+              <AuthRoute path='/take/:actId' component={TakeAct} />
+              <AuthRoute path='/take' component={TakeActs} />
+              <AuthRoute path='/surveys/:id' component={EditSurvey} />
+              <AuthRoute path='/organizations' component={Organizations} />
+              <AuthRoute path='/library' component={Library}/>
+              <AuthRoute path='/volumes/:id' component={Volume}/>
+              <AuthRoute path='/acts/:id/edit' component={EditAct}/>
+              <AuthRoute path='/acts/new' component={EditAct}/>
+              <AuthRoute path='/acts' component={Acts}/>
+              <Route render={() => <h3>No Match</h3>} />
+            </Switch>
           </div>
         </div>
       </BrowserRouter>
