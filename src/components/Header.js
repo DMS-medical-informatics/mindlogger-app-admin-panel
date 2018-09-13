@@ -51,10 +51,10 @@ class Header extends Component {
                 <LinkContainer eventKey="1" to="/take-acts"><NavItem>Go to Web App</NavItem></LinkContainer>
                 <LinkContainer eventKey="2" to="/user-data"><NavItem>View User Data</NavItem></LinkContainer>
                 <LinkContainer eventKey="3" to="/acts"><NavItem>Edit Activities</NavItem></LinkContainer>
-                <MenuItem disabled>Manage Users</MenuItem>
+                <LinkContainer eventKey="4" to="/users"><NavItem>Manage Users</NavItem></LinkContainer>
                 <LinkContainer eventKey="5" to="/viewers"><NavItem>&nbsp; Viewers</NavItem></LinkContainer>
                 <LinkContainer eventKey="6" to="/editors"><NavItem>&nbsp; Editors</NavItem></LinkContainer>
-                <LinkContainer eventKey="6" to="/managers"><NavItem>&nbsp; Managers</NavItem></LinkContainer>
+                <LinkContainer eventKey="7" to="/managers"><NavItem>&nbsp; Managers</NavItem></LinkContainer>
               </NavDropdown>
             </Nav>
             }

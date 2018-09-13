@@ -10,7 +10,6 @@ import Register from './Register';
 import Home from './Home';
 import Dashboard from './protected/Dashboard';
 import Images from './protected/Images';
-import Users from './protected/Users';
 import Answers from './protected/Answers';
 import AuthRoute from './authRoute';
 import Header from './Header';
@@ -25,8 +24,8 @@ import Volume from './pages/library/Volume';
 
 import Acts from './pages/acts';
 import EditAct from './pages/acts/edit';
-import Managers from './pages/users/Managers';
-import Editors from './pages/users/Editors';
+
+import {Managers, Editors, Viewers, Users} from './pages/users';
 
 export default class App extends Component {
   componentDidMount () {
@@ -50,9 +49,12 @@ export default class App extends Component {
               <AuthRoute path='/images' component={Images} />
               <AuthRoute path='/users/:id/answers' component={Answers} />
               <AuthRoute path='/users/:id/setup' component={SetupActs} />
+
               <AuthRoute path='/users' component={Users} />
+              <AuthRoute path='/viewers' component={Viewers} />
               <AuthRoute path='/editors' component={Editors} />
               <AuthRoute path='/managers' component={Managers} />
+
               <AuthRoute path='/profile' component={Profile} />
               {/* <AuthRoute path='/acts' component={Acts} /> */}
               <AuthRoute path='/take/:actId' component={TakeAct} />
