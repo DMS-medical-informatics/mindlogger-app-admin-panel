@@ -122,7 +122,6 @@ class SettingForm extends Component {
           <br/>
           <Field name="display[progress]" label="Show progress bar on top (for survey screens)" component={InputCheckField} />
         </div>
-        <Button type="submit" disabled={submitting}>Submit</Button>
       </form>
     );
   }

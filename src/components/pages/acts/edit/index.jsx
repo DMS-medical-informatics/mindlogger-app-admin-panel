@@ -4,15 +4,18 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Prompt } from 'react-router-dom';
 import {
-  Button,
+  Button as Submit,
   Tab, Tabs,
   Modal
 } from "react-bootstrap";
 
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+
 import { getItems, getObject, addItem, updateItem, updateFolder, getObjectsById } from "../../../../actions/api";
 import { setActChanged } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
-import Bookmarks from './Bookmarks';
+import Bookmark from './Bookmark';
 import Screen from './Screen';
 import AddObjectForm from '../AddObjectForm';
 
@@ -26,7 +29,10 @@ class EditAct extends Component {
 
   loadAllScreens() {
     const {getObjectsById, actId} = this.props;
-    getObjectsById('item', 'screens', {folderId: actId});
+    console.log(this.props.screensHash);
+    getObjectsById('item', 'screens', {folderId: actId}).then(res => {
+      console.log(this.props.screensHash);
+    });
   }
 
   updateScreen(index, screen) {
@@ -39,7 +45,7 @@ class EditAct extends Component {
 
   loadScreen(index, screens) {
     let {screensData} = this.state;
-    const {screenHash} = this.props;
+    const {screensHash} = this.props;
     if (!screens) {
       screens = this.state.screens;
     }
@@ -48,8 +54,8 @@ class EditAct extends Component {
       if (screensData[index] === undefined) {
         const id = screens[index]['@id'].split("/")[1];
         console.log("loading..", id);
-        if (screenHash[id]) {
-          this.updateScreen(index, screenHash[id]);
+        if (screensHash[id]) {
+          this.updateScreen(index, screensHash[id]);
         }
         getObject(`item/${id}`).then(res => {
           this.updateScreen(index, res);
@@ -191,6 +197,42 @@ class EditAct extends Component {
     </Modal>)
   }
 
+  getScreen(index, key) {
+    const {screensData,screens} = this.state;
+    const {screensHash} = this.props;
+    if (screensData[index]) {
+      return screensData[index];
+    } else {
+      const screen = screensHash[key];
+      if (screen)
+        return { name: screen.name, ...screen.meta, id: screen._id};
+    }
+  }
+
+  renderBookmarks() {
+    const {screensData, index, setting, screens} = this.state;
+    const {screensHash} = this.props;
+    console.log(screens);
+    return (
+      <div className="bookmarks">
+        { screens && screens.map((screen,idx) =>
+          <Bookmark
+            index={idx}
+            key={idx}
+            selected={idx === index}
+            onSelect={this.selectScreen}
+            screen={this.getScreen(idx, screen['@id'].split("/")[1])}
+            />)
+        }
+        <center className="p-3">
+          <Button variant="fab" aria-label="Add" onClick={this.addScreen}>
+            <AddIcon />
+          </Button>
+        </center>
+      </div>
+    );
+  }
+
   render() {
     const {screensData, index, setting, screens} = this.state;
     let screen = screensData[index];
@@ -203,11 +245,11 @@ class EditAct extends Component {
           </Tab>
           <Tab eventKey={2} title="Screens">
             <div className="screens">
-              <Bookmarks screens={screens} index={index} onSelect={this.selectScreen} onAdd={this.addScreen}/>
+              {this.renderBookmarks()}
               <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen}/>
             </div>
           </Tab>
-          <Button bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Button>
+          <Submit bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Submit>
         </Tabs>
         { this.renderAddScreenDialog() }
       </section>
@@ -231,7 +273,7 @@ const mapStateToProps = (state, ownProps) => ({
   actIndex: ownProps.match.params.id,
   user: state.entities.auth || {},
   volume: state.entities.volume,
-  screenHash: state.entities.screens || {},
+  screensHash: state.entities.screens || {},
 });
 
 export default compose(
