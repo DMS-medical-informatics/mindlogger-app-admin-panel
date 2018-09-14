@@ -301,3 +301,10 @@ export const getUsers = (params) => ({
   group: 'users',
   path: `/user?${generateQuery(params)}`,
 })
+
+export const getObjectsById = (name, group, params={}) => ({
+  type: types.GET_OBJECTS_HASH,
+  method: 'GET',
+  group,
+  path: `/${name}?${generateQuery(params)}`,
+})

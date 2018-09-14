@@ -14,8 +14,6 @@ import UsersByViewer from './viewers/UsersByViewer';
 import Grid from '@material-ui/core/Grid';
 import PagedTable from '../../layout/PagedTable';
 
-
-
 const userContain = (user, keyword) => 
   {
     return user && 

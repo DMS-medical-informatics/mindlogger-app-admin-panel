@@ -9,7 +9,7 @@ import {
   Modal
 } from "react-bootstrap";
 
-import { getItems, getObject, addItem, updateItem, updateFolder } from "../../../../actions/api";
+import { getItems, getObject, addItem, updateItem, updateFolder, getObjectsById } from "../../../../actions/api";
 import { setActChanged } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmarks from './Bookmarks';
@@ -24,8 +24,22 @@ class EditAct extends Component {
     screensData: [],
   }
 
+  loadAllScreens() {
+    const {getObjectsById, actId} = this.props;
+    getObjectsById('item', 'screens', {folderId: actId});
+  }
+
+  updateScreen(index, screen) {
+    let screensData = [...this.state.screensData];
+    screensData[index] = { name: screen.name, ...screen.meta, id: screen._id};
+    this.setState({index, screensData}, () => {
+      this.formRef.reset();
+    });
+  }
+
   loadScreen(index, screens) {
     let {screensData} = this.state;
+    const {screenHash} = this.props;
     if (!screens) {
       screens = this.state.screens;
     }
@@ -34,12 +48,11 @@ class EditAct extends Component {
       if (screensData[index] === undefined) {
         const id = screens[index]['@id'].split("/")[1];
         console.log("loading..", id);
-        getObject('item', id).then(res => {
-          let screensData = [...this.state.screensData];
-          screensData[index] = {name: res.name, ...res.meta, id: res._id};
-          this.setState({index, screensData}, () => {
-            this.formRef.reset();
-          });
+        if (screenHash[id]) {
+          this.updateScreen(index, screenHash[id]);
+        }
+        getObject(`item/${id}`).then(res => {
+          this.updateScreen(index, res);
         })
       } else {
         this.setState({index}, () => {
@@ -88,9 +101,10 @@ class EditAct extends Component {
   }
   componentWillMount() {
     const {actId, getObject} = this.props;
-    getObject('folder', actId).then(act => {
+    getObject(`folder/${actId}`).then(act => {
       this.decodeData(act);
     });
+    this.loadAllScreens();
   }
 
   componentDidMount() {
@@ -207,6 +221,7 @@ const mapDispatchToProps = {
   addItem,
   updateItem,
   updateFolder,
+  getObjectsById,
 };
 
 const mapStateToProps = (state, ownProps) => ({
@@ -216,6 +231,7 @@ const mapStateToProps = (state, ownProps) => ({
   actIndex: ownProps.match.params.id,
   user: state.entities.auth || {},
   volume: state.entities.volume,
+  screenHash: state.entities.screens || {},
 });
 
 export default compose(
