@@ -54,18 +54,21 @@ class GroupTable extends Component {
   }
 
   selectUser = (user) => {
-    const {volume, updateObject, group, setVolume} = this.props;
-    let meta = volume.meta;
-    let userIds = [...meta.members[group]];
+    const {volume, updateObject, group, setVolume, onAddMember} = this.props;
+    const meta = volume.meta;
+    let members = (volume.meta && volume.meta.members) || {};
+    let userIds = members[group] || [];
     if (!userIds.includes(user._id)) {
       userIds.push(user._id);
     }
-    meta.members[group] = userIds;
-    volume.meta = meta;
+    members[group] = [...userIds];
+    meta.members = members;
+    this.closeModal();
     return updateObject('folder', volume._id, volume.name, meta).then(res => {
       console.log(volume);
       setVolume({...volume});
-      this.closeModal();
+      if (onAddMember)
+        return onAddMember(user);
     });
   }
 
@@ -82,7 +85,7 @@ class GroupTable extends Component {
           <Col sm={9}><FormControl type="name" placeholder="name or email" onChange={this.onSearch}/></Col>
         </Row>
         </div>
-        <UsersTable userIds = {userIds} onSelect={onSelect}/>
+        {userIds && <UsersTable userIds={userIds} onSelect={onSelect}/> }
         <Button variant="contained" onClick={this.showAddModal}>Add {groupName}</Button>
         {" "}
         <Button variant="contained" onClick={this.showSelectModal}>Add Existing User</Button>

@@ -308,3 +308,12 @@ export const getObjectsById = (name, group, params={}) => ({
   group,
   path: `/${name}?${generateQuery(params)}`,
 })
+
+export const copyObject = (objectId, objectType, parentId, parentType) => ({
+  type: types.ADD_OBJECT,
+  method: 'POST',
+  path: `/${objectType}/${objectId}/copy?${generateQuery({parentId, parentType})}`,
+  body: {
+    reuseExisting: true,
+  }
+})

@@ -212,7 +212,6 @@ class EditAct extends Component {
   renderBookmarks() {
     const {screensData, index, setting, screens} = this.state;
     const {screensHash} = this.props;
-    console.log(screens);
     return (
       <div className="bookmarks">
         { screens && screens.map((screen,idx) =>
