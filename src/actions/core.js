@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from './actionTypes';
 
 export const setAct = (act) => ({
     type: types.SET_DATA,

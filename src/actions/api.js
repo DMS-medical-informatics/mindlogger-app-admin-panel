@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from './actionTypes';
 function generateQuery(params) {
   if (params == undefined) return ""
   var esc = encodeURIComponent;

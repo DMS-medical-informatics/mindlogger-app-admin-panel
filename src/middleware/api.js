@@ -1,5 +1,5 @@
 import { API_HOST } from '../constants';
-import * as types from '../constants/actionTypes';
+import * as types from '../actions/actionTypes';
 import objectToFormData from 'object-to-formdata';
 
 export default store => next => action => {

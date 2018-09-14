@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from '../actions/actionTypes';
 
 export default store => next => action => {
     if ((action.type === types.SIGN_IN || action.type === types.SIGN_UP) && action.status === 'COMPLETE') {

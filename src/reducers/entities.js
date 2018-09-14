@@ -1,4 +1,4 @@
-import * as types from '../constants/actionTypes';
+import * as types from '../actions/actionTypes';
 
 const entities = (state = {}, action) => {
     if (action.type === types.SIGN_OUT) {
