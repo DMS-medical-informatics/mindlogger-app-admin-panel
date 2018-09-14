@@ -11,3 +11,16 @@
   margin-top: 40px;
   margin-bottom: 40px;
 }
+
+.modal-table {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  padding: 20px;
+  position: absolute;
+}
+
+.users-by-viewer {
+  border-left: 1px solid #777;
+}

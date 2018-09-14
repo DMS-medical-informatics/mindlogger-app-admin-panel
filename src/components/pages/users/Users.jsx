@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import UsersTable from './UsersTable';
+import GroupTable from './GroupTable';
 import { getUsers } from '../../../actions/api';
 
 class Viewers extends Component {
@@ -19,7 +19,7 @@ class Viewers extends Component {
           <br/>
           Tap [+] on the left to add a User. Tap any User to edit or delete the User.
         </p>
-        <UsersTable group='users' groupName='User' />
+        <GroupTable group='users' groupName='User' />
       </div>
     )
   }

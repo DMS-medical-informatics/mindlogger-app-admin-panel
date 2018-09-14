@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import UsersTable from './UsersTable';
+import GroupTable from './GroupTable';
 import { getUsers } from '../../../actions/api';
 
 class Editors extends Component {
@@ -20,7 +20,7 @@ class Editors extends Component {
           Tap [+] on the left to add a Viewer. Tap any Viewer to edit or delete the Viewer.
           <br/>
         </p>
-        <UsersTable group='editors' groupName='Editor' />
+        <GroupTable group='editors' groupName='Editor' />
       </div>
     )
   }

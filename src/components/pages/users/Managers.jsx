@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { getUsers } from '../../../actions/api';
-import UsersTable from './UsersTable';
+import GroupTable from './GroupTable';
 
 class Managers extends Component {
   componentWillMount() {
@@ -21,7 +21,7 @@ class Managers extends Component {
           <br/>
           Tap in the Managers column on the right to add or remove Managers viewed by the Viewer.
         </p>
-        <UsersTable group='managers' groupName='Managers' />
+        <GroupTable group='managers' groupName='Managers' />
       </div>
     )
   }

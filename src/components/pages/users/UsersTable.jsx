@@ -1,77 +1,52 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import UserRow from './UserRow';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
+
 import { FormControl, Row, Col } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
+import TableCell from '@material-ui/core/TableCell';
+import TableRow from '@material-ui/core/TableRow';
 
-const userContain = (user, keyword) => 
-  {
-    return user && 
-  (user.firstName.includes(keyword) || user.lastName.includes(keyword) || user.email.includes(keyword))
-  }
-
+import AddUser from './modal/AddUser';
+import { updateObject } from '../../../actions/api';
+import SelectUser from './modal/SelectUser';
+import PagedTable from '../../layout/PagedTable';
+import UserRow from './UserRow';
 
 class UsersTable extends Component {
-  static propTypes = {
-    group: PropTypes.string.isRequired,
-    groupName: PropTypes.string.isRequired,
-  }
+
   state = {
 
   }
-  onSearch = (e) => {
-    let keyword = e.target.value;
-    this.setState({keyword});
-  }
 
-  filterUsers() {
-    const {keyword} = this.state;
-    const {userIds, users} = this.props;
-    if (keyword && keyword.length>0) {
-      return userIds.filter(id => userContain(users[id], keyword) )
-    } else {
-      return userIds;
-    }
+  renderUser=(userId) => {
+    return (<UserRow id={userId} key={userId} onSelect={this.props.onSelect}/>)
   }
 
   render() {
-    let {groupName} = this.props;
-    
-    const userIds = this.filterUsers();
+    let {userIds} = this.props;
     
     return (
-      <div>
-        <div className="search-box">
-        <Row>
-          <Col sm={3}> Search {groupName}s: </Col>
-          <Col sm={9}><FormControl type="name" placeholder="name or email" onChange={this.onSearch}/></Col>
-        </Row>
-        </div>
-        <table className="users-table">
-          <thead>
-            <tr>
-              <th>{groupName} [+]</th>
-              <th>Name</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-          { userIds.map(id => <UserRow id={id} key={id} /> ) }
-          </tbody>
-        </table>
-      </div>
+      
+      <PagedTable data={userIds} header={<TableRow>
+            <TableCell>Username</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Email</TableCell>
+            </TableRow>
+        }
+        row={this.renderUser}
+        />
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  volume: state.entities.volume,
-  userIds: state.entities.volume.meta.members && state.entities.volume.meta.members[ownProps.group],
-  users: state.entities.users,
+
 })
 
 const mapDispatchToProps = {
-  
+  updateObject
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersTable)

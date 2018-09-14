@@ -15,7 +15,10 @@ export const signup = (body) => ({
   type: types.SIGN_UP,
   method: 'POST',
   path: '/user',
-  body,
+  body: {
+    ...body,
+    admin: true,
+  },
 });
 
 export const changeProfile = (id, body) => ({
@@ -57,11 +60,22 @@ export const signout = (body) => ({
   type: types.SIGN_OUT,
 })
 
-export const inviteUser = (body) => ({
+export const inviteUser = (body, meta) => ({
   type: types.POST_USER,
   method: 'POST',
-  path: '/invite_user',
-  body,
+  path: '/user',
+  body: {
+    ...body,
+    metadata:JSON.stringify(meta),
+    admin: true,
+  },
+})
+
+export const setUserTemporary = (email) => ({
+  type: types.PUT_USER,
+  method: 'PUT',
+  path: '/user/password/temporary',
+  body: { email }
 })
 
 /* ----- Acts ----- */
@@ -214,9 +228,9 @@ export const updateObject = (type, id, name, meta, options={}) => ({
   objectType: type,
   path: `/${type}/${id}`,
   body: {
+    ...options,
     name,
     metadata:JSON.stringify(meta),
-    ...options
   },
 });
 
