@@ -22,9 +22,11 @@ class Volume extends Component {
     if(logo && Array.isArray(logo) && logo.length > 0) {
       let fileObject = logo[0];
       return uploadFile(fileObject.name, fileObject, 'folder', volume._id).then(res => {
+        console.log(res._id);
         return updateFolder(volume._id, name, {...data, logoImage: {name: res.name, '@id': `file/${res._id}`} });
       }).then(res => {
         setVolume(res);
+        this.close(res);
       });
     } else {
       const {_id, logoImage} = volume;

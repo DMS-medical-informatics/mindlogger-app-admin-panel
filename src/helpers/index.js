@@ -1,3 +1,4 @@
+import {API_HOST} from '../constants'
 export const validateEmail = (email) => {
   var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return re.test(email)
@@ -29,4 +30,8 @@ export const prepareAct = (data) => {
 
 export const uploadFileS3 = () => {
   
+}
+
+export const fileLink = (file, token) => {
+return `${API_HOST}/${file['@id']}/download?contentDisposition=inline&token=${token}`;
 }

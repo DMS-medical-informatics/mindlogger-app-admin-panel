@@ -12,6 +12,7 @@ import { getObject, getCollection, getFolders, addFolder, updateFolder, uploadFi
 import { setVolume } from "../../../actions/core";
 import VolumeForm from "./VolumeForm";
 import plus from './plus.svg';
+import Image from "../../controls/Image";
 
 
 class Home extends Component {
@@ -66,6 +67,20 @@ class Home extends Component {
     this.props.history.push(`/volumes/${index}`);
   }
 
+  renderVolume(i,meta) {
+    let image = meta.logoImage
+    if (image) {
+      return <div key={i} className="volume" key={i} onClick={() => this.selectVolume(i)}>
+        <div><Image file={image}/></div>
+        <div className="volume__text">{meta.shortName}</div>
+        </div>
+    } else {
+      return <div key={i} className="volume" key={i} onClick={() => this.selectVolume(i)}>
+        <div className="volume__text">{meta.shortName}</div>
+      </div>
+    }
+  }
+
   render() {
     const {volumes, user} = this.props;
     console.log(user);
@@ -74,9 +89,7 @@ class Home extends Component {
         <div className="volumes">
           {
             volumes && volumes.map((volume, i) => 
-              (<div className="volume" key={i} onClick={() => this.selectVolume(i)}>
-                <span>{volume.meta.shortName}</span>
-              </div>)
+                this.renderVolume(i, volume.meta)
             )
           }
           {

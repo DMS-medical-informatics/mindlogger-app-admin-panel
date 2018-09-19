@@ -10,6 +10,7 @@
     cursor: pointer;
   }
   .volume {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -22,6 +23,16 @@
     &:hover {
       background: #97E2EF;
       color: black;
+    }
+    img {
+      object-fit: contain;
+      display: block;
+      width: 100%;
+      height: 90px;
+    }
+    .volume__text{
+      
+      overflow: hidden;
     }
   }
   .plus-button {
