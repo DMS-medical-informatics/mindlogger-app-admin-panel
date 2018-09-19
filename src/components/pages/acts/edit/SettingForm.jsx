@@ -4,7 +4,7 @@ import {Button,Row, Col} from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
 
 import { InputField } from '../../../forms/FormItems';
-import {InputCheckField, InputRadioField} from '../../../forms/Material';
+import {InputCheckField, InputRadioField, InputTextField} from '../../../forms/Material';
 import InputTimeField from '../../../forms/InputTimeField';
 import {isRequired} from '../../../forms/validation';
 import InputWeekdayField from './InputWeekdayField';
@@ -43,7 +43,10 @@ class SettingForm extends Component {
               <Field name="notification[modeMonth]" label="Monthly:" component={InputCheckField} select="monthly"/>
               <Field name="notification[monthDay]" component={InputMonthDayField} bordered/>
             </Grid>
+            <Grid container>
             <Field name="notification[modeDate]" label="Calendar date:" component={InputCheckField} select="calendar_date"/>
+            <Field name="notificaiton[calendarDay]" component={InputTextField} type="date" />
+            </Grid>
             <Field name="notification[resetDate]" label="User can reset day/dates" component={InputCheckField} />
           </PadBlock>
           <Grid container alignItems="baseline">

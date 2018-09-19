@@ -67,7 +67,8 @@ class Home extends Component {
   }
 
   render() {
-    const {volumes} = this.props;
+    const {volumes, user} = this.props;
+    console.log(user);
     return (
       <div>
         <div className="volumes">
@@ -78,9 +79,12 @@ class Home extends Component {
               </div>)
             )
           }
-          <div className="plus-button" onClick={() => this.setState({form: true})}>
-            <img src={plus} alt="plus"/>
-          </div>
+          {
+            user.meta && user.meta.role == 'admin' && <div className="plus-button" onClick={() => this.setState({form: true})}>
+              <img src={plus} alt="plus"/>
+            </div>
+          }
+          
         </div>
         <Row>
           <Col xs={10} xsOffset={1}>
@@ -106,7 +110,7 @@ const mapStateToProps = state => ({
   collection: state.entities.collection && state.entities.collection.volumes,
   volumes: state.entities.folder && state.entities.folder.volumes,
   total_count: (state.entities.paging && state.entities.paging.total) || 0,
-  user: state.entities.auth || {}
+  user: state.entities.self || {}
 });
 
 export default compose(

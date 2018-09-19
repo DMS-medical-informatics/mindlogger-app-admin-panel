@@ -132,7 +132,7 @@ class Viewers extends Component {
 const mapStateToProps = (state) => ({
   volume: state.entities.volume,
   users: state.entities.users,
-  userDict: state.entities.volume.meta.members && state.entities.volume.meta.members.viewers,
+  userDict: state.entities.volume.meta.members && state.entities.volume.meta.members.viewers || {},
 })
 
 const mapDispatchToProps = {

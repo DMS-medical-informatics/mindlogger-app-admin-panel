@@ -40,7 +40,7 @@ class Header extends Component {
           <Navbar className="navbar-blue" collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/">MindLogger</Link>
+              <Link to="/"><img className="logo" src="/logo.svg"/>MindLogger</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
