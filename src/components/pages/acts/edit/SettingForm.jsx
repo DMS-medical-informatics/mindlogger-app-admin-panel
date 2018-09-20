@@ -36,16 +36,16 @@ class SettingForm extends Component {
           Day of the week, month, or specific dates;
           <PadBlock>
             <Grid container alignItems="baseline">
-              <Field name="notification[modeWeek]" label="Weekly:" component={InputCheckField} select="weekly"/>
+              <Field name="notification[modeWeek]" label="Weekly:" component={InputCheckField}/>
               <Field name="notification[weekDay]" component={InputWeekdayField} bordered/>
             </Grid>
             <Grid container alignItems="baseline">
-              <Field name="notification[modeMonth]" label="Monthly:" component={InputCheckField} select="monthly"/>
+              <Field name="notification[modeMonth]" label="Monthly:" component={InputCheckField}/>
               <Field name="notification[monthDay]" component={InputMonthDayField} bordered/>
             </Grid>
             <Grid container>
             <Field name="notification[modeDate]" label="Calendar date:" component={InputCheckField} select="calendar_date"/>
-            <Field name="notificaiton[calendarDay]" component={InputTextField} type="date" />
+            <Field name="notification[calendarDay]" component={InputTextField} type="date" />
             </Grid>
             <Field name="notification[resetDate]" label="User can reset day/dates" component={InputCheckField} />
           </PadBlock>
