@@ -175,7 +175,10 @@ class EditAct extends Component {
     const {addItem, act, updateFolder} = this.props;
     let {screens, screensData} = this.state;
     addItem(name, {}, act._id).then(res => {
-      screens.push({'@id': `item/${res._id}`});
+      screens.push({
+        '@id': `item/${res._id}`,
+        name: res.name,
+      });
       screensData.push({name, id:res._id});
       const {name: actName, ...setting} = this.state.setting;
       return updateFolder(act._id, actName, {screens, ...setting});

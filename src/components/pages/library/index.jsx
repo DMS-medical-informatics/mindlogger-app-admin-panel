@@ -36,7 +36,13 @@ class Home extends Component {
       if(logo && Array.isArray(logo) && logo.length > 0) {
         let fileObject = logo[0];
         return uploadFile(fileObject.name, fileObject, 'folder', folder._id).then(res => {
-          return updateFolder(folder._id, name, {...data, logoImage: {name: res.name, '@id': `file/${res._id}`} });
+          return updateFolder(folder._id, name, {
+            ...data,
+            logoImage: {
+              name: res.name,
+              '@id': `file/${res.name}`
+            }
+          });
         });
       }
       return true;
@@ -70,12 +76,12 @@ class Home extends Component {
   renderVolume(i,meta) {
     let image = meta.logoImage
     if (image) {
-      return <div key={i} className="volume" key={i} onClick={() => this.selectVolume(i)}>
+      return <div key={i} className="volume" onClick={() => this.selectVolume(i)}>
         <div><Image file={image}/></div>
         <div className="volume__text">{meta.shortName}</div>
         </div>
     } else {
-      return <div key={i} className="volume" key={i} onClick={() => this.selectVolume(i)}>
+      return <div key={i} className="volume" onClick={() => this.selectVolume(i)}>
         <div className="volume__text">{meta.shortName}</div>
       </div>
     }
