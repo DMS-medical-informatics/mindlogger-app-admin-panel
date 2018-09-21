@@ -18,7 +18,7 @@ export class Image extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  auth: state.entities.auth
+  auth: state.entities.auth || { token: '' }
 })
 
 const mapDispatchToProps = {

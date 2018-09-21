@@ -20,7 +20,7 @@ export default class Bookmark extends Component {
         <div className="thumb" onClick={() => !selected && onSelect(index)}>
           <div className="thumb__label">
             <h3>{ screen && screen.name }</h3>
-            <p>{ screen && screenTypes[screenType].toLowerCase() }</p>
+            <p>{ screen && screenTypes[screenType] && screenTypes[screenType].toLowerCase() }</p>
           </div>
         </div>
         <div className="subtitle">Screen {index+1} of 42</div>
