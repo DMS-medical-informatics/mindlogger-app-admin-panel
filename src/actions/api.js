@@ -162,13 +162,13 @@ export const saveAnswer = (actId, actData, answerData) => ({
 export const getOrganizations = (offset, limit) => ({
   type: types.GET_LIST,
   method: 'GET',
-  path: `/organizations?${generateQuery({offset, limit})}`
+  path: `/group?${generateQuery({offset, limit})}`
 })
 
 export const addOrganization = (body) => ({
   type: types.ADD_ORGANIZATION,
   method: 'POST',
-  path: '/organizations',
+  path: '/group',
   body,
 })
 

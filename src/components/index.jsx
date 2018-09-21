@@ -24,6 +24,7 @@ import Volume from './pages/library/Volume';
 
 import Acts from './pages/acts';
 import EditAct from './pages/acts/edit';
+import ActsSelect from './pages/acts/select/index';
 
 import {Managers, Editors, Viewers, Users} from './pages/users';
 
@@ -65,6 +66,7 @@ export default class App extends Component {
               <AuthRoute path='/volumes/:id' component={Volume}/>
               <AuthRoute path='/acts/:id/edit' component={EditAct}/>
               <AuthRoute path='/acts/new' component={EditAct}/>
+              <AuthRoute path='/acts/select' component={ActsSelect}/>
               <AuthRoute path='/acts' component={Acts}/>
               <Route render={() => <h3>No Match</h3>} />
             </Switch>

@@ -79,7 +79,7 @@ class EditAct extends Component {
       screens = [];
     }
     this.setState({open: 'add'});
-    
+
     // const {volume, addItem} = this.props;
     // addItem('item', 'screen',{}, volume._id, 'collection').then(res => {
 
@@ -97,7 +97,7 @@ class EditAct extends Component {
         window.alert("Please fix valdiation errors");
       }
     }
-    
+
   }
 
   onSaveScreen = (body) => {
@@ -186,7 +186,7 @@ class EditAct extends Component {
       this.setState({screens, screensData});
       this.handleClose();
     });
-    
+
   }
 
   renderAddScreenDialog() {
