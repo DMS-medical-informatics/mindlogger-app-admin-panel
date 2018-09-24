@@ -28,9 +28,8 @@ class EditAct extends Component {
   }
 
   loadAllScreens() {
-    const {getObjectsById, actId} = this.props;
-    console.log(this.props.screensHash);
-    getObjectsById('item', 'screens', {folderId: actId}).then(res => {
+    const {getObjectsById, actId, getItems} = this.props;
+    getItems(actId).then(res => {
       console.log(this.props.screensHash);
     });
   }
@@ -52,14 +51,17 @@ class EditAct extends Component {
     const {getObject} = this.props;
     if (screens && screens[index]) {
       if (screensData[index] === undefined) {
-        const id = screens[index]['@id'].split("/")[1];
-        console.log("loading..", id);
-        if (screensHash[id]) {
-          this.updateScreen(index, screensHash[id]);
+        const key = `item/${screens[index]['name']}`;
+        const id = screens[index]['@id'];
+        console.log("loading..", key);
+
+        if (screensHash[key]) {
+          this.updateScreen(index, screensHash[key]);
+        } else {
+          getObject(id).then(res => {
+            this.updateScreen(index, res);
+          })
         }
-        getObject(`item/${id}`).then(res => {
-          this.updateScreen(index, res);
-        })
       } else {
         this.setState({index}, () => {
           this.formRef.reset();
@@ -107,6 +109,7 @@ class EditAct extends Component {
   }
   componentWillMount() {
     const {actId, getObject} = this.props;
+    console.log(this.props);
     getObject(`folder/${actId}`).then(act => {
       this.decodeData(act);
     });
@@ -207,6 +210,7 @@ class EditAct extends Component {
       return screensData[index];
     } else {
       const screen = screensHash[key];
+      console.log(key);
       if (screen)
         return { name: screen.name, ...screen.meta, id: screen._id};
     }
@@ -223,7 +227,7 @@ class EditAct extends Component {
             key={idx}
             selected={idx === index}
             onSelect={this.selectScreen}
-            screen={this.getScreen(idx, screen['@id'].split("/")[1])}
+            screen={this.getScreen(idx, `item/${screen['name']}`)}
             />)
         }
         <center className="p-3">
@@ -275,7 +279,7 @@ const mapStateToProps = (state, ownProps) => ({
   actIndex: ownProps.match.params.id,
   user: state.entities.auth || {},
   volume: state.entities.volume,
-  screensHash: state.entities.screens || {},
+  screensHash: state.entities.objects && state.entities.objects[`folder/${ownProps.match.params.id}`] || {},
 });
 
 export default compose(

@@ -293,7 +293,14 @@ export const uploadFile = (name, fileObject, parentType, parentId) => ({
   extraHeaders: { 'Content-Type': fileObject.type }
 })
 
-export const getItems = (parentId, name, parentType='folder') => (listObjects(parentId, parentType, 'item', 'item' ));
+export const getItems = (parentId) => ({
+  type: types.GET_NAMES_HASH,
+  method: 'GET',
+  objectType: 'item',
+  parentId,
+  parentType: 'folder',
+  path: `/item?${generateQuery({folderId:parentId})}`,
+});
 
 export const getUsers = (params) => ({
   type: types.GET_OBJECTS_HASH,
@@ -316,4 +323,10 @@ export const copyObject = (objectId, objectType, parentId, parentType) => ({
   body: {
     reuseExisting: true,
   }
+})
+
+export const getPath = (path, query) => ({
+  type: types.GET_PATH,
+  method: 'GET',
+  path: `/${path}?${generateQuery(query)}`,
 })

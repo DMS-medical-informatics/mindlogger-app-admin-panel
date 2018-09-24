@@ -81,12 +81,27 @@ const entities = (state = {}, action) => {
                         data,
                     }
                 }
+            case types.GET_NAMES_HASH:
+                {
+                    let objects = state.objects || {};
+                    let key = `${action.parentType}/${action.parentId}`;
+                    let dict = objects[key] || {};
+                    let arr = action.response;
+                    arr.forEach(obj => {
+                        dict[`${action.objectType}/${obj.name}`] = obj;
+                    });
+                    objects[key] = dict;
+                    return {
+                        ...state,
+                        objects,
+                    }
+                }
             case types.GET_OBJECTS_HASH:
                 {
                     let dict = state[action.group] || {};
                     let arr = action.response;
                     arr.forEach(obj => {
-                        dict[obj._id] = obj;
+                        dict[obj.name] = obj;
                     });
                     let newState = {
                         ...state,
@@ -95,9 +110,7 @@ const entities = (state = {}, action) => {
                     return newState;
                 }
             default:
-              return {
-                  ...state,
-              }
+              return state;
 
         }
         
