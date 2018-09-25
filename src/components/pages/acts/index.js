@@ -158,13 +158,16 @@ class Acts extends Component {
   handleImport = (act) => {
     const {folder, subfolder} = this.state;
     const {volume, copyObject, updateFolder} = this.props;
-
+    this.setState({open: false, library: false});
     copyObject(act._id, 'folder', this.groupId, 'folder').then(res => {
-      let meta = {info: false, consent: false};
-      meta[subfolder] = true;
-      return updateFolder(res._id, res.name , meta);
+      if(subfolder) {
+        let meta = {info: false, consent: false};
+        meta[subfolder] = true;
+        return updateFolder(res._id, res.name , meta);
+      }
+      
     }).then(res => {
-      this.setState({folder: undefined, subfolder: undefined, open: false});
+      this.setState({folder: undefined, subfolder: undefined});
     });
   }
 
@@ -198,7 +201,7 @@ class Acts extends Component {
   }
   render() {
     const {folder, subfolder, library} = this.state;
-    if(folder && subfolder && library) {
+    if(library) {
       return <ActSelect onSelect={this.handleImport} />
     } else {
       return this.renderVolumeActs();

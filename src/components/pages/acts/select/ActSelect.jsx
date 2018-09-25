@@ -12,6 +12,10 @@ import { getPath, getOrganizations } from "../../../../actions/api";
 import { setPublicActs } from "../../../../actions/core";
 import ProgressCircle from '../../../layout/ProgressCircle';
 
+const actContain = (act, keyword) => 
+{
+  return act.name.toLowerCase().includes(keyword) || act.volumeName.toLowerCase().includes(keyword);
+}
 class ActSelect extends Component {
   static propTypes = {
     onSelect: PropTypes.func
@@ -44,6 +48,11 @@ class ActSelect extends Component {
       setPublicActs(results);
       this.setState({loading: false});
     });
+  }
+
+  onSearch = (e) => {
+    let keyword = e.target.value.toLowerCase();
+    this.setState({keyword});
   }
   
   renderHeader(text) {
@@ -85,9 +94,19 @@ class ActSelect extends Component {
           </TableCell>
         </TableRow>)
   }
+  filterActs() {
+    const {keyword} = this.state;
+    const {acts} = this.props;
+    if (keyword && keyword.length>0) {
+      return acts.filter(act =>  actContain(act, keyword))
+    } else {
+      return acts;
+    }
+  }
   render() {
     const {volume, groups, acts, volumes, multiselect} = this.props;
     const {organizations, activities, loading} = this.state;
+    let data = this.filterActs(acts);
     return (
       <div>
       <Grid item>
@@ -101,13 +120,13 @@ class ActSelect extends Component {
       </Grid>
       <Grid container spacing={8} justify="space-between">
         <Grid item xs={3}>
-          <TextField className="searchText" value={this.state.inputValue} onChange={evt => this.updateResults(evt)}></TextField>
+          <TextField className="searchText" onChange={this.onSearch}></TextField>
         </Grid>
       </Grid>
       { loading &&
         <ProgressCircle />
       }
-      <PagedTable data={acts} header={this.renderHeader(acts ? acts.length + " Activities:" : "")}
+      <PagedTable data={data} header={this.renderHeader(acts ? acts.length + " Activities:" : "")}
           row={this.renderAct}
           />
       {multiselect ? <div style={{"position":"fixed","bottom":"5px"}}>
