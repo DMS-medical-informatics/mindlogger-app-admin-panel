@@ -4,20 +4,11 @@ import { compose } from "redux";
 import { withRouter } from "react-router";
 
 
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import AddIcon from '@material-ui/icons/Add';
 import { Modal } from 'react-bootstrap';
-import Button from '@material-ui/core/Button';
 
 import ActGroup from './ActGroup';
 import { getFolders, addFolder, copyObject, updateFolder } from "../../../actions/api";
 import { setDataObject } from "../../../actions/core";
-import { InputRow } from '../../forms/Material';
 import AddActForm from './AddObjectForm';
 import ActSelect from './select/ActSelect';
 import InfoGroup from './InfoGroup';
@@ -41,7 +32,6 @@ class Acts extends Component {
     open: false,
   };
   componentWillMount() {
-    const {getFolders, volume} = this.props;
     return this.createDefaultGroups();
     // getFolders(volume._id, 'groups', 'folder').then(res => {
     //   if (res.length < 2) {

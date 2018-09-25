@@ -52,8 +52,6 @@ export const makeRequest = (method, path, data, accessToken, {isMultipartUpload,
             body = objectToFormData(data);
         }
     }
-
-    console.log(headers);
     
     return fetch(`${API_HOST}${path}`, {
             mode: 'cors',
