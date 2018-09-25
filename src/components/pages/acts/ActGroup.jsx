@@ -45,7 +45,7 @@ class ActGroup extends Component {
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={6}>
-            <strong>{name} {group.name}</strong> <Button onClick={onAdd}>&#8853;</Button>
+            <strong>{name} {group.name}</strong> <Button onClick={() => onAdd(group)}>&#8853;</Button>
             <TextField className="search-text" placeholder="&#128269;" onChange={this.onSearch}/>
           </Grid>
           <Grid item xs={6}>
