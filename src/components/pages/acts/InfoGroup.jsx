@@ -20,8 +20,6 @@ class InfoGroup extends Component {
 
   componentWillMount() {
     const {group:{_id:parentId, name}, getPath} = this.props;
-    console.log(this.props);
-    console.log("info group:",parentId);
     getPath('folder', {parentId, parentType: 'folder'}).then(acts => {
       let info;
       let consent;

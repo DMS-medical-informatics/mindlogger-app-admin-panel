@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { getFolders } from '../../../actions/api';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import ActRow from './ActRow';
 
 const actContain = (act, keyword) => 
 {
@@ -38,7 +39,7 @@ class ActGroup extends Component {
     }
   }
   render() {
-    const {group, onAdd, onEdit, name} = this.props;
+    const {group, onAdd, onEdit, name, onEditInfo, onAddInfo} = this.props;
     let acts = this.filterActs();
     return (
       <Grid item xs={12}>
@@ -52,10 +53,7 @@ class ActGroup extends Component {
           </Grid>
         </Grid>
         { acts.map((act, i) => <div key={i}>
-            <Grid container>
-              <Grid item xs={6}><Button onClick={() => onEdit(act)}>{(act.meta && act.meta["schema:name"] && act.meta["schema:name"]["@value"]) ? act.meta["schema:name"]["@value"] : act.name}</Button></Grid>
-              <Grid item xs={6}>{(act.instr) ? <Button onClick={() => onEdit(act.instr)}>{(act.instr.meta && act.instr.meta["schema:name"] && act.instr.meta["schema:name"]["@value"]) ? act.instr.meta["schema:name"]["@value"] : act.instr.parentAct ? act.instr.parentAct.name : act.instr.name}</Button> : <Button onClick={() => onAdd(act, "Activity", "instructions")}>&#8853;</Button>}</Grid>
-            </Grid>
+            <ActRow key={i} act={act} onEdit={this.onEdit} onEditInfo={onEditInfo} onAddInfo={onAddInfo}/>
           </div>) }
         
       </Grid>

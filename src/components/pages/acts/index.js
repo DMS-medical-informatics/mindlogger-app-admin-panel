@@ -65,7 +65,7 @@ class Acts extends Component {
     this.setState({actGroup, infoGroup});
   }
 
-  handleListItemClick(obj) {
+  handleListItemClick = (obj) => {
     const {setDataObject, history} = this.props;
     setDataObject(obj);
     history.push(`/acts/${obj._id}/edit`);
@@ -187,6 +187,35 @@ class Acts extends Component {
     this.setState({folder: 'volume', subfolder, open: 'add'});
   }
 
+  onAddActInfoScreen = (act, subfolder) => {
+    this.groupId = act._id;
+    this.setState({folder: 'act', subfolder, open: 'add_variant'});
+  }
+
+  renderAddActVariantDialog() {
+    return (<Modal show={this.state.open === 'add_variant'} onHide={this.handleClose}>
+      <Modal.Header closeButton>
+        <Modal.Title>Add activity</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <AddActForm onSubmit={this.handleSubmitActVariant}/>
+      </Modal.Body>
+    </Modal>)
+  }
+
+  handleSubmitActVariant = ({name}) => {
+    const {addFolder} = this.props;
+    const {subfolder} = this.state;
+    const meta = {};
+    if(subfolder) {
+      meta[subfolder] = true;
+    }
+    return addFolder(name, meta, this.groupId, 'folder').then(res => {
+      this.handleClose();
+      this.handleListItemClick(res);
+    });
+  }
+
   renderVolumeActs() {
     const {volume} = this.props;
     const {actGroup, infoGroup} = this.state;
@@ -194,8 +223,15 @@ class Acts extends Component {
       <div>
       <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap [+] to add an entry, and tap any entry to edit or delete.</p>
       {infoGroup && <InfoGroup key={infoGroup._id} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
-      {actGroup && <ActGroup group={actGroup} onEdit={this.onEdit} onAdd={this.onAddAct}/> }
+      {actGroup && 
+      <ActGroup group={actGroup}
+        onEdit={this.onEdit}
+        onAdd={this.onAddAct}
+        onAddInfo={this.onAddActInfoScreen}
+        onEditInfo={this.handleListItemClick}
+        /> }
       { this.renderAddActDialog() }
+      { this.renderAddActVariantDialog() }
       </div>
     );
   }

@@ -109,7 +109,6 @@ class EditAct extends Component {
   }
   componentWillMount() {
     const {actId, getObject} = this.props;
-    console.log(this.props);
     getObject(`folder/${actId}`).then(act => {
       this.decodeData(act);
     });
@@ -127,7 +126,8 @@ class EditAct extends Component {
 
   decodeData(act) {
     const {name} = act;
-    const {screens, ...setting} = act.meta || {};
+    let {screens, ...setting} = act.meta || {};
+    screens = screens || [];
     this.setState({setting: {name, ...setting}, screens });
     this.loadScreen(0, screens);
   }
@@ -210,7 +210,6 @@ class EditAct extends Component {
       return screensData[index];
     } else {
       const screen = screensHash[key];
-      console.log(key);
       if (screen)
         return { name: screen.name, ...screen.meta, id: screen._id};
     }

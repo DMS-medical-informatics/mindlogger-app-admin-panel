@@ -278,6 +278,16 @@ export const updateFolder = (id, name, meta) => ({
   },
 });
 
+export const updateFolderMeta = (id, meta) => ({
+  type: types.UPDATE_OBJECT,
+  method: 'PUT',
+  objectType: 'folder',
+  path: `/folder/${id}`,
+  body: {
+    metadata:JSON.stringify(meta),
+  },
+});
+
 export const uploadFile = (name, fileObject, parentType, parentId) => ({
   type: types.ADD_OBJECT,
   method: 'POST',
@@ -300,6 +310,15 @@ export const getItems = (parentId) => ({
   parentId,
   parentType: 'folder',
   path: `/item?${generateQuery({folderId:parentId})}`,
+});
+
+export const getFoldersDict = (objectType, parentId, parentType='folder') => ({
+  type: types.GET_NAMES_HASH,
+  method: 'GET',
+  objectType,
+  parentId,
+  parentType: 'folder',
+  path: `/${objectType}?${generateQuery({parentId, parentType})}`,
 });
 
 export const getUsers = (params) => ({
