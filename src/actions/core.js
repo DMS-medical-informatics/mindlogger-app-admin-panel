@@ -23,4 +23,9 @@ export const setDataObject = (object) => ({
 export const setActChanged = (actChanged) => ({
     type: types.SET_DATA,
     data: { actChanged }
+});
+
+export const setPublicActs = (publicActs) => ({
+    type: types.SET_DATA,
+    data: { publicActs }
 })

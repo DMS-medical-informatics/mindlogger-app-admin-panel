@@ -4,6 +4,7 @@ import { submit } from 'redux-form';
 import {Row, Col, Image} from 'react-bootstrap';
 import { S3_IMAGE_BUCKET } from '../../constants/index';
 import { getFiles } from '../../actions/api';
+import ProgressCircle from '../layout/ProgressCircle';
 
 const IMAGE_AB_PATH = 'images/';
 class ImageBrowser extends Component {
@@ -55,7 +56,7 @@ class ImageBrowser extends Component {
         })
         return (
         <section>
-            {loading && <img src="//assets.okfn.org/images/icons/ajaxload-circle.gif" alt='progress'/>}
+            { loading && <ProgressCircle /> }
             <Row>
                 { IMAGE_AB_PATH !== path &&
                 <Col md={2} className="image-cell">

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from "redux";
 import { withRouter } from "react-router";
 
-import TextField from '@material-ui/core/TextField/TextField';
+
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
@@ -12,61 +12,63 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import AddIcon from '@material-ui/icons/Add';
 import { Modal } from 'react-bootstrap';
+import Button from '@material-ui/core/Button';
 
 import ActGroup from './ActGroup';
-import { getFolders, addFolder, getObject } from "../../../actions/api";
+import { getFolders, addFolder, copyObject, updateFolder } from "../../../actions/api";
 import { setDataObject } from "../../../actions/core";
 import { InputRow } from '../../forms/Material';
 import AddActForm from './AddObjectForm';
-
-import ActsSelect from './select/index';
+import ActSelect from './select/ActSelect';
+import InfoGroup from './InfoGroup';
 
 const mapStateToProps = (state, ownProps) => ({
   volume: state.entities.volume,
   groups: state.entities.folder.groups || [],
-  acts: state.entities.folder.acts
+  acts: state.entities.folder.acts,
 });
 
 const mapDispatchToProps = {
   getFolders,
   addFolder,
   setDataObject,
-  getObject
+  copyObject,
+  updateFolder,
 };
 
 class Acts extends Component {
   state = {
     open: false,
   };
-
   componentWillMount() {
-    const {getFolders, volume, getObject, acts} = this.props;
-    if (volume.meta && volume.meta.information && volume.meta.information["@id"]) {
-      getObject(volume.meta.information["@id"]).then(res => {
-        volume.info = res;
-      });
-    }
-    if (volume.meta && volume.meta.consent && volume.meta.consent["@id"]) {
-      getObject(volume.meta.consent["@id"]).then(res => {
-        volume.consent = res;
-      });
-    }
-    getFolders(volume._id, 'groups', 'folder').then(res => {
-      if (res.length === 0) {
-        return this.createDefaultGroups();
+    const {getFolders, volume} = this.props;
+    return this.createDefaultGroups();
+    // getFolders(volume._id, 'groups', 'folder').then(res => {
+    //   if (res.length < 2) {
+        
+    //   } else {
+    //     this.updateData(res);
+    //   }
+    // });
+  }
+
+  updateData(groups) {
+    let actGroup;
+    let infoGroup;
+    groups.forEach(folder => {
+      if (folder.meta && folder.meta.info) {
+        infoGroup = folder;
+      } else {
+        actGroup = folder;
       }
     });
+    this.setState({actGroup, infoGroup});
   }
 
   handleListItemClick(obj) {
     const {setDataObject, history} = this.props;
     setDataObject(obj);
     history.push(`/acts/${obj._id}/edit`);
-  }
-
-  handleListAddClick = (obj, objectType, metaType) => {
-    const {setDataObject, history} = this.props;
-    history.push('/acts/select');
   }
 
   handleAddClick(obj) {
@@ -77,14 +79,44 @@ class Acts extends Component {
     this.setState({open: false});
   }
 
+  // Deprecated Select variant dialog
+  // renderSelectDialog(array) {
+  //   return (<Modal show={this.state.open === 'select'} onHide={this.handleClose}>
+  //     <Modal.Header closeButton>
+  //       <Modal.Title>Select one</Modal.Title>
+  //     </Modal.Header>
+  //     <Modal.Body>
+  //       <List>
+  //         {array && array.map(obj => (
+  //           <ListItem button onClick={() => this.handleListItemClick(obj)} key={obj._id}>
+  //             <ListItemText primary={obj.name} />
+  //           </ListItem>
+  //         ))}
+  //         <ListItem button onClick={() => this.handleAddClick('addAccount')}>
+  //           <ListItemAvatar>
+  //             <Avatar>
+  //               <AddIcon />
+  //             </Avatar>
+  //           </ListItemAvatar>
+  //           <ListItemText primary="Add new version" />
+  //         </ListItem>
+  //       </List>
+  //     </Modal.Body>
+  //   </Modal>)
+  // }
+
   onEdit = (folder) => {
     const {getFolders} = this.props;
-    this.setState({open: 'select'});
     this.groupId = folder._id;
     getFolders(folder._id, 'acts', 'folder').then(res => {
-       this.handleListItemClick(this.props.acts.latest);
+      let variant;
+      res.forEach(m => {
+        if (!(m.meta && m.meta.info))
+          variant = m;
+      });
+      this.handleListItemClick(variant);
+
     });
-    this.handleListItemClick(folder);
   }
 
   onAddAct = (group) => {
@@ -92,80 +124,85 @@ class Acts extends Component {
     this.setState({open: 'add'});
   }
 
+  openLibrary = () => {
+    this.setState({library: true});
+  }
+
   renderAddActDialog() {
     return (<Modal show={this.state.open === 'add'} onHide={this.handleClose}>
       <Modal.Header closeButton>
-        <Modal.Title>Create Activity</Modal.Title>
+        <Modal.Title>Add activity</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <AddActForm onSubmit={this.handleSubmitAct} />
+        <AddActForm onSubmit={this.handleSubmitAct} onLibrary={() => this.openLibrary()}/>
       </Modal.Body>
     </Modal>)
   }
 
-  renderAddActVariantDialog() {
-    return (<Modal show={this.state.open === 'add_variant'} onHide={this.handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Add activity version</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <AddActForm onSubmit={this.handleSubmitActVariant} />
-      </Modal.Body>
-    </Modal>)
-  }
 
-  handleSubmitAct = ({name, plus}) => {
+  handleSubmitAct = ({name}) => {
     const {addFolder} = this.props;
-    if (plus) {
-      switch (plus) {
-        case 'new':
-          if (name) {
-            return addFolder(name, {}, this.groupId, 'folder').then(res => {
-              return addFolder(name, {}, res._id, 'folder', false).then(obj => {
-                this.handleListItemClick(obj);
-              })
-            });
-          }
-          break;
-        case 'select':
-          this.handleListAddClick();
-          break;
-        default:
-          null;
-      }
+    const {folder, subfolder} = this.state;
+    const meta = {};
+    if (folder === 'volume') {
+      meta[subfolder] = true;
     }
+    
+    return addFolder(name, meta, this.groupId, 'folder').then(res => {
+      return addFolder(name, {}, res._id, 'folder', false).then(obj => {
+        this.handleListItemClick(obj);
+      })
+    });
   }
 
-  handleSubmitActVariant = ({name}) => {
-    const {addFolder} = this.props;
-    return addFolder(name, {}, this.groupId, 'folder').then(res => {
-      this.handleClose();
+  handleImport = (act) => {
+    const {folder, subfolder} = this.state;
+    const {volume, copyObject, updateFolder} = this.props;
+
+    copyObject(act._id, 'folder', this.groupId, 'folder').then(res => {
+      let meta = {info: false, consent: false};
+      meta[subfolder] = true;
+      return updateFolder(res._id, res.name , meta);
+    }).then(res => {
+      this.setState({folder: undefined, subfolder: undefined, open: false});
     });
   }
 
   createDefaultGroups() {
     const {addFolder, getFolders, volume} = this.props;
-    return addFolder('Activities',{},volume._id, 'folder').then(res => {
+    return addFolder('Activities',{},volume._id, 'folder').then(actGroup => {
+      this.setState({actGroup});
+      return addFolder('Info', {info: true}, volume._id, 'folder');
+    }).then(infoGroup => {
+      this.setState({infoGroup});
       return getFolders(volume._id, 'groups', 'folder');
-    });
+    })
   }
 
-  render() {
-    const {volume, groups, acts} = this.props;
-    acts.latest = acts.length ? acts.sort((a, b) => new Date(b.updated) - new Date(a.updated))[0] : null;
+  onAddInfoScreen = (subfolder) => {
+    this.groupId = this.state.infoGroup._id;
+    this.setState({folder: 'volume', subfolder, open: 'add'});
+  }
+
+  renderVolumeActs() {
+    const {volume} = this.props;
+    const {actGroup, infoGroup} = this.state;
     return (
       <div>
-      <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap &#8853; to add an entry, and tap any entry to edit or delete.</p>
-      <Grid container spacing={8} justify="space-between">
-        {
-          groups.map((group,idx) =>
-          <ActGroup group={group} key={group._id} onEdit={this.onEdit} onAdd={this.handleListAddClick} onAddNew={this.onAdd} vol={volume} />)
-        }
-      </Grid>
+      <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap [+] to add an entry, and tap any entry to edit or delete.</p>
+      {infoGroup && <InfoGroup key={infoGroup._id} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
+      {actGroup && <ActGroup group={actGroup} onEdit={this.onEdit} onAdd={this.onAddAct}/> }
       { this.renderAddActDialog() }
-      { this.renderAddActVariantDialog() }
       </div>
     );
+  }
+  render() {
+    const {folder, subfolder, library} = this.state;
+    if(folder && subfolder && library) {
+      return <ActSelect onSelect={this.handleImport} />
+    } else {
+      return this.renderVolumeActs();
+    }
   }
 }
 

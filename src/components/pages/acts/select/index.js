@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from "redux";
 import { withRouter } from "react-router";
 
-import TextField from '@material-ui/core/TextField/TextField';
+import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
