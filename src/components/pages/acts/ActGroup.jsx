@@ -53,7 +53,7 @@ class ActGroup extends Component {
           </Grid>
         </Grid>
         { acts.map((act, i) => <div key={i}>
-            <ActRow key={i} act={act} onEdit={this.onEdit} onEditInfo={onEditInfo} onAddInfo={onAddInfo}/>
+            <ActRow key={i} act={act} onEdit={onEdit} onEditInfo={onEditInfo} onAddInfo={onAddInfo}/>
           </div>) }
         
       </Grid>
