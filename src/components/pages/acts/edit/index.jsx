@@ -147,7 +147,10 @@ class EditAct extends Component {
   onSubmit = () => {
     const {setActChanged, updateItem, act, updateFolder, history} = this.props;
     let prArray = [];
-    let formErrors = this.formRef.submit();
+    let formErrors;
+    if (this.formRef) {
+      formErrors = this.formRef.submit();
+    }
     if (formErrors) {
       window.alert("Please fix valdiation errors in screens");
       return;
