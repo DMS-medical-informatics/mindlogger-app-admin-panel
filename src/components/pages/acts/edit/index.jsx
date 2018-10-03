@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 import { getItems, getObject, addItem, updateItem, updateFolder } from "../../../../actions/api";
-import { setActChanged } from "../../../../actions/core";
+import { setActChanged, setPageTitle } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmark from './Bookmark';
 import Screen from './Screen';
@@ -113,6 +113,7 @@ class EditAct extends Component {
       this.decodeData(act);
     });
     this.loadAllScreens();
+    this.selectTab(1);
   }
 
   componentDidMount() {
@@ -241,13 +242,22 @@ class EditAct extends Component {
     );
   }
 
+  selectTab = (key) => {
+    const {volume, setPageTitle} = this.props;
+    if (key == 1) {
+      setPageTitle(`Edit ${volume.meta.shortName} Activites: Settings`);
+    } else if (key == 2) {
+      setPageTitle(`Edit ${volume.meta.shortName} Activites: Screens`);
+    }
+  }
+
   render() {
     const {screensData, index, setting, screens} = this.state;
     let screen = screensData[index];
     return (
       <section className="edit-act">
         <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
-        <Tabs id="edit-act-tabs"  defaultActiveKey={1}>
+        <Tabs id="edit-act-tabs" onSelect={this.selectTab}  defaultActiveKey={1}>
           <Tab eventKey={1} title="Settings">
             <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref }/>
           </Tab>
@@ -271,6 +281,7 @@ const mapDispatchToProps = {
   addItem,
   updateItem,
   updateFolder,
+  setPageTitle,
 };
 
 const mapStateToProps = (state, ownProps) => ({
