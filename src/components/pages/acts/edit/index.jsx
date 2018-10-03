@@ -12,7 +12,7 @@ import {
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
-import { getItems, getObject, addItem, updateItem, updateFolder, getObjectsById } from "../../../../actions/api";
+import { getItems, getObject, addItem, updateItem, updateFolder } from "../../../../actions/api";
 import { setActChanged } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmark from './Bookmark';
@@ -28,7 +28,7 @@ class EditAct extends Component {
   }
 
   loadAllScreens() {
-    const {getObjectsById, actId, getItems} = this.props;
+    const {actId, getItems} = this.props;
     getItems(actId).then(res => {
       console.log(this.props.screensHash);
     });
@@ -271,7 +271,6 @@ const mapDispatchToProps = {
   addItem,
   updateItem,
   updateFolder,
-  getObjectsById,
 };
 
 const mapStateToProps = (state, ownProps) => ({

@@ -101,7 +101,7 @@ const entities = (state = {}, action) => {
                     let dict = state[action.group] || {};
                     let arr = action.response;
                     arr.forEach(obj => {
-                        dict[obj.name] = obj;
+                        dict[obj._id] = obj;
                     });
                     let newState = {
                         ...state,
