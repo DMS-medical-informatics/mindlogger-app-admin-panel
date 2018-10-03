@@ -22,7 +22,9 @@ import AddObjectForm from '../AddObjectForm';
 class EditAct extends Component {
 
   state = {
-    settings: {},
+    settings: {
+      resumeMode: 'free'
+    },
     screens: [],
     screensData: [],
   }
@@ -256,7 +258,9 @@ class EditAct extends Component {
     let screen = screensData[index];
     return (
       <section className="edit-act">
-        <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
+        <Prompt
+          when={this.props.changed}
+          message={location => 'You will lose any changes you have made if you don\'t submit them.'} />
         <Tabs id="edit-act-tabs" onSelect={this.selectTab}  defaultActiveKey={1}>
           <Tab eventKey={1} title="Settings">
             <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref }/>

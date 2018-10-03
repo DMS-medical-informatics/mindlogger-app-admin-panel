@@ -16,7 +16,7 @@ class SettingForm extends Component {
     const {handleSubmit, submitting} = this.props
     return (
       <form onSubmit={ handleSubmit }>
-        <div className="section-title"><a name="information">Information</a></div>
+        <div className="section-title"><a id="information">Information</a></div>
         <Row>
           <Col md={8}>
             <Field name="abbreviation" type="text" label="Short name(max 20 characters)" validate={isRequired} component={InputField} className="form-control-auto" />
@@ -28,7 +28,7 @@ class SettingForm extends Component {
         <div className="section-title">
           <Row>
             <Col sm={6}>
-              <a name="user-notification">User notifications</a>
+              <a id="user-notifications">User notifications</a>
             </Col>
           </Row>
         </div>
@@ -95,7 +95,7 @@ class SettingForm extends Component {
         </div>
 
         <div className="section-title">
-          <a name="user-settings">User settings</a>
+          <a id="user-settings">User settings</a>
         </div>
         <div className="section-body">
           <p>User can resume an Activity later:</p>
@@ -116,7 +116,7 @@ class SettingForm extends Component {
         </div>
 
         <div className="section-title">
-          <a name="display-settings">Display settings</a>
+          <a id="display-settings">Display settings</a>
         </div>
         <div className="section-body">
           <Field name="permission[skip]" label="Allow skipping screens" component={InputCheckField} />
