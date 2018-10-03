@@ -6,12 +6,18 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import {withRouter} from 'react-router'
 
-import {signout} from '../actions/api'
+import {signout} from '../actions/api';
+import {setPageTitle} from '../actions/core';
 
 class Header extends Component {
     state = { page:1, users: []}
     componentWillMount() {
-        
+    }
+
+    componentWillUpdate(nextProps) {
+      if (this.props.location.pathname != nextProps.location.pathname) {
+        this.props.setPageTitle("");
+      }
     }
     selectPage = (page) => {
         this.setState({page})
@@ -28,19 +34,25 @@ class Header extends Component {
       signout();
       history.push('/');
     }
+
     render () {
-      let {auth, user, pageTitle, volume} = this.props
+      let {auth, user, pageTitle, volume} = this.props;
       let authed = auth && auth.token ? true : false
+
+      let {viewers, managers, editors} = volume && volume.meta && volume.meta.members || {};
+      let canView = false;
+      let canManage = false;
+      let canEdit = false;
+
+      canView = viewers && Object.keys(viewers).includes(user._id)
+      canManage = managers && managers.includes(user._id)
+      canEdit = editors && editors.includes(user._id);
       
-      // let data = [
-      //   { name: "http requests", data: [{date: new Date('2014/09/15 13:24:54'), foo: 'bar1'}, {date: new Date('2014/09/15 13:25:03'), foo: 'bar2'}, {date: new Date('2014/09/15 13:25:05'), foo: 'bar1'}] },
-      //   { name: "SQL queries", data: [{date: new Date('2014/09/15 13:24:57'), foo: 'bar4'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar6'}, {date: new Date('2014/09/15 13:25:04'), foo: 'bar2'}] }
-      // ]
       return (
           <Navbar className="navbar-blue" collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to="/"><img className="logo" src="/logo.svg"/>MindLogger</Link>
+              <Link to={authed ? "/library" : "/"}><img className="logo" src="/logo.svg"/>MindLogger</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
@@ -48,13 +60,13 @@ class Header extends Component {
             {volume && 
             <Nav>
               <NavDropdown id="resourceId" title={`${volume.meta && volume.meta.shortName} Menu`}>
-                <LinkContainer eventKey="1" to="/take-acts"><NavItem>Go to Web App</NavItem></LinkContainer>
-                <LinkContainer eventKey="2" to="/user-data"><NavItem>View User Data</NavItem></LinkContainer>
-                <LinkContainer eventKey="3" to="/acts"><NavItem>Edit Activities</NavItem></LinkContainer>
-                <LinkContainer eventKey="4" to="/users"><NavItem>Manage Users</NavItem></LinkContainer>
-                <LinkContainer eventKey="5" to="/viewers"><NavItem>&nbsp; Viewers</NavItem></LinkContainer>
-                <LinkContainer eventKey="6" to="/editors"><NavItem>&nbsp; Editors</NavItem></LinkContainer>
-                <LinkContainer eventKey="7" to="/managers"><NavItem>&nbsp; Managers</NavItem></LinkContainer>
+                {/* <LinkContainer eventKey="1" to="/take-acts"><NavItem>Go to Web App</NavItem></LinkContainer> */}
+                { canView && <LinkContainer eventKey="2" to="/user-data"><NavItem>View User Data</NavItem></LinkContainer> }
+                { canEdit && <LinkContainer eventKey="3" to="/acts"><NavItem>Edit Activities</NavItem></LinkContainer> }
+                { canManage && <LinkContainer eventKey="4" to="/users"><NavItem>Manage Users</NavItem></LinkContainer> }
+                { canManage && <LinkContainer eventKey="5" to="/viewers"><NavItem>&nbsp; Viewers</NavItem></LinkContainer> }
+                { canManage && <LinkContainer eventKey="6" to="/editors"><NavItem>&nbsp; Editors</NavItem></LinkContainer> }
+                { canManage && <LinkContainer eventKey="7" to="/managers"><NavItem>&nbsp; Managers</NavItem></LinkContainer> }
               </NavDropdown>
             </Nav>
             }
@@ -96,14 +108,15 @@ class Header extends Component {
     }
 }
 const mapDispatchToProps = {
-    signout
+    signout,
+    setPageTitle
 }
   
-const mapStateToProps = (state) => ({
-    auth: state.entities.auth,
-    user: state.entities.self,
-    volume: state.entities.volume,
-    pageTitle: state.entities.pageTitle,
+const mapStateToProps = ({entities: {auth, self, volume, pageTitle}}) => ({
+    auth,
+    user: self,
+    volume,
+    pageTitle,
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header))
