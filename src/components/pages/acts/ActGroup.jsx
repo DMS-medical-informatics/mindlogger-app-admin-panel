@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
-import { getFolders } from '../../../actions/api';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
+
+import { getFolders } from '../../../actions/api';
 import ActRow from './ActRow';
 
 const actContain = (act, keyword) => 
@@ -45,11 +48,15 @@ class ActGroup extends Component {
       <Grid item xs={12}>
         <Grid container>
           <Grid item xs={6}>
-            <strong>{name} {group.name}</strong> <Button onClick={() => onAdd(group)}>&#8853;</Button>
-            <TextField className="search-text" placeholder="&#128269;" onChange={this.onSearch}/>
+          <TextField className="search-text" placeholder="&#128269;" onChange={this.onSearch}/>
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={6}>
+            <strong>{name} {group.name}</strong> <Button onClick={() => onAdd(group)}><AddIcon/></Button>
           </Grid>
           <Grid item xs={6}>
-            <strong>&#128712; Activity information</strong>
+            <strong>Activity Information Screens</strong>
           </Grid>
         </Grid>
         { acts.map((act, i) => <div key={i}>

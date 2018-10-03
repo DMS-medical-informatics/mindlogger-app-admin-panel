@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 import { getPath, getFoldersDict } from '../../../actions/api';
 class ActRow extends Component {
@@ -29,7 +30,7 @@ class ActRow extends Component {
     return (
       <Grid container>
         <Grid item xs={6}><Button onClick={() => onEdit(act)}>{(act.meta && act.meta["schema:name"] && act.meta["schema:name"]["@value"]) ? act.meta["schema:name"]["@value"] : act.name}</Button></Grid>
-        <Grid item xs={6}>{info ? <Button onClick={() => onEditInfo(info)}>{(info.meta && info.meta["schema:name"] && info.meta["schema:name"]["@value"]) ? info.meta["schema:name"]["@value"] : info.name}</Button> : <Button onClick={() => onAddInfo(act, 'info')}>&#8853;</Button>}</Grid>
+        <Grid item xs={6}>{info ? <Button onClick={() => onEditInfo(info)}>{(info.meta && info.meta["schema:name"] && info.meta["schema:name"]["@value"]) ? info.meta["schema:name"]["@value"] : info.name}</Button> : <Button onClick={() => onAddInfo(act, 'info')}><AddIcon/></Button>}</Grid>
       </Grid>
     )
   }

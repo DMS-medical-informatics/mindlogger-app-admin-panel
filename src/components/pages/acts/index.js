@@ -213,7 +213,6 @@ class Acts extends Component {
     const {actGroup, infoGroup} = this.state;
     return (
       <div>
-      <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap [+] to add an entry, and tap any entry to edit or delete.</p>
       {infoGroup && <InfoGroup key={infoGroup._id} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
       {actGroup && 
       <ActGroup group={actGroup}

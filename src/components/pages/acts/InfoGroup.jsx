@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 import { getPath } from '../../../actions/api';
 
@@ -39,17 +40,22 @@ class InfoGroup extends Component {
     const {info, consent} = this.state;
     const infoButton = (info ? 
       <Button onClick={() => onEdit(info)}>{info.name}</Button> 
-      : <Button onClick={() => onAdd('info')}>&#8853;</Button>);
-    const consentButton = (consent ? <Button onClick={() => onEdit(consent)}>{consent.name}</Button> : <Button onClick={() => onAdd("consent")}>&#8853;</Button>);
+      : <Button onClick={() => onAdd('info')}><AddIcon /></Button>);
+    const consentButton = (consent ? 
+      <Button onClick={() => onEdit(consent)}>{consent.name}</Button> : 
+      <Button onClick={() => onAdd("consent")}><AddIcon /></Button>);
     return (
+      <div>
+      <p> {consent ? "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens and Start Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." : "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." }</p>
       <Grid item xs={12}>
         <Grid item>
-          <h4><strong>{name} information screens:</strong> {infoButton}</h4>
+          <h4><strong>Information screens:</strong> {infoButton}</h4>
         </Grid>
         <Grid item>
-          <h4><strong>{name} consent:</strong> {consentButton}</h4>
+          <h4><strong>Start Screens:</strong> {consentButton}</h4>
         </Grid>
       </Grid>
+      </div>
     )
   }
 }
