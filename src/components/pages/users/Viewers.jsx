@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import UserRow from './UserRow';
 import AddUser from './modal/AddUser';
 import { updateObject, getUsers } from '../../../actions/api';
+import { setPageTitle } from '../../../actions/core';
 import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
@@ -22,7 +23,9 @@ const userContain = (user, keyword) =>
 class Viewers extends Component {
 
   componentWillMount() {
-    this.props.getUsers();
+    const { volume: {meta: data}, getUsers, setPageTitle } = this.props;
+    getUsers();
+    setPageTitle(`Manage ${data.shortName} Viewers`);
   }
   state = {
 
@@ -95,9 +98,9 @@ class Viewers extends Component {
     return (
       <div>
         <p>
-          Manage {data.shortName} Viewers (and the Users whose data they view).
+          Here you can add, edit, or delete Viewers of ETA Activity Set data, and add or remove Users whose data they view.
           <br/>
-          Tap [+] on the left to add a Viewer. Tap any Viewer to edit or delete the Viewer.
+          Users perform Activities in the App, and Viewers can view their data in a Dashboard.
           <br/>
           Tap in the Users column on the right to add or remove Users viewed by the Viewer.
         </p>
@@ -139,6 +142,7 @@ const mapDispatchToProps = {
   getUsers,
   updateObject,
   setVolume,
+  setPageTitle,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Viewers)

@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { getUsers } from '../../../actions/api';
+import { setPageTitle } from '../../../actions/core';
 import GroupTable from './GroupTable';
 
 class Managers extends Component {
   componentWillMount() {
-    this.props.getUsers();
+    const { volume: {meta: data}, getUsers, setPageTitle } = this.props;
+    getUsers();
+    setPageTitle(`Manage ${data.shortName} Managers`);
   }
   
   render() {
@@ -15,11 +18,9 @@ class Managers extends Component {
     return (
       <div>
         <p>
-          Manage {data.shortName} Managers (and the Managers whose data they view).
+          Here you can add, edit, or delete Managers of the ETA Activity Set.
           <br/>
-          Tap [+] on the left to add a Viewer. Tap any Viewer to edit or delete the Viewer.
-          <br/>
-          Tap in the Managers column on the right to add or remove Managers viewed by the Viewer.
+          Managers control who can be Users, Viewers, Editors, and other Managers.
         </p>
         <GroupTable group='managers' groupName='Managers' />
       </div>
@@ -32,7 +33,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  getUsers
+  getUsers,
+  setPageTitle
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Managers)

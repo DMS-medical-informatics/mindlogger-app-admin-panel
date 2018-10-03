@@ -4,12 +4,16 @@ import { connect } from 'react-redux';
 
 import { FormControl, Row, Col } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import AddUser from './modal/AddUser';
 
 import { updateObject } from '../../../actions/api';
 import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
+import { InputRow } from '../../forms/Material';
+
+
 
 const userContain = (user, keyword) => 
   {
@@ -80,10 +84,7 @@ class GroupTable extends Component {
     return (
       <div>
         <div className="search-box">
-        <Row>
-          <Col sm={3}> Search {groupName}s: </Col>
-          <Col sm={9}><FormControl type="name" placeholder="name or email" onChange={this.onSearch}/></Col>
-        </Row>
+          <InputRow label={`Search ${groupName}`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
         {userIds && <UsersTable userIds={userIds} onSelect={onSelect}/> }
         <Button variant="contained" onClick={this.showAddModal}>Add {groupName}</Button>
