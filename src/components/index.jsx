@@ -43,7 +43,7 @@ export default class App extends Component {
           <Header />
           <div className="container content">
             <Switch>
-              <AuthRoute path='/' exact component={Library} />
+              <AuthRoute path='/' exact component={Home} />
               <Route path='/login' component={Login} />
               <Route path='/register' component={Register} />
               <AuthRoute path='/dashboard' component={Dashboard} />

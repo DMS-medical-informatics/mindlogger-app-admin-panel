@@ -17,7 +17,7 @@ class Login extends Component {
   state = { loginMessage: null }
   submit = (body) => {
     const { history, signin } = this.props
-    return signin(body).then(res => history.push('/users'))
+    return signin(body).then(res => history.push('/library'))
       .catch((error) => {
           console.log(error)
           this.setState(setErrorMsg(error.message))
