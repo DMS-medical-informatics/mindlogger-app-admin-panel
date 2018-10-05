@@ -25,6 +25,10 @@
 .modal-header{
   color: white;
   background: #0067A0;
+  .close {
+    color: white;
+    opacity: .4;
+  }
 }
 
 .page-title {

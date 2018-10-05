@@ -29,13 +29,11 @@ class AddUser extends Component {
     return inviteUser(body, {role})
       .then(user =>
         setUserTemporary(body.email)
-        .then(res => {
+      ).then(res => {
           return onAdd();
-        })
-      ).then( res => {
+      }).then( res => {
         onClose();
-      })
-      .catch(err => {
+      }).catch(err => {
         let valErrors = {_error:`${err.type} errors`};
         valErrors[err.field] = err.message;
         throw new SubmissionError(valErrors);
