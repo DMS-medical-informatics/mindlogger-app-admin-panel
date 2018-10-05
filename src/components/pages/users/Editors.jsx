@@ -16,9 +16,9 @@ class Editors extends Component {
     const { volume: {meta: data} } = this.props;
 
     return (
-      <div>
+      <div className="pt-3">
         <p>
-        Here you can add, edit, or delete Editors of the ETA Activity Set.
+        Here you can add, edit, or remove Editors of the ETA Activity Set.
         <br/>
         Editors can edit the content and settings for each Activity.
         </p>

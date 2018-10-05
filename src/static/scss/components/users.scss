@@ -21,6 +21,11 @@
   position: absolute;
 }
 
+.users-by-viewer--container {
+  z-index: 10;
+}
+
 .users-by-viewer {
   border-left: 1px solid #777;
+  background-color: white;
 }

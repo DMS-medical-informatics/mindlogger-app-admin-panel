@@ -76,6 +76,23 @@ class GroupTable extends Component {
     });
   }
 
+  handleDelete = (user) => {
+    const {volume, updateObject, group, setVolume} = this.props;
+    const meta = volume.meta;
+    let members = (volume.meta && volume.meta.members) || {};
+    let userIds = members[group]
+    const index = userIds.indexOf(user._id);
+    if (index>=0) {
+      userIds.splice(index,1);
+    }
+    members[group] = [...userIds];
+    meta.members = members;
+    return updateObject('folder', volume._id, volume.name, meta).then(res => {
+      console.log(volume);
+      setVolume({...volume});
+    });
+  }
+
   render() {
     let {groupName, group, onSelect} = this.props;
     
@@ -84,12 +101,12 @@ class GroupTable extends Component {
     return (
       <div>
         <div className="search-box">
-          <InputRow label={`Search ${groupName}`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
+          <InputRow label={`Search ${groupName}s`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
-        {userIds && <UsersTable userIds={userIds} onSelect={onSelect}/> }
+        {userIds && <UsersTable userIds={userIds} onSelect={onSelect} onDelete={this.handleDelete}/> }
         <Button variant="contained" onClick={this.showAddModal}>Add {groupName}</Button>
         {" "}
-        <Button variant="contained" onClick={this.showSelectModal}>Add Existing User</Button>
+        <Button variant="contained" onClick={this.showSelectModal}>Add Existing Member</Button>
         <AddUser
           show={this.state.form === 'add_user'} onClose={this.closeModal}
           groupName={groupName} role={groupName.toLowerCase()}

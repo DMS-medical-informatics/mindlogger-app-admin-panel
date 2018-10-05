@@ -16,13 +16,13 @@ class Managers extends Component {
     const { volume: {meta: data} } = this.props;
 
     return (
-      <div>
+      <div className="pt-3">
         <p>
-          Here you can add, edit, or delete Managers of the ETA Activity Set.
+          Here you can add, edit, or remove Managers of the ETA Activity Set.
           <br/>
           Managers control who can be Users, Viewers, Editors, and other Managers.
         </p>
-        <GroupTable group='managers' groupName='Managers' />
+        <GroupTable group='managers' groupName='Manager' />
       </div>
     )
   }

@@ -24,8 +24,8 @@ class Users extends Component {
 
     return (
       <div>
-        <p>
-          Here you can add, edit, or delete Users of the ETA Activity Set, and add, edit, or delete Viewers of their data.
+        <p className="pt-3">
+          Here you can add, edit, or remove Users of the ETA Activity Set, and add, edit, or delete Viewers of their data.
           <br/>
           Users perform Activities in the App, and Viewers can view their data in a Dashboard.
         </p>

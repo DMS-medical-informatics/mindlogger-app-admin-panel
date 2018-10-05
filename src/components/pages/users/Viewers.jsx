@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { FormControl, Row, Col } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
 
-import UserRow from './UserRow';
 import AddUser from './modal/AddUser';
 import { updateObject, getUsers } from '../../../actions/api';
 import { setPageTitle } from '../../../actions/core';
@@ -71,6 +70,19 @@ class Viewers extends Component {
     });
   }
 
+  handleDelete = (user) => {
+    const {volume, updateObject, group, setVolume} = this.props;
+    const meta = volume.meta;
+    let userDict = {...meta.members.viewers};
+    delete userDict[user._id];
+    meta.members.viewers = userDict;
+    meta.members.viewers = userDict;
+    volume.meta = meta;
+    return updateObject('folder', volume._id, volume.name, meta).then(res => {
+      setVolume({...volume});
+    });
+  }
+
   onSelectUsers = (userIds) => {
     const {volume, updateObject, setVolume} = this.props;
     let meta = volume.meta;
@@ -96,9 +108,9 @@ class Viewers extends Component {
     const { user } = this.state;
     const userIds = this.filterUsers();
     return (
-      <div>
+      <div className="pt-3">
         <p>
-          Here you can add, edit, or delete Viewers of ETA Activity Set data, and add or remove Users whose data they view.
+          Here you can add, edit, or remove Viewers of ETA Activity Set data, and add or remove Users whose data they view.
           <br/>
           Users perform Activities in the App, and Viewers can view their data in a Dashboard.
           <br/>
@@ -112,12 +124,12 @@ class Viewers extends Component {
         </div>
         <Grid container>
           <Grid item xs={9}>
-            <UsersTable userIds = {userIds} onSelect={this.onSelect}/>
+            <UsersTable userIds = {userIds} onSelect={this.onSelect} onDelete={this.handleDelete}/>
             <Button variant="contained" onClick={this.showAddModal}>Add Viewer</Button>
             {" "}
-            <Button variant="contained" onClick={this.showSelectModal}>Add Existing User</Button>
+            <Button variant="contained" onClick={this.showSelectModal}>Add Existing Member</Button>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3} className="users-by-viewer--container">
             { user && <UsersByViewer key={user._id} selected={userDict[user._id]} userIds={data.members && data.members.users} onSelectUsers={this.onSelectUsers} onCancel={() => this.setState({user:undefined})} /> }
           </Grid>
         </Grid>

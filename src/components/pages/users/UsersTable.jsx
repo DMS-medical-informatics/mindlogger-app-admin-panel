@@ -21,7 +21,8 @@ class UsersTable extends Component {
   }
 
   renderUser=(userId) => {
-    return (<UserRow id={userId} key={userId} onSelect={this.props.onSelect}/>)
+    const {onSelect, onDelete} = this.props;
+    return (<UserRow id={userId} key={userId} onSelect={onSelect} onDelete={onDelete}/>)
   }
 
   render() {
@@ -33,6 +34,7 @@ class UsersTable extends Component {
             <TableCell>Username</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
+            <TableCell></TableCell>
             </TableRow>
         }
         row={this.renderUser}
