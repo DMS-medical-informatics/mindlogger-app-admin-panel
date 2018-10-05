@@ -45,25 +45,30 @@ class ActGroup extends Component {
     const {group, onAdd, onEdit, name, onEditInfo, onAddInfo} = this.props;
     let acts = this.filterActs();
     return (
-      <Grid item xs={12}>
+      <div>
         <Grid container>
           <Grid item xs={6}>
-          <TextField className="search-text" placeholder="&#128269;" onChange={this.onSearch}/>
+            <div className="pl-3">
+            <TextField className="search-text" placeholder="&#128269;" onChange={this.onSearch}/>
+            </div>
           </Grid>
         </Grid>
+        <div className="pt-3">
         <Grid container>
           <Grid item xs={6}>
-            <strong>{name} {group.name}</strong> <Button onClick={() => onAdd(group)}><AddIcon/></Button>
+            <div className="pl-3">
+              <strong>{name} {group.name}</strong> <Button onClick={() => onAdd(group)}><AddIcon/></Button>
+            </div>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} className="pl-3">
             <strong>Activity Information Screens</strong>
           </Grid>
         </Grid>
+        </div>
         { acts.map((act, i) => <div key={i}>
             <ActRow key={i} act={act} onEdit={onEdit} onEditInfo={onEditInfo} onAddInfo={onAddInfo}/>
           </div>) }
-        
-      </Grid>
+      </div>
     )
   }
 }

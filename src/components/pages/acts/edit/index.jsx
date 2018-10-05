@@ -12,7 +12,7 @@ import {
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
-import { getItems, getObject, addItem, updateItem, updateFolder } from "../../../../actions/api";
+import { getItems, getObject, addItem, updateItem, updateFolder, deleteObject } from "../../../../actions/api";
 import { setActChanged, setPageTitle } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmark from './Bookmark';
@@ -22,9 +22,7 @@ import AddObjectForm from '../AddObjectForm';
 class EditAct extends Component {
 
   state = {
-    settings: {
-      resumeMode: 'free'
-    },
+    settings: {},
     screens: [],
     screensData: [],
   }
@@ -124,7 +122,7 @@ class EditAct extends Component {
   }
 
   componentWillUnmount() {
-    this.props.setActChanged(false);
+
   }
 
   decodeData(act) {
@@ -253,6 +251,20 @@ class EditAct extends Component {
     }
   }
 
+  handleDelete = () => {
+    const {act, deleteObject, history} = this.props;
+    this.props.setActChanged(false);
+    if (act.meta && act.meta.info) {
+      return deleteObject(act._id, 'folder').then(res => {
+        history.push('/acts');
+      });
+    } else {
+      return deleteObject(act.parentId, 'folder').then(res => {
+        history.push('/acts');
+      });
+    }
+  }
+
   render() {
     const {screensData, index, setting, screens} = this.state;
     let screen = screensData[index];
@@ -263,7 +275,7 @@ class EditAct extends Component {
           message={location => 'You will lose any changes you have made if you don\'t submit them.'} />
         <Tabs id="edit-act-tabs" onSelect={this.selectTab}  defaultActiveKey={1}>
           <Tab eventKey={1} title="Settings">
-            <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref }/>
+            <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref } onDelete={this.handleDelete}/>
           </Tab>
           <Tab eventKey={2} title="Screens">
             <div className="screens">
@@ -286,6 +298,7 @@ const mapDispatchToProps = {
   updateItem,
   updateFolder,
   setPageTitle,
+  deleteObject
 };
 
 const mapStateToProps = (state, ownProps) => ({

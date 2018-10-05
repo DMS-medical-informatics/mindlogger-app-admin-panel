@@ -234,6 +234,12 @@ export const updateObject = (type, id, name, meta, options={}) => ({
   },
 });
 
+export const deleteObject = (id, type) => ({
+  type: types.DELETE_OBJECT,
+  method: 'DELETE',
+  path: `/${type}/${id}`
+})
+
 export const addItem = (name, meta, folderId) => (addObject('item', name, meta, {folderId}));
 export const updateItem = (id, name, meta) => (updateObject('item', id, name, meta));
 

@@ -43,9 +43,9 @@ class InfoGroup extends Component {
       : <Button onClick={() => onAdd('info')}><AddIcon /></Button>);
     return (
       <div>
-      <p> {info ? "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens and Start Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." : "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." }</p>
-      <Grid item xs={12}>
+      <Grid container>
         <Grid item>
+        <p> {info ? "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens and Start Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." : "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." }</p>
           <h4><strong>{name} Activity Set Information screens:</strong> {infoButton}</h4>
         </Grid>
       </Grid>

@@ -11,7 +11,7 @@ class ActSetting extends Component {
       el.scrollIntoView()
   }
   render() {
-    const {setting, onSetting, onFormRef} = this.props;
+    const {setting, onSetting, onFormRef, onDelete} = this.props;
     return (
       <div className="setting">
         <ul className="scroll-to-list">
@@ -20,7 +20,11 @@ class ActSetting extends Component {
           <ScrollLink to="user-settings">User settings</ScrollLink>
           <ScrollLink to="display-settings">Display Settings</ScrollLink>
         </ul>
-        <SettingForm initialValues={setting} onSubmit={onSetting} ref={ref => {
+        <SettingForm 
+          initialValues={setting}
+          onSubmit={onSetting}
+          onDelete={onDelete}
+          ref={ref => {
           ref && onFormRef(ref);
           }
         }/>

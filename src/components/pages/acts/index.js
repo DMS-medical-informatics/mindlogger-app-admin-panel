@@ -28,6 +28,20 @@ const mapDispatchToProps = {
   setPageTitle,
 };
 
+const defaultSetting = {
+  resumeMode: 'free',
+  notification: {
+    resetDate: true,
+    resetTime: true,
+  },
+  permission: {
+    font: true,
+    delete: true,
+    skip: true,
+    prev: true,
+  }
+};
+
 class Acts extends Component {
   state = {
     open: false,
@@ -141,7 +155,7 @@ class Acts extends Component {
     }
     
     return addFolder(name, meta, this.groupId, 'folder').then(res => {
-      return addFolder(name, {}, res._id, 'folder', false).then(obj => {
+      return addFolder(name, defaultSetting, res._id, 'folder', false).then(obj => {
         this.handleListItemClick(obj);
       })
     });
@@ -213,7 +227,9 @@ class Acts extends Component {
     const {actGroup, infoGroup} = this.state;
     return (
       <div className="pt-3">
-      {infoGroup && <InfoGroup key={infoGroup._id} name={volume.meta.shortName} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
+        <div className="p-3">
+        {infoGroup && <InfoGroup key={infoGroup._id} name={volume.meta.shortName} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
+        </div>
       {actGroup && 
       <ActGroup group={actGroup}
         onEdit={this.onEdit}

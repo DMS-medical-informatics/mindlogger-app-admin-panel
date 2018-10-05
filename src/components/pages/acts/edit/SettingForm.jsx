@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import {Button,Row, Col} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
 
 import { InputField } from '../../../forms/FormItems';
@@ -10,10 +10,11 @@ import {isRequired} from '../../../forms/validation';
 import InputWeekdayField from './InputWeekdayField';
 import InputMonthDayField from './InputMonthDayField';
 import PadBlock from '../../../layout/PadBlock';
+import Button from '@material-ui/core/Button';
 
 class SettingForm extends Component {
   render() {
-    const {handleSubmit, submitting} = this.props
+    const {handleSubmit, submitting, onDelete} = this.props
     return (
       <form onSubmit={ handleSubmit }>
         <div className="section-title"><a id="information">Information</a></div>
@@ -124,6 +125,13 @@ class SettingForm extends Component {
           <Field name="permission[prev]" label="Allow returning to previous screens" component={InputCheckField} />
           <br/>
           <Field name="display[progress]" label="Show progress bar on top (for survey screens)" component={InputCheckField} />
+        </div>
+
+        <div className="section-title">
+          <a>Delete activity</a>
+        </div>
+        <div className="section-body">
+          <Button variant="contained" color="secondary" onClick={onDelete}>Delete activity</Button>
         </div>
       </form>
     );
