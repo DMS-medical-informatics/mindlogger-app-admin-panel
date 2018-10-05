@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { FormControl, Row, Col } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import AddUser from './modal/AddUser';
 import { updateObject, getUsers } from '../../../actions/api';
@@ -13,6 +14,7 @@ import UsersTable from './UsersTable';
 import UsersByViewer from './viewers/UsersByViewer';
 import Grid from '@material-ui/core/Grid';
 import PagedTable from '../../layout/PagedTable';
+import { InputRow } from '../../forms/Material';
 
 const userContain = (user, keyword) => 
   {
@@ -117,10 +119,7 @@ class Viewers extends Component {
           Tap in the Users column on the right to add or remove Users viewed by the Viewer.
         </p>
         <div className="search-box">
-          <Row>
-            <Col sm={3}> Search Viewers: </Col>
-            <Col sm={9}><FormControl type="name" placeholder="name or email" onChange={this.onSearch}/></Col>
-          </Row>
+          <InputRow label={`Search Viewers`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
         <Grid container>
           <Grid item xs={9}>
