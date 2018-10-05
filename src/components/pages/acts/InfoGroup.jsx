@@ -41,18 +41,12 @@ class InfoGroup extends Component {
     const infoButton = (info ? 
       <Button onClick={() => onEdit(info)}>{info.name}</Button> 
       : <Button onClick={() => onAdd('info')}><AddIcon /></Button>);
-    const consentButton = (consent ? 
-      <Button onClick={() => onEdit(consent)}>{consent.name}</Button> : 
-      <Button onClick={() => onAdd("consent")}><AddIcon /></Button>);
     return (
       <div>
-      <p> {consent ? "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens and Start Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." : "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." }</p>
+      <p> {info ? "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens and Start Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." : "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." }</p>
       <Grid item xs={12}>
         <Grid item>
-          <h4><strong>Information screens:</strong> {infoButton}</h4>
-        </Grid>
-        <Grid item>
-          <h4><strong>Start Screens:</strong> {consentButton}</h4>
+          <h4><strong>{name} Activity Set Information screens:</strong> {infoButton}</h4>
         </Grid>
       </Grid>
       </div>

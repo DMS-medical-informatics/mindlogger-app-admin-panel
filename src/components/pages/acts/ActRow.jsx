@@ -22,7 +22,7 @@ class ActRow extends Component {
     if(variants) {
       Object.keys(variants).forEach(key => {
         const variant = variants[key];
-        if(variant.meta.info) {
+        if(variant.meta && variant.meta.info) {
           info = variant;
         }
       })

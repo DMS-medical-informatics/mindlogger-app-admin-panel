@@ -212,8 +212,8 @@ class Acts extends Component {
     const {volume} = this.props;
     const {actGroup, infoGroup} = this.state;
     return (
-      <div>
-      {infoGroup && <InfoGroup key={infoGroup._id} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
+      <div className="pt-3">
+      {infoGroup && <InfoGroup key={infoGroup._id} name={volume.meta.shortName} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
       {actGroup && 
       <ActGroup group={actGroup}
         onEdit={this.onEdit}
