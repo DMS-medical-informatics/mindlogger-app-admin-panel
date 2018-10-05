@@ -21,7 +21,7 @@ class ScreenForm extends Component {
     const {handleSubmit, index, body: {surveyType, canvasType}, initialValues: {id}} = this.props;
     return (
       <form onSubmit={ handleSubmit }>
-        <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} />
+        {/* <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} /> */}
         <div className="section-title"><a id="display">Screen display</a></div>
         <Grid container>
           <Grid item md={3}>

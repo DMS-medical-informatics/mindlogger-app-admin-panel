@@ -107,6 +107,24 @@ class EditAct extends Component {
     screensData[index] = {...body};
     this.setState({screensData});
   }
+
+  onDeleteScreen = () => {
+    const {act, updateFolder, deleteObject} = this.props;
+    let {screens, screensData, index, setting} = this.state;
+    let screen = screensData.splice(index,1)[0];
+    screens.splice(index,1);
+    console.log(screen);
+    deleteObject(screen.id, 'item').then(res => {
+      this.setState({screensData})
+      this.loadScreen(index);
+       const {name: actName, ...setting} = this.state.setting;
+       return updateFolder(act._id, actName, {screens, ...setting});
+    })
+    
+    
+    
+    
+  }
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject(`folder/${actId}`).then(act => {
@@ -245,9 +263,9 @@ class EditAct extends Component {
   selectTab = (key) => {
     const {volume, setPageTitle} = this.props;
     if (key == 1) {
-      setPageTitle(`Edit ${volume.meta.shortName} Activites: Settings`);
+      setPageTitle(`Edit ${volume.meta.shortName} Activities: Settings`);
     } else if (key == 2) {
-      setPageTitle(`Edit ${volume.meta.shortName} Activites: Screens`);
+      setPageTitle(`Edit ${volume.meta.shortName} Activities: Screens`);
     }
   }
 
@@ -280,7 +298,7 @@ class EditAct extends Component {
           <Tab eventKey={2} title="Screens">
             <div className="screens">
               {this.renderBookmarks()}
-              <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen}/>
+              <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
             </div>
           </Tab>
           <Submit bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Submit>

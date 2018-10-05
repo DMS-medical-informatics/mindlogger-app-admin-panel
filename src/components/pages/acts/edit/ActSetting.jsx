@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+
 import SettingForm from './SettingForm';
 import ScrollLink from '../../../layout/ScrollLink';
 class ActSetting extends Component {
@@ -24,10 +26,18 @@ class ActSetting extends Component {
           initialValues={setting}
           onSubmit={onSetting}
           onDelete={onDelete}
+          info={setting && setting.info}
           ref={ref => {
           ref && onFormRef(ref);
           }
         }/>
+
+        <div className="section-title">
+          <a>Delete activity</a>
+        </div>
+        <div className="section-body">
+          <Button variant="contained" color="secondary" onClick={onDelete}>Delete activity</Button>
+        </div>
       </div>
     );
   }
