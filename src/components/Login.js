@@ -25,10 +25,8 @@ class Login extends Component {
   }
   
   forgotPassword = () => {
-    const {forgotPassword} = this.props
-    forgotPassword({email: this.email.value})
-      .then(() => this.setState(setErrorMsg(`Password reset email sent to ${this.email.value}.`)))
-      .catch((error) => this.setState(setErrorMsg(`Email address not found.`)))
+    const {history} = this.props
+    history.push('/forgot-password');
   }
 
   render () {
@@ -44,7 +42,7 @@ class Login extends Component {
             <div className="alert alert-danger" role="alert">
               <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
               <span className="sr-only">Error:</span>
-              &nbsp;{this.state.loginMessage} <a href="#" onClick={this.forgotPassword} className="alert-link">Forgot Password?</a>
+              &nbsp;{this.state.loginMessage} <a onClick={this.forgotPassword} className="alert-link">Forgot Password?</a>
             </div>
           }
           <button type="submit" className="btn btn-primary">Login</button>

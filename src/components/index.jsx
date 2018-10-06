@@ -7,6 +7,7 @@ import '../static/css/app.css';
 
 import Login from './Login';
 import Register from './Register';
+import ForgotPassword from './ForgotPassword';
 import Home from './Home';
 import Dashboard from './protected/Dashboard';
 import Images from './protected/Images';
@@ -45,6 +46,7 @@ export default class App extends Component {
             <Switch>
               <AuthRoute path='/' exact component={Home} />
               <Route path='/login' component={Login} />
+              <Route path='/forgot-password' component={ForgotPassword} />
               <Route path='/register' component={Register} />
               <AuthRoute path='/dashboard' component={Dashboard} />
               <AuthRoute path='/images' component={Images} />
