@@ -37,7 +37,7 @@ class Header extends Component {
 
     render () {
       let {auth, user, pageTitle, volume} = this.props;
-      let authed = auth && auth.token ? true : false
+      let authed = auth && auth.token && user ? true : false
 
       let {viewers, managers, editors} = volume && volume.meta && volume.meta.members || {};
       let canView = false;

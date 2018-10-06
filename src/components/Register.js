@@ -21,7 +21,7 @@ class Register extends Component {
     const {history, signup} = this.props
     signup({...values, admin: false})
     .then(res => {
-      history.push('/users')
+      history.push('/')
     })
     .catch(e => this.setState(setErrorMsg(e)))
   }
