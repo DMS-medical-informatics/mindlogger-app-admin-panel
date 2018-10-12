@@ -8,7 +8,7 @@ import { Modal } from 'react-bootstrap';
 
 import ActGroup from './ActGroup';
 import { getFolders, addFolder, copyObject, updateFolder } from "../../../actions/api";
-import { setDataObject } from "../../../actions/core";
+import { setDataObject, setPageTitle } from "../../../actions/core";
 import AddActForm from './AddObjectForm';
 import ActSelect from './select/ActSelect';
 import InfoGroup from './InfoGroup';
@@ -25,6 +25,21 @@ const mapDispatchToProps = {
   setDataObject,
   copyObject,
   updateFolder,
+  setPageTitle,
+};
+
+const defaultSetting = {
+  resumeMode: 'free',
+  notification: {
+    resetDate: true,
+    resetTime: true,
+  },
+  permission: {
+    font: true,
+    delete: true,
+    skip: true,
+    prev: true,
+  }
 };
 
 class Acts extends Component {
@@ -32,6 +47,7 @@ class Acts extends Component {
     open: false,
   };
   componentWillMount() {
+    this.props.setPageTitle("Edit Activities");
     return this.createDefaultGroups();
     // getFolders(volume._id, 'groups', 'folder').then(res => {
     //   if (res.length < 2) {
@@ -139,7 +155,7 @@ class Acts extends Component {
     }
     
     return addFolder(name, meta, this.groupId, 'folder').then(res => {
-      return addFolder(name, {}, res._id, 'folder', false).then(obj => {
+      return addFolder(name, defaultSetting, res._id, 'folder', false).then(obj => {
         this.handleListItemClick(obj);
       })
     });
@@ -210,9 +226,10 @@ class Acts extends Component {
     const {volume} = this.props;
     const {actGroup, infoGroup} = this.state;
     return (
-      <div>
-      <p>Edit the {volume.meta && volume.meta.shortName} Volume’s Information, Consent, and Activities, and each Activity’s Instructions. Tap [+] to add an entry, and tap any entry to edit or delete.</p>
-      {infoGroup && <InfoGroup key={infoGroup._id} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
+      <div className="pt-3">
+        <div className="p-3">
+        {infoGroup && <InfoGroup key={infoGroup._id} name={volume.meta.shortName} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
+        </div>
       {actGroup && 
       <ActGroup group={actGroup}
         onEdit={this.onEdit}

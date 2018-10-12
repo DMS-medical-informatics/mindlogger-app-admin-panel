@@ -4,17 +4,21 @@ import { connect } from 'react-redux'
 import { getObject } from '../../../actions/api';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
+import Button from '@material-ui/core/Button/Button';
+import ClearIcon from '@material-ui/icons/Clear';
+
 
 class UserRow extends Component {
   
   render() {
-    const {user, onSelect} = this.props;
+    const {user, onSelect, onDelete} = this.props;
     if (user) {
       return (
-        <TableRow hover onClick={() => onSelect(user)}>
-          <TableCell>{user.login}</TableCell>
-          <TableCell>{user.firstName} {user.lastName}</TableCell>
-          <TableCell>{user.email}</TableCell>
+        <TableRow hover>
+          <TableCell onClick={() => onSelect && onSelect(user)}>{user.login}</TableCell>
+          <TableCell onClick={() => onSelect && onSelect(user)}>{user.firstName} {user.lastName}</TableCell>
+          <TableCell onClick={() => onSelect && onSelect(user)}>{user.email}</TableCell>
+          <TableCell><Button onClick={() => onDelete && onDelete(user)}><ClearIcon /></Button></TableCell>
         </TableRow>
       )
     } else {

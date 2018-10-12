@@ -15,6 +15,10 @@ class SelectUser extends Component {
     onSelect: PropTypes.func.isRequired
   }
 
+  static defaultProps = {
+    users: {}
+  }
+
   state = {
     order: 'asc',
     orderBy: 'calories',
@@ -65,6 +69,7 @@ class SelectUser extends Component {
 
   render() {
     const {show, onClose, groupName} = this.props;
+    console.log(this.props.users);
     const { keys } = this.state;
     return (
       <Modal

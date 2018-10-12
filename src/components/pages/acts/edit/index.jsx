@@ -12,8 +12,8 @@ import {
 import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
-import { getItems, getObject, addItem, updateItem, updateFolder, getObjectsById } from "../../../../actions/api";
-import { setActChanged } from "../../../../actions/core";
+import { getItems, getObject, addItem, updateItem, updateFolder, deleteObject } from "../../../../actions/api";
+import { setActChanged, setPageTitle } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmark from './Bookmark';
 import Screen from './Screen';
@@ -28,7 +28,7 @@ class EditAct extends Component {
   }
 
   loadAllScreens() {
-    const {getObjectsById, actId, getItems} = this.props;
+    const {actId, getItems} = this.props;
     getItems(actId).then(res => {
       console.log(this.props.screensHash);
     });
@@ -107,12 +107,31 @@ class EditAct extends Component {
     screensData[index] = {...body};
     this.setState({screensData});
   }
+
+  onDeleteScreen = () => {
+    const {act, updateFolder, deleteObject} = this.props;
+    let {screens, screensData, index, setting} = this.state;
+    let screen = screensData.splice(index,1)[0];
+    screens.splice(index,1);
+    console.log(screen);
+    deleteObject(screen.id, 'item').then(res => {
+      this.setState({screensData})
+      this.loadScreen(index);
+       const {name: actName, ...setting} = this.state.setting;
+       return updateFolder(act._id, actName, {screens, ...setting});
+    })
+    
+    
+    
+    
+  }
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject(`folder/${actId}`).then(act => {
       this.decodeData(act);
     });
     this.loadAllScreens();
+    this.selectTab(1);
   }
 
   componentDidMount() {
@@ -121,7 +140,7 @@ class EditAct extends Component {
   }
 
   componentWillUnmount() {
-    this.props.setActChanged(false);
+
   }
 
   decodeData(act) {
@@ -241,20 +260,45 @@ class EditAct extends Component {
     );
   }
 
+  selectTab = (key) => {
+    const {volume, setPageTitle} = this.props;
+    if (key == 1) {
+      setPageTitle(`Edit ${volume.meta.shortName} Activities: Settings`);
+    } else if (key == 2) {
+      setPageTitle(`Edit ${volume.meta.shortName} Activities: Screens`);
+    }
+  }
+
+  handleDelete = () => {
+    const {act, deleteObject, history} = this.props;
+    this.props.setActChanged(false);
+    if (act.meta && act.meta.info) {
+      return deleteObject(act._id, 'folder').then(res => {
+        history.push('/acts');
+      });
+    } else {
+      return deleteObject(act.parentId, 'folder').then(res => {
+        history.push('/acts');
+      });
+    }
+  }
+
   render() {
     const {screensData, index, setting, screens} = this.state;
     let screen = screensData[index];
     return (
       <section className="edit-act">
-        <Prompt when={this.props.changed} message={location => 'Are you sure you want to leave this page?'} />
-        <Tabs id="edit-act-tabs"  defaultActiveKey={1}>
+        <Prompt
+          when={this.props.changed}
+          message={location => 'You will lose any changes you have made if you don\'t submit them.'} />
+        <Tabs id="edit-act-tabs" onSelect={this.selectTab}  defaultActiveKey={1}>
           <Tab eventKey={1} title="Settings">
-            <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref }/>
+            <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref } onDelete={this.handleDelete}/>
           </Tab>
           <Tab eventKey={2} title="Screens">
             <div className="screens">
               {this.renderBookmarks()}
-              <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen}/>
+              <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
             </div>
           </Tab>
           <Submit bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Submit>
@@ -271,7 +315,8 @@ const mapDispatchToProps = {
   addItem,
   updateItem,
   updateFolder,
-  getObjectsById,
+  setPageTitle,
+  deleteObject
 };
 
 const mapStateToProps = (state, ownProps) => ({

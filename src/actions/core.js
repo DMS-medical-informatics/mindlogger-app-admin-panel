@@ -29,3 +29,8 @@ export const setPublicActs = (publicActs) => ({
     type: types.SET_DATA,
     data: { publicActs }
 })
+
+export const setPageTitle = (pageTitle) => ({
+    type: types.SET_DATA,
+    data: {pageTitle}
+})

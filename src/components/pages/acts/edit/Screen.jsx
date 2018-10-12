@@ -5,12 +5,16 @@ import {
   Modal,
 } from "react-bootstrap";
 import Sugar from 'sugar';
+import Button from '@material-ui/core/Button';
 
 import ScreenForm from './ScreenForm';
 import SurveyListForm from './survey/survey-list';
 import SurveyTableForm from './survey/survey-table';
 import SurveySliderForm from './survey/slider';
 import SurveyCanvasDrawForm from './survey/draw';
+import ScrollLink from '../../../layout/ScrollLink';
+import PadBlock from '../../../layout/PadBlock';
+
 
 const mapStateToProps = (state) => ({
   body: formValueSelector('screen-form')(state, 'surveyType', 'canvasType'),
@@ -113,19 +117,27 @@ class Screen extends Component {
   }
   
   render() {
-    const {index, screen, onFormRef, actId} = this.props;
+    const {index, screen, onFormRef, actId, onDelete} = this.props;
     return (
       <div className="screen">
-        <a href="#display">Screen display</a>
-        <br/>
-        <a href="#survey">Survey</a>
-        <br/>
-        <a href="#canvas">Canvas</a>
+        <ul className="scroll-to-list">
+          <ScrollLink to="display">Screen display</ScrollLink>
+          <ScrollLink to="survey">Survey</ScrollLink>
+          <ScrollLink to="canvas">Canvas</ScrollLink>
+        </ul>
+        
         { screen && <ScreenForm ref={ref => {
           ref && onFormRef(ref);
           }
         } index={index} onSubmit={this.onFormSubmit} showModal={this.showModal} body={this.props.body || {}} initialValues={screen}/> }
         {this.state.form && this.renderModal()}
+        <div className="section-title">
+          <a>Delete screen</a>
+        </div>
+        <PadBlock>
+          <Button variant="contained" color="secondary" onClick={onDelete}>Delete screen</Button>
+        </PadBlock>
+        
       </div>
     );
   }

@@ -4,12 +4,16 @@ import { connect } from 'react-redux';
 
 import { FormControl, Row, Col } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import AddUser from './modal/AddUser';
 
 import { updateObject } from '../../../actions/api';
 import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
+import { InputRow } from '../../forms/Material';
+
+
 
 const userContain = (user, keyword) => 
   {
@@ -72,6 +76,23 @@ class GroupTable extends Component {
     });
   }
 
+  handleDelete = (user) => {
+    const {volume, updateObject, group, setVolume} = this.props;
+    const meta = volume.meta;
+    let members = (volume.meta && volume.meta.members) || {};
+    let userIds = members[group]
+    const index = userIds.indexOf(user._id);
+    if (index>=0) {
+      userIds.splice(index,1);
+    }
+    members[group] = [...userIds];
+    meta.members = members;
+    return updateObject('folder', volume._id, volume.name, meta).then(res => {
+      console.log(volume);
+      setVolume({...volume});
+    });
+  }
+
   render() {
     let {groupName, group, onSelect} = this.props;
     
@@ -80,15 +101,12 @@ class GroupTable extends Component {
     return (
       <div>
         <div className="search-box">
-        <Row>
-          <Col sm={3}> Search {groupName}s: </Col>
-          <Col sm={9}><FormControl type="name" placeholder="name or email" onChange={this.onSearch}/></Col>
-        </Row>
+          <InputRow label={`Search ${groupName}s`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
-        {userIds && <UsersTable userIds={userIds} onSelect={onSelect}/> }
+        {userIds && <UsersTable userIds={userIds} onSelect={onSelect} onDelete={this.handleDelete}/> }
         <Button variant="contained" onClick={this.showAddModal}>Add {groupName}</Button>
         {" "}
-        <Button variant="contained" onClick={this.showSelectModal}>Add Existing User</Button>
+        <Button variant="contained" onClick={this.showSelectModal}>Add Existing Member</Button>
         <AddUser
           show={this.state.form === 'add_user'} onClose={this.closeModal}
           groupName={groupName} role={groupName.toLowerCase()}

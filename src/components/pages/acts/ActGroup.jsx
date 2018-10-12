@@ -2,9 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
-import { getFolders } from '../../../actions/api';
+
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
+
+import { getFolders } from '../../../actions/api';
 import ActRow from './ActRow';
 
 const actContain = (act, keyword) => 
@@ -42,21 +45,30 @@ class ActGroup extends Component {
     const {group, onAdd, onEdit, name, onEditInfo, onAddInfo} = this.props;
     let acts = this.filterActs();
     return (
-      <Grid item xs={12}>
+      <div>
         <Grid container>
           <Grid item xs={6}>
-            <strong>{name} {group.name}</strong> <Button onClick={() => onAdd(group)}>&#8853;</Button>
+            <div className="pl-3">
             <TextField className="search-text" placeholder="&#128269;" onChange={this.onSearch}/>
-          </Grid>
-          <Grid item xs={6}>
-            <strong>&#128712; Activity information</strong>
+            </div>
           </Grid>
         </Grid>
+        <div className="pt-3">
+        <Grid container>
+          <Grid item xs={6}>
+            <div className="pl-3">
+              <strong>{name} {group.name}</strong> <Button onClick={() => onAdd(group)}><AddIcon/></Button>
+            </div>
+          </Grid>
+          <Grid item xs={6} className="pl-3">
+            <strong>Activity Information Screens</strong>
+          </Grid>
+        </Grid>
+        </div>
         { acts.map((act, i) => <div key={i}>
             <ActRow key={i} act={act} onEdit={onEdit} onEditInfo={onEditInfo} onAddInfo={onAddInfo}/>
           </div>) }
-        
-      </Grid>
+      </div>
     )
   }
 }

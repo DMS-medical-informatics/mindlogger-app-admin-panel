@@ -37,11 +37,16 @@ const entities = (state = {}, action) => {
     if (action.path && action.method && action.status === 'COMPLETE') {
         switch (action.type) {
             case types.SIGN_IN:
-            case types.SIGN_UP:
                 return {
                     ...state,
                     auth: action.response.authToken,
                     self: action.response.user,
+                }
+            case types.SIGN_UP:
+                return {
+                    ...state,
+                    auth: action.response.authToken,
+                    self: action.response,
                 }
             case types.CHANGE_PROFILE:
                 return {
@@ -101,7 +106,7 @@ const entities = (state = {}, action) => {
                     let dict = state[action.group] || {};
                     let arr = action.response;
                     arr.forEach(obj => {
-                        dict[obj.name] = obj;
+                        dict[obj._id] = obj;
                     });
                     let newState = {
                         ...state,

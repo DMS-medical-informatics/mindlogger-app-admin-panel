@@ -52,6 +52,7 @@ export default class PagedTable extends Component {
           component="div"
           count={data.length}
           rowsPerPage={rowsPerPage}
+          labelRowsPerPage="rows"
           page={page}
           backIconButtonProps={{
             'aria-label': 'Previous Page',

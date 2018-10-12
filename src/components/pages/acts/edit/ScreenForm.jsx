@@ -21,8 +21,8 @@ class ScreenForm extends Component {
     const {handleSubmit, index, body: {surveyType, canvasType}, initialValues: {id}} = this.props;
     return (
       <form onSubmit={ handleSubmit }>
-        <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} />
-        <div className="section-title"><a name="display">Screen display</a></div>
+        {/* <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} /> */}
+        <div className="section-title"><a id="display">Screen display</a></div>
         <Grid container>
           <Grid item md={3}>
             <a>Picture / Video</a>
@@ -109,7 +109,7 @@ class ScreenForm extends Component {
           </Col>
         </Row>
 
-        <div className="section-title"><a name="survey">Survey</a></div>
+        <div className="section-title"><a id="survey">Survey</a></div>
         <PadBlock>
           <Field name="surveyType" component={InputRadioField} label="None" select={false} />
           <br/>
@@ -130,7 +130,7 @@ class ScreenForm extends Component {
           </InputRow>
         </PadBlock>
 
-        <div className="section-title"><a name="survey">Canvas (if no picture/video display)</a></div>
+        <div className="section-title"><a id="canvas">Canvas (if no picture/video display)</a></div>
         <PadBlock>
           <Field name="canvasType" component={InputRadioField} label="None" select={false} />
           <InputRow>

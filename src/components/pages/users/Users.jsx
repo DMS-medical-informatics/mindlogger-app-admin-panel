@@ -3,10 +3,13 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import GroupTable from './GroupTable';
 import { getUsers, addFolder, copyObject } from '../../../actions/api';
+import { setPageTitle } from '../../../actions/core';
 
 class Users extends Component {
   componentWillMount() {
-    this.props.getUsers();
+    const { volume: {meta: data}, getUsers, setPageTitle } = this.props;
+    getUsers();
+    setPageTitle(`Manage ${data.shortName} Users`);
   }
 
   handleMember = (user) => {
@@ -21,10 +24,10 @@ class Users extends Component {
 
     return (
       <div>
-        <p>
-          Manage {data.shortName} Users.
+        <p className="pt-3">
+          Here you can add, edit, or remove Users of the ETA Activity Set, and add, edit, or delete Viewers of their data.
           <br/>
-          Tap [+] on the left to add a User. Tap any User to edit or delete the User.
+          Users perform Activities in the App, and Viewers can view their data in a Dashboard.
         </p>
         <GroupTable group='users' groupName='User' onAddMember={this.handleMember} />
       </div>
@@ -40,6 +43,7 @@ const mapDispatchToProps = {
   getUsers,
   copyObject,
   addFolder,
+  setPageTitle,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users)

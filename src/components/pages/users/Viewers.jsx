@@ -3,16 +3,18 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { FormControl, Row, Col } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
-import UserRow from './UserRow';
 import AddUser from './modal/AddUser';
 import { updateObject, getUsers } from '../../../actions/api';
+import { setPageTitle } from '../../../actions/core';
 import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
 import UsersByViewer from './viewers/UsersByViewer';
 import Grid from '@material-ui/core/Grid';
 import PagedTable from '../../layout/PagedTable';
+import { InputRow } from '../../forms/Material';
 
 const userContain = (user, keyword) => 
   {
@@ -22,7 +24,9 @@ const userContain = (user, keyword) =>
 class Viewers extends Component {
 
   componentWillMount() {
-    this.props.getUsers();
+    const { volume: {meta: data}, getUsers, setPageTitle } = this.props;
+    getUsers();
+    setPageTitle(`Manage ${data.shortName} Viewers`);
   }
   state = {
 
@@ -68,6 +72,19 @@ class Viewers extends Component {
     });
   }
 
+  handleDelete = (user) => {
+    const {volume, updateObject, group, setVolume} = this.props;
+    const meta = volume.meta;
+    let userDict = {...meta.members.viewers};
+    delete userDict[user._id];
+    meta.members.viewers = userDict;
+    meta.members.viewers = userDict;
+    volume.meta = meta;
+    return updateObject('folder', volume._id, volume.name, meta).then(res => {
+      setVolume({...volume});
+    });
+  }
+
   onSelectUsers = (userIds) => {
     const {volume, updateObject, setVolume} = this.props;
     let meta = volume.meta;
@@ -93,28 +110,25 @@ class Viewers extends Component {
     const { user } = this.state;
     const userIds = this.filterUsers();
     return (
-      <div>
+      <div className="pt-3">
         <p>
-          Manage {data.shortName} Viewers (and the Users whose data they view).
+          Here you can add, edit, or remove Viewers of ETA Activity Set data, and add or remove Users whose data they view.
           <br/>
-          Tap [+] on the left to add a Viewer. Tap any Viewer to edit or delete the Viewer.
+          Users perform Activities in the App, and Viewers can view their data in a Dashboard.
           <br/>
           Tap in the Users column on the right to add or remove Users viewed by the Viewer.
         </p>
         <div className="search-box">
-          <Row>
-            <Col sm={3}> Search Viewers: </Col>
-            <Col sm={9}><FormControl type="name" placeholder="name or email" onChange={this.onSearch}/></Col>
-          </Row>
+          <InputRow label={`Search Viewers`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
         <Grid container>
           <Grid item xs={9}>
-            <UsersTable userIds = {userIds} onSelect={this.onSelect}/>
+            <UsersTable userIds = {userIds} onSelect={this.onSelect} onDelete={this.handleDelete}/>
             <Button variant="contained" onClick={this.showAddModal}>Add Viewer</Button>
             {" "}
-            <Button variant="contained" onClick={this.showSelectModal}>Add Existing User</Button>
+            <Button variant="contained" onClick={this.showSelectModal}>Add Existing Member</Button>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={3} className="users-by-viewer--container">
             { user && <UsersByViewer key={user._id} selected={userDict[user._id]} userIds={data.members && data.members.users} onSelectUsers={this.onSelectUsers} onCancel={() => this.setState({user:undefined})} /> }
           </Grid>
         </Grid>
@@ -139,6 +153,7 @@ const mapDispatchToProps = {
   getUsers,
   updateObject,
   setVolume,
+  setPageTitle,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Viewers)

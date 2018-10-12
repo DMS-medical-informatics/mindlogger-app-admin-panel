@@ -37,8 +37,8 @@ export const changePassword = (id, body) => ({
 
 export const forgotPassword = (body) => ({
   type: types.FORGOT_PASSWORD,
-  method: 'POST',
-  path: '/user/forgot-password',
+  method: 'PUT',
+  path: '/user/password/temporary',
   body,
 });
 
@@ -233,6 +233,12 @@ export const updateObject = (type, id, name, meta, options={}) => ({
     metadata:JSON.stringify(meta),
   },
 });
+
+export const deleteObject = (id, type) => ({
+  type: types.DELETE_OBJECT,
+  method: 'DELETE',
+  path: `/${type}/${id}`
+})
 
 export const addItem = (name, meta, folderId) => (addObject('item', name, meta, {folderId}));
 export const updateItem = (id, name, meta) => (updateObject('item', id, name, meta));
