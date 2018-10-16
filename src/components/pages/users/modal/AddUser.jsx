@@ -26,14 +26,13 @@ class AddUser extends Component {
   onAddUser = (body) => {
     const {inviteUser, setUserTemporary, role, onClose, onAdd} = this.props;
   
-    return inviteUser(body, {role})
+    return inviteUser(body, {})
       .then(user =>
-        setUserTemporary(body.email)
-      ).then(res => {
-          return onAdd();
-      }).then( res => {
-        onClose();
-      }).catch(err => {
+        setUserTemporary(body.email).then(res => {
+          console.log(user);
+          return onAdd(user);
+        })
+      ).catch(err => {
         let valErrors = {_error:`${err.type} errors`};
         valErrors[err.field] = err.message;
         throw new SubmissionError(valErrors);

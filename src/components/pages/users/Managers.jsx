@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { getUsers } from '../../../actions/api';
 import { setPageTitle } from '../../../actions/core';
 import GroupTable from './GroupTable';
 
 class Managers extends Component {
   componentWillMount() {
-    const { volume: {meta: data}, getUsers, setPageTitle } = this.props;
-    getUsers();
+    const { volume: {meta: data}, setPageTitle } = this.props;
     setPageTitle(`Manage ${data.shortName} Managers`);
   }
   
@@ -33,7 +31,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  getUsers,
   setPageTitle
 }
 

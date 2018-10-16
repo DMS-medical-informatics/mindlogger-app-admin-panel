@@ -60,14 +60,16 @@ class Viewers extends Component {
   }
 
   selectUser = (user) => {
-    const {volume, updateObject, group, setVolume} = this.props;
+    console.log(user);
+    let {volume, updateObject, group, setVolume, getUsers} = this.props;
     let meta = volume.meta;
-    let userDict = {...meta.members.viewers};
+    let userDict = {...this.props.userDict};
     userDict[user._id] = [];
     meta.members.viewers = userDict;
     volume.meta = meta;
     return updateObject('folder', volume._id, volume.name, meta).then(res => {
       setVolume({...volume});
+      getUsers();
       this.closeModal();
     });
   }
@@ -75,7 +77,7 @@ class Viewers extends Component {
   handleDelete = (user) => {
     const {volume, updateObject, group, setVolume} = this.props;
     const meta = volume.meta;
-    let userDict = {...meta.members.viewers};
+    let userDict = {...this.props.userDict};
     delete userDict[user._id];
     meta.members.viewers = userDict;
     meta.members.viewers = userDict;
