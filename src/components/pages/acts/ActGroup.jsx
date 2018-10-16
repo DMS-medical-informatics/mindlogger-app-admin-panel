@@ -49,7 +49,7 @@ class ActGroup extends Component {
         <Grid container>
           <Grid item xs={6}>
             <div className="pl-3">
-            <TextField className="search-text" placeholder="&#128269;" onChange={this.onSearch}/>
+            <TextField className="search-text" placeholder="&#128269; Activity name" onChange={this.onSearch}/>
             </div>
           </Grid>
         </Grid>

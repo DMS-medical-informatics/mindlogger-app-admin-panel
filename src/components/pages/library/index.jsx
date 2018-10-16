@@ -31,8 +31,15 @@ class Home extends Component {
   };
 
   onAddVolume = ({name, logo, ...data}) => {
-    const {addFolder, updateFolder, collection, getFolders, uploadFile} = this.props;
-    return addFolder(name, data, collection._id, 'collection').then(folder => {
+    const {addFolder, updateFolder, collection, getFolders, uploadFile, user} = this.props;
+    return addFolder(name, {
+        ...data,
+        members: {
+          editors: [user._id],
+          managers: [user._id],
+        }
+      }
+      , collection._id, 'collection').then(folder => {
       if(logo && Array.isArray(logo) && logo.length > 0) {
         let fileObject = logo[0];
         return uploadFile(fileObject.name, fileObject, 'folder', folder._id).then(res => {
@@ -73,29 +80,38 @@ class Home extends Component {
     this.props.history.push(`/volumes/${index}`);
   }
 
-  renderVolume(i,meta) {
+  renderVolume(i,{_id: id, meta}) {
     let image = meta.logoImage
     if (image) {
-      return <div key={i} className="volume" onClick={() => this.selectVolume(i)}>
+      return <div key={i} className="volume" onClick={() => this.selectVolume(id)}>
         <div><Image file={image}/></div>
         <div className="volume__text">{meta.shortName}</div>
         </div>
     } else {
-      return <div key={i} className="volume" onClick={() => this.selectVolume(i)}>
+      return <div key={i} className="volume" onClick={() => this.selectVolume(id)}>
         <div className="volume__text">{meta.shortName}</div>
       </div>
     }
   }
 
+  filterVolumes() {
+    const {volumes, user} = this.props;
+    return volumes.filter(({meta}) => {
+        if (!meta || !meta.members) return false;
+        const {editors, managers, viewers} = meta.members;
+        return ((editors && editors.includes(user._id)) || (managers && managers.includes(user._id)) || (viewers && viewers[user._id]))
+      }
+    )
+  }
+
   render() {
     const {volumes, user} = this.props;
-    console.log(user);
     return (
       <div>
         <div className="volumes">
           {
-            volumes && volumes.map((volume, i) => 
-                this.renderVolume(i, volume.meta)
+            volumes && this.filterVolumes().map((volume, i) => 
+                this.renderVolume(i, volume)
             )
           }
           {

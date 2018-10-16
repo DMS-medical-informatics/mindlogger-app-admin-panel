@@ -12,8 +12,9 @@ import VolumeForm from "./VolumeForm";
 class Volume extends Component {
 
   componentWillMount() {
-    const {volumes, volumeIndex, setVolume} = this.props;
-    setVolume(volumes[volumeIndex]);
+    const {volumes, volumeId, setVolume} = this.props;
+    const volume = volumes.find(v => v._id == volumeId);
+    setVolume(volume);
     this.setState({});
   }
 
@@ -22,7 +23,6 @@ class Volume extends Component {
     if(logo && Array.isArray(logo) && logo.length > 0) {
       let fileObject = logo[0];
       return uploadFile(fileObject.name, fileObject, 'folder', volume._id).then(res => {
-        console.log(res._id);
         return updateFolder(volume._id, name, {...data, logoImage: {name: res.name, '@id': `file/${res._id}`} });
       }).then(res => {
         setVolume(res);
@@ -106,7 +106,7 @@ const mapDispatchToProps = {
 const mapStateToProps = ({entities: {folder, volume, self}}, ownProps) => ({
   volumes: folder.volumes,
   volume,
-  volumeIndex: ownProps.match.params.id,
+  volumeId: ownProps.match.params.id,
   user: self,
 });
 
