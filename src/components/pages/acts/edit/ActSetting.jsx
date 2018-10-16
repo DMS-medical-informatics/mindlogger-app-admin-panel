@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 
 import SettingForm from './SettingForm';
 import ScrollLink from '../../../layout/ScrollLink';
+import ConfirmButton from '../../../controls/ConfirmButton';
 class ActSetting extends Component {
   componentWillMount() {
     this.childRefs = {};
@@ -36,7 +37,7 @@ class ActSetting extends Component {
           <a>Delete activity</a>
         </div>
         <div className="section-body">
-          <Button variant="contained" color="secondary" onClick={onDelete}>Delete activity</Button>
+          <ConfirmButton onClick={onDelete} text="Are you SURE you want to delete this activity?" buttonText="Delete activity" />
         </div>
       </div>
     );

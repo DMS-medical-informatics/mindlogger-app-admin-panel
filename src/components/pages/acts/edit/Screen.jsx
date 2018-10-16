@@ -14,6 +14,7 @@ import SurveySliderForm from './survey/slider';
 import SurveyCanvasDrawForm from './survey/draw';
 import ScrollLink from '../../../layout/ScrollLink';
 import PadBlock from '../../../layout/PadBlock';
+import ConfirmButton from '../../../controls/ConfirmButton';
 
 
 const mapStateToProps = (state) => ({
@@ -135,7 +136,10 @@ class Screen extends Component {
           <a>Delete screen</a>
         </div>
         <PadBlock>
-          <Button variant="contained" color="secondary" onClick={onDelete}>Delete screen</Button>
+          <ConfirmButton
+            onClick={onDelete}
+            text="Are you SURE you want to delete this screen?"
+            buttonText="Delete screen" />
         </PadBlock>
         
       </div>

@@ -31,7 +31,7 @@ class UsersTable extends Component {
     return (
       
       <PagedTable data={userIds} header={<TableRow>
-            <TableCell>Username</TableCell>
+            <TableCell>User</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
             <TableCell></TableCell>

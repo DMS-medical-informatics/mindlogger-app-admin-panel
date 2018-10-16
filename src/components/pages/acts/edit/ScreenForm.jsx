@@ -99,6 +99,7 @@ class ScreenForm extends Component {
             <div className="num-input-wrapper">
               If SKIP screen go to screen #:
               <Field name="skipToScreen" component={InputField} type="number" inline/>
+               (default is next screen)
             </div>
             <FormGroup>
               <Field name="redoLimit" label="Maximum times User can redo audio/camera/draw:" component={InputCheckField} inline/>

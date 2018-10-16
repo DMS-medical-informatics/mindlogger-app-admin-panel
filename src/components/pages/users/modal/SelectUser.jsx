@@ -81,7 +81,7 @@ class SelectUser extends Component {
       <Paper className="modal-table">
         <h3>Select User</h3>
         <PagedTable data={keys} header={<TableRow>
-            <TableCell>Username</TableCell>
+            <TableCell>User</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
             </TableRow>

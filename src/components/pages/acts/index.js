@@ -49,13 +49,6 @@ class Acts extends Component {
   componentWillMount() {
     this.props.setPageTitle("Edit Activities");
     return this.createDefaultGroups();
-    // getFolders(volume._id, 'groups', 'folder').then(res => {
-    //   if (res.length < 2) {
-        
-    //   } else {
-    //     this.updateData(res);
-    //   }
-    // });
   }
 
   updateData(groups) {

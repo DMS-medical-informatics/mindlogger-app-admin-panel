@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 import { getFolders } from '../../../actions/api';
 import ActRow from './ActRow';
+import ProgressCircle from '../../layout/ProgressCircle';
 
 const actContain = (act, keyword) => 
 {
@@ -21,10 +22,14 @@ class ActGroup extends Component {
     parentId: PropTypes.string
   }
 
-  state = {}
+  state = {
+    loading: true
+  }
   componentWillMount() {
     const {group:{_id:parentId, name}, getFolders} = this.props;
-    getFolders(parentId, name, 'folder');
+    getFolders(parentId, name, 'folder').then(res => {
+      this.setState({loading: false});
+    });
   }
 
   onSearch = (e) => {
@@ -43,7 +48,9 @@ class ActGroup extends Component {
   }
   render() {
     const {group, onAdd, onEdit, name, onEditInfo, onAddInfo} = this.props;
+    
     let acts = this.filterActs();
+    console.log("Load acts", acts);
     return (
       <div>
         <Grid container>
@@ -65,9 +72,14 @@ class ActGroup extends Component {
           </Grid>
         </Grid>
         </div>
-        { acts.map((act, i) => <div key={i}>
+        {
+          this.state.loading ?
+          (<div className="text-center"><ProgressCircle /></div>)
+          :
+          acts.map((act, i) => <div key={i}>
             <ActRow key={i} act={act} onEdit={onEdit} onEditInfo={onEditInfo} onAddInfo={onAddInfo}/>
-          </div>) }
+          </div>)
+        }
       </div>
     )
   }
