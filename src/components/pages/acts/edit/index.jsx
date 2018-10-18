@@ -116,14 +116,14 @@ class EditAct extends Component {
     console.log(screen);
     deleteObject(screen.id, 'item').then(res => {
       this.setState({screensData})
-      this.loadScreen(index);
-       const {name: actName, ...setting} = this.state.setting;
-       return updateFolder(act._id, actName, {screens, ...setting});
+      if(screensData.length <= index) {
+        index = index - 1;
+      }
+      if (index>=0)
+        this.loadScreen(index);
+      const {name: actName, ...setting} = this.state.setting;
+      return updateFolder(act._id, actName, {screens, ...setting});
     })
-    
-    
-    
-    
   }
   componentWillMount() {
     const {actId, getObject} = this.props;
