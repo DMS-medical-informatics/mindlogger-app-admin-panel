@@ -7,12 +7,9 @@ import AddIcon from '@material-ui/icons/AddCircleOutline';
 import { withStyles } from '@material-ui/core/styles';
 
 import { getPath, getFoldersDict } from '../../../actions/api';
+import LButton from '../../controls/LButton';
 
-const StyledButton = withStyles({
-  label: {
-    textTransform: 'initial',
-  },
-})(Button);
+
 class ActRow extends Component {
   static propTypes = {
     act: PropTypes.object.isRequired
@@ -36,8 +33,8 @@ class ActRow extends Component {
     }
     return (
       <Grid container>
-        <Grid item xs={6}><StyledButton onClick={() => onEdit(act)}>{(act.meta && act.meta["schema:name"] && act.meta["schema:name"]["@value"]) ? act.meta["schema:name"]["@value"] : act.name}</StyledButton></Grid>
-        <Grid item xs={6}>{info ? <StyledButton onClick={() => onEditInfo(info)}>{(info.meta && info.meta["schema:name"] && info.meta["schema:name"]["@value"]) ? info.meta["schema:name"]["@value"] : info.name}</StyledButton> : <StyledButton onClick={() => onAddInfo(act, 'info')}><AddIcon/></StyledButton>}</Grid>
+        <Grid item xs={6}><LButton onClick={() => onEdit(act)}>{(act.meta && act.meta["schema:name"] && act.meta["schema:name"]["@value"]) ? act.meta["schema:name"]["@value"] : act.name}</LButton></Grid>
+        <Grid item xs={6}>{info ? <LButton onClick={() => onEditInfo(info)}>{(info.meta && info.meta["schema:name"] && info.meta["schema:name"]["@value"]) ? info.meta["schema:name"]["@value"] : info.name}</LButton> : <LButton onClick={() => onAddInfo(act, 'info')}><AddIcon/></LButton>}</Grid>
       </Grid>
     )
   }

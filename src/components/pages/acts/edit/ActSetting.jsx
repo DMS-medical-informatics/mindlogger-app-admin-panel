@@ -17,12 +17,13 @@ class ActSetting extends Component {
     const {setting, onSetting, onFormRef, onDelete} = this.props;
     return (
       <div className="setting">
+        {!(setting && setting.info) && (
         <ul className="scroll-to-list">
           <ScrollLink to="information">Information</ScrollLink>
           <ScrollLink to="user-notifications">User notifications</ScrollLink>
           <ScrollLink to="user-settings">User settings</ScrollLink>
           <ScrollLink to="display-settings">Display Settings</ScrollLink>
-        </ul>
+        </ul>)}
         <SettingForm 
           initialValues={setting}
           onSubmit={onSetting}

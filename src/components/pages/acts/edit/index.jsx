@@ -96,7 +96,7 @@ class EditAct extends Component {
       if (formErrors === undefined) {
         this.loadScreen(index);
       } else {
-        window.alert("Please fix valdiation errors");
+        window.alert("Please fix validation errors");
       }
     }
 
@@ -171,12 +171,12 @@ class EditAct extends Component {
       formErrors = this.formRef.submit();
     }
     if (formErrors) {
-      window.alert("Please fix valdiation errors in screens");
+      window.alert("Please fix validation errors in screens");
       return;
     }
     formErrors = this.settingRef.submit();
     if (formErrors) {
-      window.alert("Please fix valdiation errors in settings");
+      window.alert("Please fix validation errors in settings");
       return;
     }
     const {screens, screensData} = this.state;

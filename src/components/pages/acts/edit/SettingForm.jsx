@@ -16,12 +16,14 @@ class SettingForm extends Component {
     const {handleSubmit, submitting, onDelete, info} = this.props
     return (
       <form onSubmit={ handleSubmit }>
+        {info != true &&
         <div className="section-title"><a id="information">Information</a></div>
+        }
         <Row>
           <Col md={8}>
-            <Field name="abbreviation" type="text" label="Short name(max 20 characters)" validate={isRequired} component={InputField} className="form-control-auto" />
+            <Field name="abbreviation" type="text" label="Short name(max 20 characters)" component={InputField} className="form-control-auto" />
             <Field name="name" type="text" label="Full name:" validate={isRequired} component={InputField} />
-            <Field name="description" componentClass="textarea" label="Description:" validate={isRequired} component={InputField} />
+            <Field name="description" componentClass="textarea" label="Description:" component={InputField} />
           </Col>
         </Row>
         { info != true && 

@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 import { getPath } from '../../../actions/api';
+import LButton from '../../controls/LButton';
 
 class InfoGroup extends Component {
   static propTypes = {
@@ -39,13 +40,13 @@ class InfoGroup extends Component {
     const {group, name, onEdit, onAdd} = this.props;
     const {info, consent} = this.state;
     const infoButton = (info ? 
-      <Button onClick={() => onEdit(info)}>{info.name}</Button> 
+      <LButton onClick={() => onEdit(info)}>{info.name}</LButton>
       : <Button onClick={() => onAdd('info')}><AddIcon /></Button>);
     return (
       <div>
       <Grid container>
         <Grid item>
-        <p> {info ? "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens and Start Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." : "Edit Information Screens, Start Screens, and Activities for the ETA Activity Set, and edit the Information Screens for each Activity. Tap on a [+] to add missing screens or a new Activity." }</p>
+          <p> Here you can {info ? 'edit' : 'add'} the {name} Activity Set’s Information screens, and edit individual Activities and their Information screens.  Tap on a <AddIcon /> to add an Activity or Information screens. </p>
           <h4><strong>{name} Activity Set Information screens:</strong> {infoButton}</h4>
         </Grid>
       </Grid>
