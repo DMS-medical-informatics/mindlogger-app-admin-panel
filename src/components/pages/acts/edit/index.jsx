@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 
 import { getItems, getObject, addItem, updateItem, updateFolder, deleteObject } from "../../../../actions/api";
-import { setActChanged, setPageTitle } from "../../../../actions/core";
+import { setActChanged } from "../../../../actions/core";
 import ActSetting from "./ActSetting";
 import Bookmark from './Bookmark';
 import Screen from './Screen';
@@ -261,12 +261,7 @@ class EditAct extends Component {
   }
 
   selectTab = (key) => {
-    const {volume, setPageTitle} = this.props;
-    if (key == 1) {
-      setPageTitle(`Edit ${volume.meta.shortName} Activities: Settings`);
-    } else if (key == 2) {
-      setPageTitle(`Edit ${volume.meta.shortName} Activities: Screens`);
-    }
+    const {volume} = this.props;
   }
 
   handleDelete = () => {
@@ -315,7 +310,6 @@ const mapDispatchToProps = {
   addItem,
   updateItem,
   updateFolder,
-  setPageTitle,
   deleteObject
 };
 

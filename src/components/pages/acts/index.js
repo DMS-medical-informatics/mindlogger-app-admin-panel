@@ -8,7 +8,7 @@ import { Modal } from 'react-bootstrap';
 
 import ActGroup from './ActGroup';
 import { getFolders, addFolder, copyObject, updateFolder } from "../../../actions/api";
-import { setDataObject, setPageTitle } from "../../../actions/core";
+import { setDataObject } from "../../../actions/core";
 import AddActForm from './AddObjectForm';
 import ActSelect from './select/ActSelect';
 import InfoGroup from './InfoGroup';
@@ -25,7 +25,6 @@ const mapDispatchToProps = {
   setDataObject,
   copyObject,
   updateFolder,
-  setPageTitle,
 };
 
 const defaultSetting = {
@@ -47,7 +46,6 @@ class Acts extends Component {
     open: false,
   };
   componentWillMount() {
-    this.props.setPageTitle("Edit Activities");
     return this.createDefaultGroups();
   }
 
@@ -219,7 +217,8 @@ class Acts extends Component {
     const {volume} = this.props;
     const {actGroup, infoGroup} = this.state;
     return (
-      <div className="pt-3">
+      <div>
+        <h3>Edit Activities</h3>
         <div className="p-3">
         {infoGroup && <InfoGroup key={infoGroup._id} name={volume.meta.shortName} group={infoGroup} onAdd={this.onAddInfoScreen} onEdit={this.onEdit} />}
         </div>

@@ -89,8 +89,8 @@ class Volume extends Component {
         <Grid container spacing={16}>
           <Grid item>
             <h3>Actions</h3>
-            <p>You can do more actions by clicking menu on top</p>
             { canEdit && <Button variant="outlined" color="primary" onClick={this.onEditActivity}>Edit Activities</Button> }
+            <p>The Menu on top of the page may offer more options, depending on whether you have Manager</p>
           </Grid>
         </Grid>
       </div>
