@@ -1,16 +1,57 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm } from 'redux-form';
 import {Row, Col} from 'react-bootstrap';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
 
 import { InputField } from '../../../forms/FormItems';
-import {InputCheckField, InputRadioField, InputTextField} from '../../../forms/Material';
+import {InputCheckField, InputRadioField, InputTextField, InputRow} from '../../../forms/Material';
 import InputTimeField from '../../../forms/InputTimeField';
 import {isRequired} from '../../../forms/validation';
 import InputWeekdayField from './InputWeekdayField';
 import InputMonthDayField from './InputMonthDayField';
 import PadBlock from '../../../layout/PadBlock';
 
+const renderTimes = ({ fields, meta: { error } }) => (
+  <div>
+    <InputRow>
+      Times of day:<Button onClick={() => fields.push()}><AddIcon/></Button>
+    </InputRow>
+    <PadBlock>
+    {fields.map((obj, index) => (
+      <div key={index}>
+        <InputRow>
+        Time #{index+1}<Button onClick={() => fields.remove(index)}><RemoveIcon/></Button>
+        </InputRow>
+        <Grid container alignItems="baseline">
+          <Grid item sm={3}>
+            <Field name={`${obj}.timeMode`} label="Scheduled:" component={InputRadioField} select="scheduled"/>
+          </Grid>
+          <Grid item>
+            <Field name={`${obj}.time`} component={InputTimeField}/>
+          </Grid>
+        </Grid>
+        <Grid container alignItems="baseline">
+          <Grid item sm={3}>
+            <Field name={`${obj}.timeMode`} label="Random:" component={InputRadioField} select="random"/>
+          </Grid>
+          <Grid item>
+            Start:
+            <Field name={`${obj}.timeStart`} component={InputTimeField}/>
+            <br/>
+            End:
+            <Field name={`${obj}.timeEnd`} component={InputTimeField}/>
+          </Grid>
+        </Grid>
+        
+      </div>))}
+    
+    {error && <li className="error">{error}</li>}
+    </PadBlock>
+  </div>
+)
 class SettingForm extends Component {
   render() {
     const {handleSubmit, submitting, onDelete, info} = this.props
@@ -52,48 +93,23 @@ class SettingForm extends Component {
               </Grid>
               <Field name="notification[resetDate]" label="User can reset day/dates" component={InputCheckField} />
             </PadBlock>
-            <Grid container alignItems="baseline">
-              <div>Times of day:</div>
-              <div className="num-input-wrapper inline-block">
-                <Field name="notification[countPerDay]" type="number" component={InputField} inline/>
-              </div>
-              <div>times per day</div>
-            </Grid>
+            
+              <FieldArray name="notification[times]" component={renderTimes} />
             <PadBlock>
-              <Grid container alignItems="baseline">
-                <Grid item sm={3}>
-                  <Field name="notification[timeMode]" label="Scheduled:" component={InputRadioField} select="scheduled"/>
-                </Grid>
-                <Grid item>
-                  <Field name="notification[time]" component={InputTimeField}/>
-                </Grid>
-              </Grid>
-              <Grid container alignItems="baseline">
-                <Grid item sm={3}>
-                  <Field name="notification[timeMode]" label="Random:" component={InputRadioField} select="random"/>
-                </Grid>
-                <Grid item>
-                  Start:
-                  <Field name="notification[timeStart]" component={InputTimeField}/>
-                  <br/>
-                  End:
-                  <Field name="notification[timeEnd]" component={InputTimeField}/>
-                </Grid>
-              </Grid>
               <Field name="notification[resetTime]" label="User can reset time" component={InputCheckField} />
             </PadBlock>
             Reminders
             <PadBlock>
-              <div className="num-input-wrapper">
+              <InputRow>
                 <Field name="notification[advance]" label="Advance notification:" component={InputCheckField} inline/>
-                <Field name="notification[advanceMin]" type="number"component={InputField} inline/>
-                &nbsp; minutes
-              </div>
-              <div className="num-input-wrapper">
+                <Field name="notification[advanceMin]" type="number"component={InputTextField}/>
+                minutes
+              </InputRow>
+              <InputRow>
                 <Field name="notification[dailyReminder]" label="Daily reminder for missed activity for up to:" component={InputCheckField} inline/>
-                <Field name="notification[dailyReminderDays]" type="number"component={InputField} inline/>
-                &nbsp; days
-              </div>
+                <Field name="notification[dailyReminderDays]" type="number"component={InputTextField}/>
+                days
+              </InputRow>
             </PadBlock>
           </div>
 
