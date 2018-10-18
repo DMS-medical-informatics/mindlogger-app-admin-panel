@@ -77,7 +77,7 @@ class SettingForm extends Component {
             </Row>
           </div>
           <div className="section-body">
-            Day of the week, month, or specific dates;
+            Day of the week, month, or specific dates:
             <PadBlock>
               <Grid container alignItems="baseline">
                 <Field name="notification[modeWeek]" label="Weekly:" component={InputCheckField}/>

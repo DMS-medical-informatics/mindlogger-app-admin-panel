@@ -60,9 +60,13 @@ class Screen extends Component {
   renderSurveyForm(surveyType) {
     const {survey} = this.state;
     const {screen} = this.props;
+    const defaultSurvey = {
+      optionsMin: 0,
+      optionsMax: 1,
+    }
     const formProps = {
       onSubmit:this.onSurveyForm,
-      data: survey,
+      data: survey || defaultSurvey,
       screenId: screen.id,
     }
     switch(surveyType) {
@@ -118,19 +122,27 @@ class Screen extends Component {
   }
   
   render() {
-    const {index, screen, onFormRef, actId, onDelete} = this.props;
+    const {index, screen, onFormRef, actId, onDelete, info} = this.props;
     return (
       <div className="screen">
+        {!info && 
         <ul className="scroll-to-list">
           <ScrollLink to="display">Screen display</ScrollLink>
           <ScrollLink to="survey">Survey</ScrollLink>
           <ScrollLink to="canvas">Canvas</ScrollLink>
         </ul>
+        }
         
-        { screen && <ScreenForm ref={ref => {
-          ref && onFormRef(ref);
-          }
-        } index={index} onSubmit={this.onFormSubmit} showModal={this.showModal} body={this.props.body || {}} initialValues={screen}/> }
+        {
+          screen && 
+          <ScreenForm
+            ref={ref => ref && onFormRef(ref) }
+            index={index}
+            onSubmit={this.onFormSubmit}
+            showModal={this.showModal}
+            body={this.props.body || {}}
+            info={info}
+            initialValues={screen}/> }
         {this.state.form && this.renderModal()}
         <div className="section-title">
           <a>Delete screen</a>

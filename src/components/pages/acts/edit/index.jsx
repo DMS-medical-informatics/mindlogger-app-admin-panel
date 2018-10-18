@@ -198,17 +198,19 @@ class EditAct extends Component {
 
   handleAddScreen = ({name}) => {
     const {addItem, act, updateFolder} = this.props;
-    let {screens, screensData} = this.state;
-    addItem(name, {}, act._id).then(res => {
+    let {screens, screensData, setting:{name: actName, ...setting}} = this.state;
+    let defaultScreen = {
+      skippable: setting.permission && setting.permission.skip
+    };
+    addItem(name, defaultScreen, act._id).then(res => {
       screens.push({
         '@id': `item/${res._id}`,
         name: res.name,
       });
       screensData.push({name, id:res._id});
-      const {name: actName, ...setting} = this.state.setting;
       return updateFolder(act._id, actName, {screens, ...setting});
     }).then(res => {
-      this.setState({screens, screensData});
+      this.setState({screens: [...screens], screensData});
       this.handleClose();
     });
 
@@ -281,6 +283,9 @@ class EditAct extends Component {
   render() {
     const {screensData, index, setting, screens} = this.state;
     let screen = screensData[index];
+    if (!setting) {
+      return (<section className="edit-act"></section>)
+    }
     return (
       <section className="edit-act">
         <Prompt
@@ -293,7 +298,7 @@ class EditAct extends Component {
           <Tab eventKey={2} title="Screens">
             <div className="screens">
               {this.renderBookmarks()}
-              <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
+              <Screen info={setting.info} index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
             </div>
           </Tab>
           <Submit bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Submit>

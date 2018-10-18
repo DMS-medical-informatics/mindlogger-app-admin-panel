@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
 import { InputField } from '../../../forms/FormItems';
-import {InputCheckField, InputRadioField, InputRow} from '../../../forms/Material';
+import {InputCheckField, InputRadioField, InputRow, InputTextField} from '../../../forms/Material';
 import {isRequired} from '../../../forms/validation'
 import PadBlock from '../../../layout/PadBlock';
 import InputFileField from '../../../forms/GInputFileField';
@@ -18,7 +18,7 @@ class ScreenForm extends Component {
     return (<Button variant="contained" onClick={() => this.props.showModal(type)}>Edit</Button>);
   }
   render() {
-    const {handleSubmit, index, body: {surveyType, canvasType}, initialValues: {id}} = this.props;
+    const {handleSubmit, index, body: {surveyType, canvasType}, info, initialValues: {id}} = this.props;
     return (
       <form onSubmit={ handleSubmit }>
         {/* <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} /> */}
@@ -81,8 +81,8 @@ class ScreenForm extends Component {
           <Col md={9}>
             <Field name="bgColor" label="Background color:" component={InputField} componentClass="select" options={[{value: '#fff', label: 'white'}, {value: '#000', label: 'black'}, {value:'#ff0', label: 'yelllow'}]} />
             <Field name="timer[enabled]" label="Timer:" component={InputCheckField} />
-            <div className="num-input-wrapper inline-block">
-              <Field name="timer[duration]" component={InputField} type="number" inline/>
+            <div className="inline-block">
+              <Field name="timer[duration]" component={InputTextField} type="number"/>
               seconds
             </div>
             <PadBlock>
@@ -90,65 +90,66 @@ class ScreenForm extends Component {
               <br/>
               <Field name="timer[hideNavigation]" label="Hide previous / next screen arrow buttons" component={InputCheckField} />
             </PadBlock>
-            <div className="num-input-wrapper inline-block">
+            <InputRow>
               Response delay(seconds):
-              <Field name="responseDelay"component={InputField} type="number" inline/>
+              <Field name="responseDelay" component={InputTextField} type="number"/>
               seconds
-            </div>
+            </InputRow>
             <Field name="skippable" label="Allow skipping screen (override Activity setting)" component={InputCheckField} />
-            <div className="num-input-wrapper">
+            <InputRow>
               If SKIP screen go to screen #:
-              <Field name="skipToScreen" component={InputField} type="number" inline/>
+              <Field name="skipToScreen" component={InputTextField} type="number" inline/>
                (default is next screen)
-            </div>
-            <FormGroup>
+            </InputRow>
+            <InputRow>
               <Field name="redoLimit" label="Maximum times User can redo audio/camera/draw:" component={InputCheckField} inline/>
-              <div className="num-input-wrapper inline-block">
-                <Field name="attemptLimit" component={InputField} type="number" inline/>
-              </div>
-            </FormGroup>
+              <Field name="attemptLimit" component={InputTextField} type="number"/>
+            </InputRow>
           </Col>
         </Row>
+        { !info &&
+        <div>
+          <div className="section-title"><a id="survey">Survey</a></div>
+          <PadBlock>
+            <Field name="surveyType" component={InputRadioField} label="None" select={false} />
+            <br/>
+            <InputRow>
+              <Field name="surveyType" component={InputRadioField} label="Survey list" select="list"/>
+              { surveyType === 'list' && this.renderModalButton('survey')}
+            </InputRow>
+            <InputRow>
+              <Field name="surveyType" component={InputRadioField} label="Survey table" select="table"/>
+              { surveyType === 'table' && this.renderModalButton('survey')}
+            </InputRow>
+            <InputRow>
+              <Field name="surveyType" component={InputRadioField} label="Slider bar" select="slider"/>
+              { surveyType === 'slider' && this.renderModalButton('survey')}
+            </InputRow>
+            <InputRow>
+              <Field name="surveyType" component={InputRadioField} label="Record audio" select="audio"/>
+            </InputRow>
+          </PadBlock>
 
-        <div className="section-title"><a id="survey">Survey</a></div>
-        <PadBlock>
-          <Field name="surveyType" component={InputRadioField} label="None" select={false} />
-          <br/>
-          <InputRow>
-            <Field name="surveyType" component={InputRadioField} label="Survey list" select="list"/>
-            { surveyType === 'list' && this.renderModalButton('survey')}
-          </InputRow>
-          <InputRow>
-            <Field name="surveyType" component={InputRadioField} label="Survey table" select="table"/>
-            { surveyType === 'table' && this.renderModalButton('survey')}
-          </InputRow>
-          <InputRow>
-            <Field name="surveyType" component={InputRadioField} label="Slider bar" select="slider"/>
-            { surveyType === 'slider' && this.renderModalButton('survey')}
-          </InputRow>
-          <InputRow>
-            <Field name="surveyType" component={InputRadioField} label="Record audio" select="audio"/>
-          </InputRow>
-        </PadBlock>
-
-        <div className="section-title"><a id="canvas">Canvas (if no picture/video display)</a></div>
-        <PadBlock>
-          <Field name="canvasType" component={InputRadioField} label="None" select={false} />
-          <InputRow>
-            <Field name="canvasType" component={InputRadioField} label="Take camera photo" select="camera"/>
-          </InputRow>
-          <InputRow>
-            <Field name="canvasType" component={InputRadioField} label="Take camera video" select="video"/>
-          </InputRow>
-          <InputRow>
-            <Field name="canvasType" component={InputRadioField} label="Draw" select="draw"/>
-            { canvasType === 'draw' && this.renderModalButton('canvas') }
-          </InputRow>
-          <InputRow>
-            <Field name="canvasType" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
-            { canvasType === 'sort_pictures' &&  this.renderModalButton('canvas') }
-          </InputRow>
-        </PadBlock>
+          <div className="section-title"><a id="canvas">Canvas (if no picture/video display)</a></div>
+          <PadBlock>
+            <Field name="canvasType" component={InputRadioField} label="None" select={false} />
+            <InputRow>
+              <Field name="canvasType" component={InputRadioField} label="Take camera photo" select="camera"/>
+            </InputRow>
+            <InputRow>
+              <Field name="canvasType" component={InputRadioField} label="Take camera video" select="video"/>
+            </InputRow>
+            <InputRow>
+              <Field name="canvasType" component={InputRadioField} label="Draw" select="draw"/>
+              { canvasType === 'draw' && this.renderModalButton('canvas') }
+            </InputRow>
+            <InputRow>
+              <Field name="canvasType" component={InputRadioField} label="Sort pictures" select="sort_pictures"/>
+              { canvasType === 'sort_pictures' &&  this.renderModalButton('canvas') }
+            </InputRow>
+          </PadBlock>
+          </div>
+        }
       </form>
     );
   }
