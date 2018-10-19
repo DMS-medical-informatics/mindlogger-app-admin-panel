@@ -109,7 +109,7 @@ class GroupTable extends Component {
         <div className="search-box">
           <InputRow label={`Search ${groupName}s`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
-        {userIds && <UsersTable userIds={userIds} onSelect={onSelect} onDelete={this.handleDelete}/> }
+        {userIds && <UsersTable userIds={userIds} onSelect={onSelect} onDelete={this.handleDelete} group={groupName}/> }
         <Button variant="contained" onClick={this.showAddModal}>Add {groupName}</Button>
         {" "}
         <Button variant="contained" onClick={this.showSelectModal}>Add Existing Member</Button>

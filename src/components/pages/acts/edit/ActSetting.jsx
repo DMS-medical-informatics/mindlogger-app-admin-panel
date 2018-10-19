@@ -14,10 +14,11 @@ class ActSetting extends Component {
       el.scrollIntoView()
   }
   render() {
-    const {setting, onSetting, onFormRef, onDelete} = this.props;
+    const {setting, onSetting, onFormRef, onDelete, info} = this.props;
+    const isInfo = (setting && setting.info) || info
     return (
       <div className="setting">
-        {!(setting && setting.info) && (
+        {!isInfo && (
         <ul className="scroll-to-list">
           <ScrollLink to="information">Information</ScrollLink>
           <ScrollLink to="user-notifications">User notifications</ScrollLink>
@@ -28,7 +29,7 @@ class ActSetting extends Component {
           initialValues={setting}
           onSubmit={onSetting}
           onDelete={onDelete}
-          info={setting && setting.info}
+          info={isInfo}
           ref={ref => {
           ref && onFormRef(ref);
           }
@@ -38,7 +39,7 @@ class ActSetting extends Component {
           <a>Delete activity</a>
         </div>
         <div className="section-body">
-          <ConfirmButton onClick={onDelete} text="Are you SURE you want to delete this activity?" buttonText="Delete activity" />
+          <ConfirmButton variant="contained" color="secondary"  onClick={onDelete} text="Are you SURE you want to delete this activity?">Delete activity</ConfirmButton>
         </div>
       </div>
     );

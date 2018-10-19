@@ -20,7 +20,7 @@ class Users extends Component {
       <div>
         <h3>Manage {data.shortName} Users</h3>
         <p className="pt-3">
-          Here you can add, edit, or remove Users of the ETA Activity Set, and add, edit, or delete Viewers of their data.
+          Here you can add, edit, or remove Users of the {data.shortName} Activity Set, and add, edit, or delete Viewers of their data.
           <br/>
           Users perform Activities in the App, and Viewers can view their data in a Dashboard.
         </p>

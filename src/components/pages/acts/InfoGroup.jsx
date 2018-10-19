@@ -40,7 +40,7 @@ class InfoGroup extends Component {
     const {group, name, onEdit, onAdd} = this.props;
     const {info, consent} = this.state;
     const infoButton = (info ? 
-      <LButton onClick={() => onEdit(info)}>{info.name}</LButton>
+      <LButton onClick={() => onEdit(info, true)}>{info.name}</LButton>
       : <Button onClick={() => onAdd('info')}><AddIcon /></Button>);
     return (
       <div>

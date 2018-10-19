@@ -116,20 +116,21 @@ class Viewers extends Component {
           <br/>
           Users perform Activities in the App, and Viewers can view their data in a Dashboard.
           <br/>
-          Tap in the Users column on the right to add or remove Users viewed by the Viewer.
+          Tap on a row to add or remove Users viewed by that Viewer.
         </p>
         <div className="search-box">
           <InputRow label={`Search Viewers`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
         <Grid container>
           <Grid item xs={9}>
-            <UsersTable userIds = {userIds} onSelect={this.onSelect} onDelete={this.handleDelete}/>
+            <h4>Viewers</h4>
+            <UsersTable userIds = {userIds} onSelect={this.onSelect} onDelete={this.handleDelete} group="Viewer"/>
             <Button variant="contained" onClick={this.showAddModal}>Add Viewer</Button>
             {" "}
             <Button variant="contained" onClick={this.showSelectModal}>Add Existing Member</Button>
           </Grid>
           <Grid item xs={3} className="users-by-viewer--container">
-            { user && <UsersByViewer key={user._id} selected={userDict[user._id]} userIds={data.members && data.members.users} onSelectUsers={this.onSelectUsers} onCancel={() => this.setState({user:undefined})} /> }
+            { user && <UsersByViewer key={user._id} viewer={user} selected={userDict[user._id]} userIds={data.members && data.members.users} onSelectUsers={this.onSelectUsers} onCancel={() => this.setState({user:undefined})} /> }
           </Grid>
         </Grid>
         <AddUser

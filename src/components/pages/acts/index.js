@@ -62,10 +62,13 @@ class Acts extends Component {
     this.setState({actGroup, infoGroup});
   }
 
-  handleListItemClick = (obj) => {
+  handleListItemClick = (obj, isInfo=false) => {
     const {setDataObject, history} = this.props;
     setDataObject(obj);
-    history.push(`/acts/${obj._id}/edit`);
+    if (isInfo)
+      history.push(`/act_infos/${obj._id}/edit`);
+    else
+      history.push(`/acts/${obj._id}/edit`);
   }
 
   handleAddClick(obj) {
@@ -102,7 +105,7 @@ class Acts extends Component {
   //   </Modal>)
   // }
 
-  onEdit = (folder) => {
+  onEdit = (folder, isInfo = false) => {
     const {getFolders} = this.props;
     this.groupId = folder._id;
     getFolders(folder._id, 'acts', 'folder').then(res => {
@@ -111,7 +114,7 @@ class Acts extends Component {
         if (!(m.meta && m.meta.info))
           variant = m;
       });
-      this.handleListItemClick(variant);
+      this.handleListItemClick(variant, isInfo);
 
     });
   }

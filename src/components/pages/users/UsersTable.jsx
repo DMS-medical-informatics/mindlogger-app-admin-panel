@@ -12,24 +12,41 @@ import AddUser from './modal/AddUser';
 import { updateObject } from '../../../actions/api';
 import SelectUser from './modal/SelectUser';
 import PagedTable from '../../layout/PagedTable';
+import ConfirmDialog from '../../controls/ConfirmDialog';
 import UserRow from './UserRow';
 
 class UsersTable extends Component {
 
   state = {
-
+    user: false,
+    formDelete: false,
   }
 
+  showDeleteConfirm = (user) => {
+    this.setState({formDelete: true, user});
+  }
   renderUser=(userId) => {
     const {onSelect, onDelete} = this.props;
-    return (<UserRow id={userId} key={userId} onSelect={onSelect} onDelete={onDelete}/>)
+    return (<UserRow id={userId} key={userId} onSelect={onSelect} onDelete={this.showDeleteConfirm}/>)
+  }
+
+  renderConfirmDialog(){
+    const {group, onDelete} = this.props;
+    const {user, formDelete} = this.state;
+    return (
+      <ConfirmDialog
+        show={formDelete}
+        onClose={()=>this.setState({formDelete: false})}
+        onClick={()=>onDelete(user)}>
+        Are you SURE you want to remove the {group} {user.firstName} {user.lastName}({user.login})?
+      </ConfirmDialog>)
   }
 
   render() {
     let {userIds} = this.props;
     
     return (
-      
+      <div>
       <PagedTable data={userIds} header={<TableRow>
             <TableCell>User</TableCell>
             <TableCell>Name</TableCell>
@@ -39,6 +56,8 @@ class UsersTable extends Component {
         }
         row={this.renderUser}
         />
+        {this.renderConfirmDialog()}
+        </div>
     )
   }
 }

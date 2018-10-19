@@ -19,7 +19,7 @@ export default class Bookmark extends Component {
       <div className={cn("bookmark", {selected})}>
         <div className="thumb" onClick={() => !selected && onSelect(index)}>
           <div className="thumb__label">
-            <h3>{ screen && screen.name }</h3>
+            <div className="thumb__label__title" tooltip={screen && screen.name}>{ screen && screen.name }</div>
             <p>{ screen && screenTypes[screenType] && screenTypes[screenType].toLowerCase() }</p>
           </div>
         </div>
