@@ -149,9 +149,13 @@ class Screen extends Component {
         </div>
         <PadBlock>
           <ConfirmButton
+            variant="contained"
+            color="secondary"
             onClick={onDelete}
             text="Are you SURE you want to delete this screen?"
-            buttonText="Delete screen" />
+            >
+            Delete screen
+          </ConfirmButton>
         </PadBlock>
         
       </div>

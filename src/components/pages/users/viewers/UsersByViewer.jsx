@@ -55,11 +55,12 @@ class UsersByViewer extends Component {
   };
 
   render() {
-    const { users, onSelectUsers, userIds, onCancel } = this.props;
+    const { users, onSelectUsers, userIds, onCancel, viewer } = this.props;
     const {selected} = this.state;
     const numSelected = selected.length;
     const rowCount = userIds.length;
     return (<div className="users-by-viewer">
+      <h4 className="text-center">Select users for {viewer.firstName} {viewer.lastName}</h4>
       <PagedTable rowsPerPage={25} data={userIds} header={
       <TableRow><TableCell padding="checkbox"><Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -72,7 +73,7 @@ class UsersByViewer extends Component {
             checked={selected.includes(id)}
           />
         </TableCell>
-        <TableCell>{users[id].firstName} {users[id].lastName}</TableCell></TableRow>} />
+        <TableCell>{users[id].firstName} {users[id].lastName}({users[id].login})</TableCell></TableRow>} />
         <center>
           <Button variant="outlined" onClick={() => onSelectUsers(selected)}>Select</Button>
           <Button variant="outlined" onClick={onCancel}>Cancel</Button>

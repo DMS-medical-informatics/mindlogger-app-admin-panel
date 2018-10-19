@@ -39,7 +39,7 @@ class ActSetting extends Component {
           <a>Delete activity</a>
         </div>
         <div className="section-body">
-          <ConfirmButton onClick={onDelete} text="Are you SURE you want to delete this activity?" buttonText="Delete activity" />
+          <ConfirmButton variant="contained" color="secondary"  onClick={onDelete} text="Are you SURE you want to delete this activity?">Delete activity</ConfirmButton>
         </div>
       </div>
     );

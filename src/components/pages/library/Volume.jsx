@@ -90,7 +90,7 @@ class Volume extends Component {
           <Grid item>
             <h3>Actions</h3>
             { canEdit && <Button variant="outlined" color="primary" onClick={this.onEditActivity}>Edit Activities</Button> }
-            <p className="pt-3">The Menu on top of the page may offer more options, depending on whether you have Manager, Editor, User, or Viewer permissions for the {volume.meta.shortName} Activity set.</p>
+            <p className="pt-3">The Menu on top of the page may offer more options, depending on whether you have Manager, Editor, User, or Viewer permissions for the {volume.meta.shortName} Activity Set.</p>
           </Grid>
         </Grid>
       </div>
