@@ -2,9 +2,7 @@
   "name": "mindlogger_admin_panel",
   "version": "0.3.0",
   "private": true,
-  "devDependencies": {
-    "react-scripts": "^1.1.5"
-  },
+  "devDependencies": {},
   "dependencies": {
     "@material-ui/core": "^1.4.3",
     "@material-ui/icons": "^2.0.1",
@@ -12,7 +10,7 @@
     "ajv": "^6.0.0",
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
-    "d3": "^4.12.0",
+    "d3": "~4.7.0",
     "debounce": "^1.1.0",
     "event-drops": "^1.3.0",
     "file-saver": "^1.3.3",
