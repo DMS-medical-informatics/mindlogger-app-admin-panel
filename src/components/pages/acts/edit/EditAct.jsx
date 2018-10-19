@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
 import { Prompt } from 'react-router-dom';
 import {
   Button as Submit,
@@ -128,6 +127,7 @@ class EditAct extends Component {
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject(`folder/${actId}`).then(act => {
+      console.log(act);
       this.decodeData(act);
     });
     this.loadAllScreens();
@@ -282,6 +282,7 @@ class EditAct extends Component {
 
   render() {
     const {screensData, index, setting, screens} = this.state;
+    const {info} = this.props;
     let screen = screensData[index];
     if (!setting) {
       return (<section className="edit-act"></section>)
@@ -291,14 +292,16 @@ class EditAct extends Component {
         <Prompt
           when={this.props.changed}
           message={location => 'You will lose any changes you have made if you don\'t submit them.'} />
+        <h3>Edit the ETA Activity in the ETA3 Activity Set</h3>
+        <p>Configure notifications and other settings in the Settings tab, and build each screen in the Screens tab.</p>
         <Tabs id="edit-act-tabs" onSelect={this.selectTab}  defaultActiveKey={1}>
           <Tab eventKey={1} title="Settings">
-            <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref } onDelete={this.handleDelete}/>
+            <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref } onDelete={this.handleDelete} info={info}/>
           </Tab>
           <Tab eventKey={2} title="Screens">
             <div className="screens">
               {this.renderBookmarks()}
-              <Screen info={setting.info} index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
+              <Screen info={info} index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
             </div>
           </Tab>
           <Submit bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Submit>
@@ -319,19 +322,11 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-  act: state.entities.data && state.entities.data[ownProps.match.params.id],
-  actId: ownProps.match.params.id,
+  act: state.entities.data && state.entities.data[ownProps.actId],
   changed: state.entities.actChanged,
-  actIndex: ownProps.match.params.id,
   user: state.entities.auth || {},
   volume: state.entities.volume,
-  screensHash: state.entities.objects && state.entities.objects[`folder/${ownProps.match.params.id}`] || {},
+  screensHash: state.entities.objects && state.entities.objects[`folder/${ownProps.actId}`] || {},
 });
 
-export default compose(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  ),
-  withRouter
-)(EditAct);
+export default connect(mapStateToProps, mapDispatchToProps)(EditAct);

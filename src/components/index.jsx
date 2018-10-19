@@ -24,7 +24,8 @@ import Library from './pages/library';
 import Volume from './pages/library/Volume';
 
 import Acts from './pages/acts';
-import EditAct from './pages/acts/edit';
+import EditActPage from './pages/acts/edit/EditActPage';
+import EditInfoActPage from './pages/acts/edit/EditInfoActPage';
 import ActsSelect from './pages/acts/select/index';
 
 import {Managers, Editors, Viewers, Users} from './pages/users';
@@ -66,8 +67,10 @@ export default class App extends Component {
               <AuthRoute path='/organizations' component={Organizations} />
               <AuthRoute path='/library' component={Library}/>
               <AuthRoute path='/volumes/:id' component={Volume}/>
-              <AuthRoute path='/acts/:id/edit' component={EditAct}/>
-              <AuthRoute path='/acts/new' component={EditAct}/>
+              <AuthRoute path='/acts/:id/edit' component={EditActPage}/>
+              <AuthRoute path='/acts/new' component={EditActPage}/>
+              <AuthRoute path='/act_infos/:id/edit' component={EditInfoActPage}/>
+              <AuthRoute path='/act_infos/new' component={EditInfoActPage}/>
               <AuthRoute path='/acts/select' component={ActsSelect}/>
               <AuthRoute path='/acts' component={Acts}/>
               <Route render={() => <h3>No Match</h3>} />
