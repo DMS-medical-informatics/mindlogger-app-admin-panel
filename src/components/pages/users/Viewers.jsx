@@ -126,7 +126,7 @@ class Viewers extends Component {
             {" "}
             <Button variant="contained" onClick={this.showSelectModal}>Add Existing Member</Button>
           </Grid>
-          <Grid item xs={3} className="users-by-viewer--container">
+          <Grid item xs={3} className="users-by-viewer__container">
             { user && <UsersByViewer key={user._id} viewer={user} selected={userDict[user._id]} userIds={data.members && data.members.users} onSelectUsers={this.onSelectUsers} onCancel={() => this.setState({user:undefined})} /> }
           </Grid>
         </Grid>

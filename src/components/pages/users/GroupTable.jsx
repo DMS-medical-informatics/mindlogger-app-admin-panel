@@ -94,7 +94,7 @@ class GroupTable extends Component {
   }
 
   render() {
-    let {groupName, group, onSelect} = this.props;
+    let {groupName, group, onSelect, withTitle} = this.props;
     
     const userIds = this.filterUsers();
     
@@ -103,6 +103,7 @@ class GroupTable extends Component {
         <div className="search-box">
           <InputRow label={`Search ${groupName}s`}>&nbsp; &nbsp; <TextField type="name" placeholder="name or email" onChange={this.onSearch}/></InputRow>
         </div>
+        { withTitle && <h4>{groupName}s</h4> }
         {userIds && <UsersTable userIds={userIds} onSelect={onSelect} onDelete={this.handleDelete} group={groupName}/> }
         <Button variant="contained" onClick={this.showAddModal}>Add {groupName}</Button>
         {" "}

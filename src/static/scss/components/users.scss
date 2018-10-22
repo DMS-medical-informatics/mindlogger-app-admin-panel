@@ -21,11 +21,23 @@
   position: absolute;
 }
 
-.users-by-viewer--container {
+.users-by-viewer__container {
   z-index: 10;
 }
 
 .users-by-viewer {
   border-left: 1px solid #777;
   background-color: white;
+}
+
+.add-users-by-viewer {
+  width: 300px;
+  .table-wrapper {
+    height: 300px;
+  }
+}
+
+.viewers-by-user__container {
+  z-index: 10;
+  padding-top: 120px;
 }
