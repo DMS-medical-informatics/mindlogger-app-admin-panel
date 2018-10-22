@@ -5,10 +5,13 @@ import { withRouter } from "react-router";
 import EditAct from "./EditAct"
 
 class EditInfoActPage extends Component {
+  onSubmit = () => {
+    this.props.history.push('/acts');
+  }
 
   render() {
     return (
-      <EditAct actId={this.props.actId} info={true}/>
+      <EditAct actId={this.props.actId} info={true} onSubmit={this.onSubmit}/>
     );
   }
 }

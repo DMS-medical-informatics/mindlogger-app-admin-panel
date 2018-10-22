@@ -6,9 +6,12 @@ import EditAct from "./EditAct"
 
 class EditActPage extends Component {
 
+  onSubmit = () => {
+    this.props.history.push('/acts');
+  }
   render() {
     return (
-      <EditAct actId={this.props.actId}/>
+      <EditAct actId={this.props.actId} onSubmit={this.onSubmit}/>
     );
   }
 }

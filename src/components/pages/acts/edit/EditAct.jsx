@@ -164,7 +164,7 @@ class EditAct extends Component {
   }
 
   onSubmit = () => {
-    const {setActChanged, updateItem, act, updateFolder, history} = this.props;
+    const {setActChanged, updateItem, act, updateFolder, onSubmit} = this.props;
     let prArray = [];
     let formErrors;
     if (this.formRef) {
@@ -192,7 +192,7 @@ class EditAct extends Component {
       return updateFolder(act._id, name, {screens, ...setting});
     }).then(() => {
       setActChanged(false);
-      history.push('/acts');
+      onSubmit();
     });
   }
 
@@ -267,15 +267,15 @@ class EditAct extends Component {
   }
 
   handleDelete = () => {
-    const {act, deleteObject, history} = this.props;
+    const {act, deleteObject, onSubmit} = this.props;
     this.props.setActChanged(false);
     if (act.meta && act.meta.info) {
       return deleteObject(act._id, 'folder').then(res => {
-        history.push('/acts');
+        onSubmit();
       });
     } else {
       return deleteObject(act.parentId, 'folder').then(res => {
-        history.push('/acts');
+        onSubmit();
       });
     }
   }
@@ -301,7 +301,7 @@ class EditAct extends Component {
           <Tab eventKey={2} title="Screens">
             <div className="screens">
               {this.renderBookmarks()}
-              <Screen info={info} index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
+              <Screen index={index} screen={screen} onFormRef={ref => (this.formRef = ref)} onSaveScreen={this.onSaveScreen} onDelete={this.onDeleteScreen}/>
             </div>
           </Tab>
           <Submit bsStyle="primary" className="save-btn" onClick={this.onSubmit}>Submit</Submit>

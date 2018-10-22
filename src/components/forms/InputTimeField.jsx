@@ -11,12 +11,13 @@ export default ({
   label,
   required,
   value,
+  defaultValue,
   meta: { touched, error, warning }
 }) => (<TimePicker
   showSecond={false}
   className="input-time-field"
   onChange={input.onChange}
-  defaultValue={moment()}
+  defaultValue={defaultValue ? moment(defaultValue, "HH:mm") : moment()}
   format={format}
   use12Hours
   inputReadOnly

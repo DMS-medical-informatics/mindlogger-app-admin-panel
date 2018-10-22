@@ -30,7 +30,7 @@ const renderTimes = ({ fields, meta: { error } }) => (
             <Field name={`${obj}.timeMode`} label="Scheduled:" component={InputRadioField} select="scheduled"/>
           </Grid>
           <Grid item>
-            <Field name={`${obj}.time`} component={InputTimeField}/>
+            <Field name={`${obj}.time`} component={InputTimeField} defaultValue="09:00"/>
           </Grid>
         </Grid>
         <Grid container alignItems="baseline">
@@ -39,10 +39,10 @@ const renderTimes = ({ fields, meta: { error } }) => (
           </Grid>
           <Grid item>
             Start:
-            <Field name={`${obj}.timeStart`} component={InputTimeField}/>
+            <Field name={`${obj}.timeStart`} component={InputTimeField} defaultValue="09:00"/>
             <br/>
             End:
-            <Field name={`${obj}.timeEnd`} component={InputTimeField}/>
+            <Field name={`${obj}.timeEnd`} component={InputTimeField} defaultValue="21:00"/>
           </Grid>
         </Grid>
         

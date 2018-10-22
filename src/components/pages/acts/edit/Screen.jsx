@@ -61,7 +61,7 @@ class Screen extends Component {
     const {survey} = this.state;
     const {screen} = this.props;
     const defaultSurvey = {
-      optionsMin: 0,
+      optionsMin: 1,
       optionsMax: 1,
     }
     const formProps = {
@@ -122,16 +122,14 @@ class Screen extends Component {
   }
   
   render() {
-    const {index, screen, onFormRef, actId, onDelete, info} = this.props;
+    const {index, screen, onFormRef, actId, onDelete} = this.props;
     return (
       <div className="screen">
-        {!info && 
         <ul className="scroll-to-list">
           <ScrollLink to="display">Screen display</ScrollLink>
           <ScrollLink to="survey">Survey</ScrollLink>
           <ScrollLink to="canvas">Canvas</ScrollLink>
         </ul>
-        }
         
         {
           screen && 
@@ -141,7 +139,6 @@ class Screen extends Component {
             onSubmit={this.onFormSubmit}
             showModal={this.showModal}
             body={this.props.body || {}}
-            info={info}
             initialValues={screen}/> }
         {this.state.form && this.renderModal()}
         <div className="section-title">
