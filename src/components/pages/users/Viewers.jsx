@@ -14,12 +14,8 @@ import UsersByViewer from './viewers/UsersByViewer';
 import Grid from '@material-ui/core/Grid';
 import PagedTable from '../../layout/PagedTable';
 import { InputRow } from '../../forms/Material';
+import { userContain } from '../../../helpers';
 
-const userContain = (user, keyword) => 
-  {
-    return user && 
-  (user.firstName.includes(keyword) || user.lastName.includes(keyword) || user.email.includes(keyword))
-  }
 class Viewers extends Component {
 
   componentWillMount() {
@@ -63,6 +59,7 @@ class Viewers extends Component {
     let userDict = {...this.props.userDict};
     userDict[user._id] = [];
     meta.members.viewers = userDict;
+    
     volume.meta = meta;
     return updateObject('folder', volume._id, volume.name, meta).then(res => {
       setVolume({...volume});

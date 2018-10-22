@@ -12,14 +12,8 @@ import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
 import { InputRow } from '../../forms/Material';
+import { userContain } from '../../../helpers';
 
-
-
-const userContain = (user, keyword) => 
-  {
-    return user && 
-  (user.firstName.includes(keyword) || user.lastName.includes(keyword) || user.email.includes(keyword))
-  }
 
 
 class GroupTable extends Component {

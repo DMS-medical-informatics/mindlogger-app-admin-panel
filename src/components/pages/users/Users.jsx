@@ -24,7 +24,7 @@ class Users extends Component {
           <br/>
           Users perform Activities in the App, and Viewers can view their data in a Dashboard.
         </p>
-        <GroupTable group='users' groupName='User' onAddMember={this.handleMember} />
+        <GroupTable group='users' groupName='User' onAddMember={this.handleMember} onSelect={this.onSelect}/>
       </div>
     )
   }
