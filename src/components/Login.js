@@ -42,10 +42,17 @@ class Login extends Component {
             <div className="alert alert-danger" role="alert">
               <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
               <span className="sr-only">Error:</span>
-              &nbsp;{this.state.loginMessage} <a onClick={this.forgotPassword} className="alert-link">Forgot Password?</a>
+              &nbsp;{this.state.loginMessage}
             </div>
           }
+          <div className="text-center">
           <button type="submit" className="btn btn-primary">Login</button>
+          </div>
+          <div className="login__footer-link">
+          <small>
+            <a onClick={this.forgotPassword} className="alert-link">Forgot Password?</a>
+          </small>
+          </div>
         </form>
       </div>
     )
