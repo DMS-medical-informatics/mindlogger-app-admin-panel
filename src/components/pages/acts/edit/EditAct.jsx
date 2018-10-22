@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { compose } from "redux";
 import { connect } from "react-redux";
 import { Prompt } from 'react-router-dom';
 import {
@@ -109,7 +108,7 @@ class EditAct extends Component {
 
   onDeleteScreen = () => {
     const {act, updateFolder, deleteObject} = this.props;
-    let {screens, screensData, index, setting} = this.state;
+    let {screens, screensData, index} = this.state;
     let screen = screensData.splice(index,1)[0];
     screens.splice(index,1);
     console.log(screen);
@@ -228,7 +227,7 @@ class EditAct extends Component {
   }
 
   getScreen(index, key) {
-    const {screensData,screens} = this.state;
+    const {screensData} = this.state;
     const {screensHash} = this.props;
     if (screensData[index]) {
       return screensData[index];
@@ -240,8 +239,7 @@ class EditAct extends Component {
   }
 
   renderBookmarks() {
-    const {screensData, index, setting, screens} = this.state;
-    const {screensHash} = this.props;
+    const {index, screens} = this.state;
     return (
       <div className="bookmarks">
         { screens && screens.map((screen,idx) =>
@@ -263,7 +261,7 @@ class EditAct extends Component {
   }
 
   selectTab = (key) => {
-    const {volume} = this.props;
+    
   }
 
   handleDelete = () => {
@@ -281,7 +279,7 @@ class EditAct extends Component {
   }
 
   render() {
-    const {screensData, index, setting, screens} = this.state;
+    const {screensData, index, setting} = this.state;
     const {info} = this.props;
     let screen = screensData[index];
     if (!setting) {
@@ -321,12 +319,12 @@ const mapDispatchToProps = {
   deleteObject
 };
 
-const mapStateToProps = (state, ownProps) => ({
-  act: state.entities.data && state.entities.data[ownProps.actId],
-  changed: state.entities.actChanged,
-  user: state.entities.auth || {},
-  volume: state.entities.volume,
-  screensHash: state.entities.objects && state.entities.objects[`folder/${ownProps.actId}`] || {},
+const mapStateToProps = ({entities: {data, objects, actChanged, auth, volume}}, ownProps) => ({
+  act: data && data[ownProps.actId],
+  changed: actChanged,
+  user: auth || {},
+  volume: volume,
+  screensHash: (objects && objects[`folder/${ownProps.actId}`]) || {},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAct);

@@ -1,20 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import Button from '@material-ui/core/Button';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
-import Modal from '@material-ui/core/Modal';
-import Paper from '@material-ui/core/Paper';
-import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
-import AddIcon from '@material-ui/icons/AddCircleOutline';
 
 import PagedTable from '../../../layout/PagedTable';
 import { userContain } from '../../../../helpers';
 import PadBlock from '../../../layout/PadBlock';
-import AddUsersByViewer from './AddUsersByViewer';
 
 class ViewersByUser extends Component {
   static propTypes = {
@@ -42,9 +35,9 @@ class ViewersByUser extends Component {
 
 
   render() {
-    const { users, onSelectUsers, userIds, onCancel, user, selected } = this.props;
-    const numSelected = selected.length;
-    const rowCount = userIds.length;
+    const { users, userIds, user, selected } = this.props;
+    // const numSelected = selected.length;
+    // const rowCount = userIds.length;
     const filteredIds = this.filterUsers();
     return (<div className="users-by-viewer">
       <h4 className="text-center">Viewers for {user.firstName} {user.lastName}</h4>

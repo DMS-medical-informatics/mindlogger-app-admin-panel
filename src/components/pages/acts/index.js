@@ -157,7 +157,7 @@ class Acts extends Component {
 
   handleImport = (act) => {
     const {folder, subfolder} = this.state;
-    const {volume, copyObject, updateFolder} = this.props;
+    const {copyObject, updateFolder} = this.props;
     this.setState({open: false, library: false});
     copyObject(act._id, 'folder', this.groupId, 'folder').then(res => {
       if(subfolder) {
@@ -238,7 +238,7 @@ class Acts extends Component {
     );
   }
   render() {
-    const {folder, subfolder, library} = this.state;
+    const {library} = this.state;
     if(library) {
       return <ActSelect onSelect={this.handleImport} />
     } else {

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import GroupTable from './GroupTable';
 import { addFolder, copyObject } from '../../../actions/api';
@@ -57,9 +56,9 @@ class Users extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  volume: state.entities.volume,
-  userDict: state.entities.volume.meta.members && state.entities.volume.meta.members.viewers || {},
+const mapStateToProps = ({entities: {volume}}) => ({
+  volume,
+  userDict: (volume.meta.members && volume.meta.members.viewers) || {},
 })
 
 const mapDispatchToProps = {

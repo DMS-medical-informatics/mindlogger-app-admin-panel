@@ -115,7 +115,7 @@ class Home extends Component {
             )
           }
           {
-            user.meta && user.meta.role == 'admin' && <div className="plus-button" onClick={() => this.setState({form: true})}>
+            user.meta && user.meta.role === 'admin' && <div className="plus-button" onClick={() => this.setState({form: true})}>
               <img src={plus} alt="plus"/>
             </div>
           }

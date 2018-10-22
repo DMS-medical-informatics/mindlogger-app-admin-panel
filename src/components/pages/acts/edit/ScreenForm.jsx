@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form'
-import {FormGroup, Row, Col} from 'react-bootstrap';
+import {Row, Col} from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
 import { InputField } from '../../../forms/FormItems';
 import {InputCheckField, InputRadioField, InputRow, InputTextField} from '../../../forms/Material';
-import {isRequired} from '../../../forms/validation'
 import PadBlock from '../../../layout/PadBlock';
 import InputFileField from '../../../forms/GInputFileField';
 
@@ -18,7 +17,7 @@ class ScreenForm extends Component {
     return (<Button variant="contained" onClick={() => this.props.showModal(type)}>Edit</Button>);
   }
   render() {
-    const {handleSubmit, index, body: {surveyType, canvasType}, info, initialValues: {id}} = this.props;
+    const {handleSubmit, body: {surveyType, canvasType}, info, initialValues: {id}} = this.props;
     return (
       <form onSubmit={ handleSubmit }>
         {/* <Field name="name" type="text" label={`Screen ${index+1} name`} validate={isRequired} component={InputField} /> */}

@@ -21,7 +21,7 @@ class InfoGroup extends Component {
   }
 
   componentWillMount() {
-    const {group:{_id:parentId, name}, getPath} = this.props;
+    const {group:{_id:parentId}, getPath} = this.props;
     getPath('folder', {parentId, parentType: 'folder'}).then(acts => {
       let info;
       let consent;
@@ -37,8 +37,8 @@ class InfoGroup extends Component {
   }
 
   render() {
-    const {group, name, onEdit, onAdd} = this.props;
-    const {info, consent} = this.state;
+    const { name, onEdit, onAdd} = this.props;
+    const {info} = this.state;
     const infoButton = (info ? 
       <LButton onClick={() => onEdit(info, true)}>{info.name}</LButton>
       : <Button onClick={() => onAdd('info')}><AddIcon /></Button>);

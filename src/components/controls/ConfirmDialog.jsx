@@ -10,12 +10,12 @@ export default class ConfirmDialog extends Component {
     onClick();
   }
   render() {
-    const {show, onClose, onClick, children} = this.props;
+    const {show, onClose, children} = this.props;
     return (
       <Modal
             aria-labelledby="simple-modal-title"
             aria-describedby="simple-modal-description"
-            open={this.props.show}
+            open={show}
             onClose={this.onClose}
           >
         <Paper className="modal-paper">

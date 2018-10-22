@@ -8,7 +8,7 @@ export default class ScrollLink extends Component {
   }
   render() {
     const {tag, children} = this.props;
-    if (tag == 'div') {
+    if (tag === 'div') {
       return (
         <div onClick={() => this.scrollTo()}>{children}</div>
       )  

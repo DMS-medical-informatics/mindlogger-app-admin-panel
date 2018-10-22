@@ -25,10 +25,9 @@ class ActSelect extends Component {
   }
   componentWillMount() {
     const {volumes, getPath, setPublicActs} = this.props;
-    const {loading} = this.state;
     let results = [];
     this.setState({loading: true});
-    let tasks = volumes.filter(v => v.public == true)
+    let tasks = volumes.filter(v => v.public === true)
       .map(volume => (
         // Get Act Groups from volume
         getPath('/folder', {parentId: volume._id, parentType: 'folder'})
@@ -84,7 +83,7 @@ class ActSelect extends Component {
             { act.volumeName }
           </TableCell>
           <TableCell>
-            { act.groups && act.groups.map((group, i)=> {group.name + (i+1 < act.groups.length ? ", " : "")}) }
+            { act.groups && act.groups.map((group, i)=> group.name + (i+1 < act.groups.length ? ", " : "")) }
           </TableCell>
           <TableCell style={act.category ? null : {fontStyle: 'italic'} }>
             { act.category ? act.category : "unknown" }
@@ -104,8 +103,8 @@ class ActSelect extends Component {
     }
   }
   render() {
-    const {volume, groups, acts, volumes, multiselect} = this.props;
-    const {organizations, activities, loading} = this.state;
+    const {acts, multiselect} = this.props;
+    const {loading} = this.state;
     let data = this.filterActs(acts);
     return (
       <div>

@@ -54,10 +54,10 @@ const renderTimes = ({ fields, meta: { error } }) => (
 )
 class SettingForm extends Component {
   render() {
-    const {handleSubmit, submitting, onDelete, info} = this.props
+    const {handleSubmit, info} = this.props
     return (
       <form onSubmit={ handleSubmit }>
-        {info != true &&
+        {info !== true &&
         <div className="section-title"><a id="information">Information</a></div>
         }
         <Row>
@@ -67,7 +67,7 @@ class SettingForm extends Component {
             <Field name="description" componentClass="textarea" label="Description:" component={InputField} />
           </Col>
         </Row>
-        { info != true && 
+        { info !== true && 
         (<div>
           <div className="section-title">
             <Row>

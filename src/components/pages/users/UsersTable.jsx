@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-
-import { FormControl, Row, Col } from 'react-bootstrap';
-import Button from '@material-ui/core/Button';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-import AddUser from './modal/AddUser';
 import { updateObject } from '../../../actions/api';
-import SelectUser from './modal/SelectUser';
 import PagedTable from '../../layout/PagedTable';
 import ConfirmDialog from '../../controls/ConfirmDialog';
 import UserRow from './UserRow';
 
 class UsersTable extends Component {
-
+  static propTypes = {
+    group: PropTypes.string.isRequired,
+    onSelect: PropTypes.func,
+    onDelete: PropTypes.func,
+    userIds: PropTypes.array,
+  }
   state = {
     user: false,
     formDelete: false,
@@ -26,7 +25,7 @@ class UsersTable extends Component {
     this.setState({formDelete: true, user});
   }
   renderUser=(userId) => {
-    const {onSelect, onDelete} = this.props;
+    const {onSelect} = this.props;
     return (<UserRow id={userId} key={userId} onSelect={onSelect} onDelete={this.showDeleteConfirm}/>)
   }
 

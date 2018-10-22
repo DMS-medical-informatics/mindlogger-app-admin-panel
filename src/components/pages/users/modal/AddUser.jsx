@@ -24,7 +24,7 @@ class AddUser extends Component {
   }
 
   onAddUser = (body) => {
-    const {inviteUser, setUserTemporary, role, onClose, onAdd} = this.props;
+    const {inviteUser, setUserTemporary, onAdd} = this.props;
   
     return inviteUser(body, {})
       .then(user =>

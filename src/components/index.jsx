@@ -26,7 +26,6 @@ import Volume from './pages/library/Volume';
 import Acts from './pages/acts';
 import EditActPage from './pages/acts/edit/EditActPage';
 import EditInfoActPage from './pages/acts/edit/EditInfoActPage';
-import ActsSelect from './pages/acts/select/index';
 
 import {Managers, Editors, Viewers, Users} from './pages/users';
 
@@ -71,7 +70,6 @@ export default class App extends Component {
               <AuthRoute path='/acts/new' component={EditActPage}/>
               <AuthRoute path='/act_infos/:id/edit' component={EditInfoActPage}/>
               <AuthRoute path='/act_infos/new' component={EditInfoActPage}/>
-              <AuthRoute path='/acts/select' component={ActsSelect}/>
               <AuthRoute path='/acts' component={Acts}/>
               <Route render={() => <h3>No Match</h3>} />
             </Switch>

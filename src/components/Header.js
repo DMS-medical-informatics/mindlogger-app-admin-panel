@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import {Navbar, NavItem, NavDropdown, Nav, MenuItem} from 'react-bootstrap';
+import {Navbar, NavItem, NavDropdown, Nav} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import {withRouter} from 'react-router'
@@ -15,7 +15,7 @@ class Header extends Component {
     }
 
     componentWillUpdate(nextProps) {
-      if (this.props.location.pathname != nextProps.location.pathname) {
+      if (this.props.location.pathname !== nextProps.location.pathname) {
         this.props.setPageTitle("");
       }
     }
@@ -39,7 +39,7 @@ class Header extends Component {
       let {auth, user, pageTitle, volume} = this.props;
       let authed = auth && auth.token && user ? true : false
 
-      let {viewers, managers, editors} = volume && volume.meta && volume.meta.members || {};
+      let {viewers, managers, editors} = (volume && volume.meta && volume.meta.members) || {};
       let canView = false;
       let canManage = false;
       let canEdit = false;
@@ -52,7 +52,7 @@ class Header extends Component {
           <Navbar className="navbar-blue" collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to={authed ? "/library" : "/"}><img className="logo" src="/logo.svg"/>MindLogger</Link>
+              <Link to={authed ? "/library" : "/"}><img alt="MindLogger" className="logo" src="/logo.svg"/>MindLogger</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

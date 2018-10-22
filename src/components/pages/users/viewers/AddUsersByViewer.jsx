@@ -58,7 +58,7 @@ class AddUsersByViewer extends Component {
 
   filterUsers() {
     const { userIds, users, excludeIds } = this.props;
-    const {keyword, selected} = this.state;
+    const {keyword} = this.state;
     let ids = excludeIds ? userIds.filter( id => !excludeIds.includes(id)) : userIds;
     if (keyword && keyword.length>0)
       return ids.filter(id => userContain(users[id], keyword));

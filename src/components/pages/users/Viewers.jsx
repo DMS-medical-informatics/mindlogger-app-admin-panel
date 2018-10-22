@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { FormControl, Row, Col } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
@@ -12,7 +10,6 @@ import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
 import UsersByViewer from './viewers/UsersByViewer';
 import Grid from '@material-ui/core/Grid';
-import PagedTable from '../../layout/PagedTable';
 import { InputRow } from '../../forms/Material';
 import { userContain } from '../../../helpers';
 
@@ -54,7 +51,7 @@ class Viewers extends Component {
   }
 
   selectUser = (user) => {
-    let {volume, updateObject, group, setVolume, getUsers} = this.props;
+    let {volume, updateObject, setVolume, getUsers} = this.props;
     let meta = volume.meta;
     let userDict = {...this.props.userDict};
     userDict[user._id] = [];
@@ -69,7 +66,7 @@ class Viewers extends Component {
   }
 
   handleDelete = (user) => {
-    const {volume, updateObject, group, setVolume} = this.props;
+    const {volume, updateObject, setVolume} = this.props;
     const meta = volume.meta;
     let userDict = {...this.props.userDict};
     delete userDict[user._id];
@@ -131,8 +128,10 @@ class Viewers extends Component {
           </Grid>
         </Grid>
         <AddUser
-          show={this.state.form === 'add_user'} onClose={this.closeModal}
-          groupName='Viewer' role='viewer'
+          show={this.state.form === 'add_user'}
+          onClose={this.closeModal}
+          groupName="Viewer"
+          role="viewer"
           onAdd={this.selectUser}
           />
         <SelectUser show={this.state.form === 'select_user'} exclude={userIds} onClose={this.closeModal} onSelect={this.selectUser} />
@@ -141,10 +140,10 @@ class Viewers extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  volume: state.entities.volume,
-  users: state.entities.users,
-  userDict: state.entities.volume.meta.members && state.entities.volume.meta.members.viewers || {},
+const mapStateToProps = ({entities: {volume, users}}) => ({
+  volume: volume,
+  users: users,
+  userDict: (volume.meta.members && volume.meta.members.viewers) || {},
 })
 
 const mapDispatchToProps = {

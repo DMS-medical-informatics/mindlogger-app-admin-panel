@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import Button from '@material-ui/core/Button';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
-import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
 import Paper from '@material-ui/core/Paper';
@@ -68,7 +67,6 @@ class UsersByViewer extends Component {
   }
 
   onAddUsers = (ids) => {
-    const {onSelectUsers} = this.props;
     let {selected} = this.state;
     selected = selected.concat(ids);
     this.setState({selected, show: false});
@@ -99,10 +97,10 @@ class UsersByViewer extends Component {
 
 
   render() {
-    const { users, onSelectUsers, userIds, onCancel, viewer } = this.props;
+    const { users, onSelectUsers, onCancel, viewer } = this.props;
     const {selected} = this.state;
-    const numSelected = selected.length;
-    const rowCount = userIds.length;
+    // const numSelected = selected.length;
+    // const rowCount = userIds.length;
     const filteredIds = this.filterUsers();
     return (<div className="users-by-viewer">
       <h4 className="text-center">Select users for {viewer.firstName} {viewer.lastName}</h4>

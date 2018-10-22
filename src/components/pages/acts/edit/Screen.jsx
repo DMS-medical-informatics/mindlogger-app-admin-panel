@@ -5,7 +5,6 @@ import {
   Modal,
 } from "react-bootstrap";
 import Sugar from 'sugar';
-import Button from '@material-ui/core/Button';
 
 import ScreenForm from './ScreenForm';
 import SurveyListForm from './survey/survey-list';
@@ -122,7 +121,7 @@ class Screen extends Component {
   }
   
   render() {
-    const {index, screen, onFormRef, actId, onDelete} = this.props;
+    const {index, screen, onFormRef, onDelete} = this.props;
     return (
       <div className="screen">
         <ul className="scroll-to-list">

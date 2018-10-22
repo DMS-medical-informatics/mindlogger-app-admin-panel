@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import { FormControl, Row, Col } from 'react-bootstrap';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddUser from './modal/AddUser';
@@ -94,7 +92,7 @@ class GroupTable extends Component {
   }
 
   render() {
-    let {groupName, group, onSelect, withTitle} = this.props;
+    let {groupName, onSelect, withTitle} = this.props;
     
     const userIds = this.filterUsers();
     

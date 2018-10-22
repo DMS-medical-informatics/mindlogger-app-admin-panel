@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
-import { withStyles } from '@material-ui/core/styles';
 
 import { getPath, getFoldersDict } from '../../../actions/api';
 import LButton from '../../controls/LButton';
@@ -40,8 +38,8 @@ class ActRow extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => ({
-  variants: state.entities.objects && state.entities.objects[`folder/${ownProps.act._id}`] || {},
+const mapStateToProps = ({entities: {objects}}, ownProps) => ({
+  variants: (objects && objects[`folder/${ownProps.act._id}`]) || {},
 })
 
 const mapDispatchToProps = {
