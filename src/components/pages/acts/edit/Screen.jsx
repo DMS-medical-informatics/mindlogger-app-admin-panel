@@ -62,6 +62,7 @@ class Screen extends Component {
     const defaultSurvey = {
       optionsMin: 1,
       optionsMax: 1,
+      optionsCount: 5,
     }
     const formProps = {
       onSubmit:this.onSurveyForm,
