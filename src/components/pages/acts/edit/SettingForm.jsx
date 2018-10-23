@@ -52,6 +52,23 @@ const renderTimes = ({ fields, meta: { error } }) => (
     </PadBlock>
   </div>
 )
+
+const renderCalendarDay = ({ fields, meta: { error } }) => (
+  <div>
+    <PadBlock>
+    {fields.map((obj, index) => (
+      <div key={index}>
+        <InputRow>
+        <Field name={obj} component={InputTextField} type="date" /><Button onClick={() => fields.remove(index)}><RemoveIcon/></Button>
+        </InputRow>
+      </div>))}
+    <InputRow>
+      <Button onClick={() => fields.push()}><AddIcon/></Button>
+    </InputRow>
+    {error && <li className="error">{error}</li>}
+    </PadBlock>
+  </div>
+)
 class SettingForm extends Component {
   render() {
     const {handleSubmit, info} = this.props
@@ -89,8 +106,9 @@ class SettingForm extends Component {
               </Grid>
               <Grid container>
               <Field name="notification[modeDate]" label="Calendar date:" component={InputCheckField} select="calendar_date"/>
-              <Field name="notification[calendarDay]" component={InputTextField} type="date" />
               </Grid>
+              <FieldArray name="notification[calendarDay]" component={renderCalendarDay} />
+              
               <Field name="notification[resetDate]" label="User can reset day/dates" component={InputCheckField} />
             </PadBlock>
             
