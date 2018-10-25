@@ -37,6 +37,8 @@ class Home extends Component {
         members: {
           editors: [user._id],
           managers: [user._id],
+          users: [],
+          viewers: {},
         }
       }
       , collection._id, 'collection').then(folder => {
