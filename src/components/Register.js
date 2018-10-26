@@ -33,10 +33,9 @@ class Register extends Component {
         <form onSubmit={handleSubmit(this.submit)}>
         <Field name="login" type="text" component={InputField} label="Username" placeholder="Username" validate={isRequired} />
         <Field name="email" type="text" component={InputField} label="Email" placeholder="Email" validate={isValidEmail} />
-        <Field name="firstName" type="text" component={InputField} label="First name" placeholder="" validate={isRequired} />
-        <Field name="lastName" type="text" component={InputField} label="Last name" placeholder="" validate={isRequired} />
-        <Field name="password" type="password" component={InputField} label="Password" placeholder="Email" validate={isRequired} />
-        
+        <Field name="firstName" type="text" component={InputField} label="First name" placeholder="Given name" validate={isRequired} />
+        <Field name="lastName" type="text" component={InputField} label="Last name" placeholder="Family name" validate={isRequired} />
+        <Field name="password" type="password" component={InputField} label="Password" placeholder="Password" validate={isRequired} />
           {
             this.state.registerError &&
             <div className="alert alert-danger" role="alert">

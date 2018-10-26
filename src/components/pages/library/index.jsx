@@ -49,7 +49,7 @@ class Home extends Component {
             ...data,
             logoImage: {
               name: res.name,
-              '@id': `file/${res.name}`
+              '@id': `file/${res._id}`
             }
           });
         });
@@ -112,16 +112,16 @@ class Home extends Component {
       <div>
         <div className="volumes">
           {
-            volumes && this.filterVolumes().map((volume, i) => 
+            volumes && this.filterVolumes().map((volume, i) =>
                 this.renderVolume(i, volume)
             )
           }
           {
-            user.meta && user.meta.role === 'admin' && <div className="plus-button" onClick={() => this.setState({form: true})}>
+            user && user.admin && <div className="plus-button" onClick={() => this.setState({form: true})}>
               <img src={plus} alt="plus"/>
             </div>
           }
-          
+
         </div>
         <Row>
           <Col xs={10} xsOffset={1}>
