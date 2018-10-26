@@ -248,6 +248,7 @@ class EditAct extends Component {
             key={idx}
             selected={idx === index}
             onSelect={this.selectScreen}
+            defaultLength={screens.length}
             screen={this.getScreen(idx, `item/${screen['name']}`)}
             />)
         }
@@ -261,7 +262,7 @@ class EditAct extends Component {
   }
 
   selectTab = (key) => {
-    
+
   }
 
   handleDelete = () => {
