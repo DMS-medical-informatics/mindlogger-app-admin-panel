@@ -22,9 +22,9 @@ class SurvyeListBasicForm extends Component {
             <InputRow>
               <Field name={`options[${i}].type`} label="Text" component={InputRadioField} select="text" />
               <Field name={`options[${i}].text`} component={InputTextField} type="text" placeholder="Text"/>
-              
+
             </InputRow>
-            
+
             <InputRow>
               <Field name={`options[${i}].type`} label="File" component={InputRadioField} select="file" />
               <Field name={`options[${i}].file`} component={InputFileField} data={{parentType: 'item', parentId: screenId}}/>
@@ -65,11 +65,11 @@ class SurvyeListBasicForm extends Component {
     </div>);
   }
   render() {
-    const {handleSubmit, submitting, body:{optionsMax}, previousPage, screenId} = this.props;
+    const {handleSubmit, submitting, body:{optionsMax, optionsCount}, previousPage, screenId} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <div className="wizard">
-          Enter text or upload pictures for the 2 response options
+          Enter text or upload pictures for the {optionsCount} response options
           { this.renderOptions() }
           { optionsMax === 1 && this.renderAdvanceScreen()}
           <div className="wizard-footer">
