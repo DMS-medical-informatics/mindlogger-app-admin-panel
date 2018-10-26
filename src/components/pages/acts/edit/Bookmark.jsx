@@ -17,7 +17,7 @@ export default class Bookmark extends Component {
     const screenType = screen && (screen.surveyType || screen.canvasType);
     return (
       <div className={cn("bookmark", {selected})}>
-        <div className="thumb" onClick={() => !selected && onSelect(index)}>
+        <div className="thumb" onClick={() => !selected && onSelect(index, screen.name)}>
           <div className="thumb__label">
             <div className="thumb__label__title" tooltip={screen && screen.name}>{ screen && screen.name }</div>
             <p>{ screen && screenTypes[screenType] && screenTypes[screenType].toLowerCase() }</p>
