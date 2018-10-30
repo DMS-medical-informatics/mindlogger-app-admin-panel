@@ -7,8 +7,7 @@ import TableRow from '@material-ui/core/TableRow';
 import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
 import Paper from '@material-ui/core/Paper';
-import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
-import AddIcon from '@material-ui/icons/AddCircleOutline';
+import ClearIcon from '@material-ui/icons/Clear';
 
 import PagedTable from '../../../layout/PagedTable';
 import { userContain } from '../../../../helpers';
@@ -50,6 +49,7 @@ class UsersByViewer extends Component {
       selected.splice(selectedIndex, 1);
     }
     this.setState({ selected });
+    this.props.onSelectUsers(selected);
   };
 
   onSearch = (e) => {
@@ -70,6 +70,7 @@ class UsersByViewer extends Component {
     let {selected} = this.state;
     selected = selected.concat(ids);
     this.setState({selected, show: false});
+    this.props.onSelectUsers(selected);
   }
 
   renderModal() {
@@ -97,29 +98,27 @@ class UsersByViewer extends Component {
 
 
   render() {
-    const { users, onSelectUsers, onCancel, viewer } = this.props;
-    const {selected} = this.state;
+    const { users, viewer } = this.props;
     // const numSelected = selected.length;
     // const rowCount = userIds.length;
     const filteredIds = this.filterUsers();
     return (<div className="users-by-viewer">
-      <h4 className="text-center">Select users for {viewer.firstName} {viewer.lastName}</h4>
-      <PadBlock>
+      <h4 className="text-center">Users for Viewer {viewer.firstName} {viewer.lastName}</h4>
+      <PadBlock padding={0.6}>
         <TextField className="searchText" onChange={this.onSearch} placeholder="Search"/>
       </PadBlock>
       <PagedTable rowsPerPage={25} data={filteredIds} header={
       <TableRow>
         <TableCell>Name</TableCell>
-        <TableCell><Button onClick={this.onShowAdd}><AddIcon/></Button></TableCell>
+        <TableCell></TableCell>
       </TableRow>
       } row={(id) => 
       <TableRow key={id} onClick={() => this.handleClick(id)}>
-        <TableCell>{users[id].firstName} {users[id].lastName}({users[id].login})</TableCell>
-        <TableCell><Button onClick={() => this.handleDelete(id)}><RemoveIcon /></Button></TableCell>
+        <TableCell>{users[id].firstName} {users[id].lastName} ({users[id].login})</TableCell>
+        <TableCell><Button onClick={() => this.handleDelete(id)}><ClearIcon /></Button></TableCell>
       </TableRow>} />
         <center>
-          <Button variant="outlined" onClick={() => onSelectUsers(selected)}>Submit</Button>
-          <Button variant="outlined" onClick={onCancel}>Cancel</Button>
+          <Button variant="outlined" onClick={this.onShowAdd}>Add Users</Button>
         </center>
       {this.renderModal()}
       </div>

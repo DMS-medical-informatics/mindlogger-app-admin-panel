@@ -85,7 +85,6 @@ class Viewers extends Component {
     userDict[this.state.user._id] = userIds;
     meta.members.viewers = userDict;
     volume.meta = meta;
-    this.setState({user:undefined});
     return updateObject('folder', volume._id, volume.name, meta).then(res => {
       setVolume({...volume});
     });

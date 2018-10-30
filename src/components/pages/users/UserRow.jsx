@@ -30,7 +30,7 @@ class UserRow extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-  user: state.entities.users && state.entities.users[ownProps.id]
+  user: (state.entities.users && state.entities.users[ownProps.id]) || {_id: ownProps.id}
 })
 
 const mapDispatchToProps = {

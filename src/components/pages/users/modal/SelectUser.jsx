@@ -4,11 +4,12 @@ import { connect } from 'react-redux'
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
 
 import Modal from '@material-ui/core/Modal';
 import PagedTable from '../../../layout/PagedTable';
-
-
+import { userContain } from '../../../../helpers';
+import PadBlock from '../../../layout/PadBlock';
 
 class SelectUser extends Component {
   static propTypes = {
@@ -67,10 +68,24 @@ class SelectUser extends Component {
     this.setState({ rowsPerPage: event.target.value });
   };
 
+  filterUsers() {
+    const { users } = this.props;
+    const {keyword, keys} = this.state;
+    if (keyword && keyword.length>0)
+      return keys.filter(id => userContain(users[id], keyword));
+    else
+      return keys;
+  }
+
+  onSearch = (e) => {
+    let keyword = e.target.value.toLowerCase();
+    this.setState({keyword});
+  }
+
   render() {
     const {show, onClose} = this.props;
     console.log(this.props.users);
-    const { keys } = this.state;
+    //const { keys } = this.state;
     return (
       <Modal
           aria-labelledby="simple-modal-title"
@@ -80,7 +95,10 @@ class SelectUser extends Component {
         >
       <Paper className="modal-table">
         <h3>Select User</h3>
-        <PagedTable data={keys} header={<TableRow>
+        <PadBlock padding={0.6}>
+        <TextField className="searchText" onChange={this.onSearch} placeholder="Search"/>
+        </PadBlock>
+        <PagedTable data={this.filterUsers()} header={<TableRow>
             <TableCell>User</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Email</TableCell>
