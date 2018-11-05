@@ -40,11 +40,11 @@ class SurveyListOrderForm extends Component {
     </div>);
   }
   render() {
-    const {handleSubmit, submitting, body:{optionsMax}, previousPage, screenId} = this.props;
+    const {handleSubmit, submitting, body:{optionsMax, optionsCount}, previousPage, screenId} = this.props;
     return (
       <form onSubmit={handleSubmit}>
         <div className="wizard">
-          Enter text or upload pictures for the 2 response options
+          Enter text or upload pictures for the {optionsCount} response options
           <Field name="responseType" label="Text Response Option" component={InputRadioField} select="text" validate={isRequired}/>
           <PadBlock>
             <p>Specify the order that text options are presented with a text file in the format below, with bracketed lists of comma-separated text strings. Example: present two text strings three possible ways: [string 1, string 2], [string 2, string 1], [string 3, string 2]</p>
@@ -57,7 +57,7 @@ class SurveyListOrderForm extends Component {
             <Field name="pictureFiles" label="Upload picture file" component={InputFileField} validate={isRequired} data={{parentType: 'item', parentId: screenId}}/>
           </PadBlock>
           <br/>
-          { optionsMax === 1 && 
+          { optionsMax === 1 &&
             this.renderAdvanceScreen()
            }
           <div className="wizard-footer">

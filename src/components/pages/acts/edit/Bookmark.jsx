@@ -13,7 +13,7 @@ const screenTypes = {
 }
 export default class Bookmark extends Component {
   render() {
-    const {index, selected, screen, onSelect} = this.props;
+    const {index, selected, screen, onSelect, defaultLength } = this.props;
     const screenType = screen && (screen.surveyType || screen.canvasType);
     return (
       <div className={cn("bookmark", {selected})}>
@@ -23,7 +23,7 @@ export default class Bookmark extends Component {
             <p>{ screen && screenTypes[screenType] && screenTypes[screenType].toLowerCase() }</p>
           </div>
         </div>
-        <div className="subtitle">Screen {index+1} of 42</div>
+        <div className="subtitle">Screen {index+1} of {defaultLength}</div>
       </div>
     );
   }
