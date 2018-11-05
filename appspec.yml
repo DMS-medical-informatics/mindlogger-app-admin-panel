@@ -11,7 +11,7 @@ version: 0.0
 #   instances.
 # Specify "os: windows" if this revision targets Windows Server instances.
 # (You cannot specify both "os: linux" and "os: windows".)
-os: linux
+os: linux 
 # os: windows
 # During the Install deployment lifecycle event (which occurs between the
 #   BeforeInstall and AfterInstall events), copy the specified files
@@ -62,7 +62,7 @@ hooks:
 # During the BeforeInstall deployment lifecycle event, run the commands
 #   in the script specified in "location".
   BeforeInstall:
-    - location: ~/.nvm/versions/node/v11.1.0/bin/npm install
+    - location: npm install
       timeout: 500
       runas: ec2-user
 # During the AfterInstall deployment lifecycle event, run the commands
@@ -70,7 +70,7 @@ hooks:
 # During the ApplicationStart deployment lifecycle event, run the commands
 #   in the script specified in "location".
   ApplicationStart:
-    - location: ~/.nvm/versions/node/v11.1.0/bin/npm start
+    - location: npm start
       timeout: 500
       runas: ec2-user
 # During the ValidateService deployment lifecycle event, run the commands
