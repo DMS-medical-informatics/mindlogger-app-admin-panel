@@ -4,3 +4,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 nvm install node
 npm install
+npm update
+npm install node-sass install.js
+npm rebuild node-sass
