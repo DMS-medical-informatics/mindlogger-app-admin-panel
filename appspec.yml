@@ -65,6 +65,14 @@ hooks:
 #   in the script specified in "location".
 # During the ApplicationStart deployment lifecycle event, run the commands
 #   in the script specified in "location".
+  Install:
+    - location: ./CodeDeploy/install.sh
+      timeout: 500
+      runas: root
+  AfterInstall:
+    - location: ./CodeDeploy/install.sh
+      timeout: 500
+      runas: root
   ApplicationStart:
     - location: ./CodeDeploy/start.sh
       timeout: 500
