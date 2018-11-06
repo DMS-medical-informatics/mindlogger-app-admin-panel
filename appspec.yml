@@ -12,6 +12,9 @@ version: 0.0
 # Specify "os: windows" if this revision targets Windows Server instances.
 # (You cannot specify both "os: linux" and "os: windows".)
 os: linux
+files:
+      - source: /
+        destination: /apps/mindlogger-admin-panel
 # os: windows
 # During the Install deployment lifecycle event (which occurs between the
 #   BeforeInstall and AfterInstall events), copy the specified files
