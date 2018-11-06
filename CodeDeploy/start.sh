@@ -5,8 +5,8 @@ export NVM_DIR="/home/ec2-user/.nvm"
 ls > ls.txt
 pwd > pwd.txt
 nvm install node
-npm install
-npm update
-npm install node-sass install.js
-npm rebuild node-sass
-npm start
+sudo npm install
+sudo npm update
+sudo npm install node-sass install.js
+sudo npm rebuild node-sass
+sudo npm start
