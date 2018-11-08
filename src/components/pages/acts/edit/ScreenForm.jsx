@@ -9,9 +9,12 @@ import {InputCheckField, InputRadioField, InputRow, InputTextField} from '../../
 import PadBlock from '../../../layout/PadBlock';
 import InputFileField from '../../../forms/GInputFileField';
 
+const plusOne = value => value + 1;
+const minusOne = value => value - 1;
+
 class ScreenForm extends Component {
   componentWillMount() {
-    
+
   }
   renderModalButton(type) {
     return (<Button variant="contained" onClick={() => this.props.showModal(type)}>Edit</Button>);
