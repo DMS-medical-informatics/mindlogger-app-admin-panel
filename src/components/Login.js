@@ -23,7 +23,7 @@ class Login extends Component {
           this.setState(setErrorMsg(error.message))
         })
   }
-  
+
   forgotPassword = () => {
     const {history} = this.props
     history.push('/forgot-password');
@@ -36,7 +36,7 @@ class Login extends Component {
         <h1> Login </h1>
         <form onSubmit={handleSubmit(this.submit)}>
         <Field name="user" type="text" component={InputField} label="Username" placeholder="Username" validate={isRequired} />
-        <Field name="password" type="password" component={InputField} label="Password" placeholder="Email" validate={isRequired} />
+        <Field name="password" type="password" component={InputField} label="Password" placeholder="Password" validate={isRequired} />
           {
             this.state.loginMessage &&
             <div className="alert alert-danger" role="alert">
