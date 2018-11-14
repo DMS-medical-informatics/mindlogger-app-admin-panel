@@ -46,7 +46,11 @@ class InfoGroup extends Component {
       <div>
       <Grid container>
         <Grid item>
-          <p> Here you can {info ? 'edit' : 'add'} the {name} Activity Set’s Information screens, and edit individual Activities and their Information screens.  Tap on a <AddIcon /> to add an Activity or Information screens. </p>
+          <p> The "{name}" Activity Set can have (1) About screens, (2) Activities, and (3) Information screens for each Activity.
+          <br/>
+          Here you can {info ? 'edit' : 'add'} the "{name}" Activity Set's (1) Information screens, (2) Activities, and (3) Information screens for each Activity.
+          <br/>
+          Tap on a <AddIcon /> to add a new Activity or new Information screens. </p>
           <h4><strong>{name} Activity Set Information screens:</strong> {infoButton}</h4>
         </Grid>
       </Grid>

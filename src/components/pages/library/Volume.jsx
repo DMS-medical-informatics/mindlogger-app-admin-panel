@@ -9,9 +9,40 @@ import Grid from '@material-ui/core/Grid';
 import { setVolume } from "../../../actions/core";
 import { updateFolder, uploadFile } from "../../../actions/api";
 import VolumeForm from "./VolumeForm";
+
+import PropTypes from 'prop-types'
+import AddIcon from '@material-ui/icons/AddCircleOutline';
+import { getPath } from '../../../actions/api';
+import LButton from '../../controls/LButton';
+
 class Volume extends Component {
 
+  static propTypes = {
+    onEdit: PropTypes.func,
+    onAdd: PropTypes.func,
+    group: PropTypes.object,
+  }
+
+  state = {
+
+  }
+
   componentWillMount() {
+//    const {group:{_id:parentId, name}, getPath} = this.props;
+
+/*    getPath('folder', {parentId, parentType: 'folder'}).then(acts => {
+      let info;
+      let consent;
+      acts.forEach(act => {
+        if(act.meta && act.meta.info) {
+          info = act;
+        } else if(act.meta && act.meta.consent) {
+          consent = act;
+        }
+      });
+      this.setState({info, consent});
+    });
+*/
     const {volumes, volumeId, setVolume} = this.props;
     const volume = volumes.find(v => v._id === volumeId);
     setVolume(volume);
@@ -61,6 +92,14 @@ class Volume extends Component {
   }
   render() {
     const {volume, user} = this.props;
+// @rno: this.props twice
+    const {group, name, onEdit, onAdd} = this.props;
+    const {info, consent} = this.state;
+
+/*    const infoButton = (info ?
+      <LButton onClick={() => onEdit(info, true)}>{info.name}</LButton>
+      : <Button onClick={() => onAdd('info')}><AddIcon /></Button>);
+*/
 
     let {viewers, managers, editors} = volume && volume.meta && volume.meta.members || {};
     let canView = false;
@@ -75,29 +114,42 @@ class Volume extends Component {
       return (<div></div>)
     return (
       <div>
+
         <Grid container spacing={16}>
           <Grid item>
-            <h2>{volume.name}</h2>
-            <p>{volume.meta.description}</p>
+            <h3>Activity Set "{volume.name}"</h3>
+            <p>Description: {volume.meta.description}</p>
             { canEdit && 
-              <Button variant="contained" onClick={() => this.setState({form: true})}>Edit</Button>
+              <Button variant="contained" onClick={() => this.setState({form: true})}>Edit Description</Button>
             }
             {this.renderEditVolumeModal()}
-            <br/>
+            <br/><br/>
+            { /*canEdit &&
+              {infoButton}*/
+            }
+
+            {this.renderEditVolumeModal()}
+            <p className="pt-3">See "{volume.name} Menu" for Managers, Editors, Users, or Viewers of this Activity Set.</p>
           </Grid>
         </Grid>
-        <Grid container spacing={16}>
-          <Grid item>
-            <h3>Actions</h3>
-            { canEdit && <Button variant="outlined" color="primary" onClick={this.onEditActivity}>Edit Activities</Button> }
-            <p className="pt-3">The Menu on top of the page may offer more options, depending on whether you have Manager, Editor, User, or Viewer permissions for the {volume.meta.shortName} Activity Set.</p>
+
+        { canEdit &&
+          <Grid container spacing={16}>
+            <Grid item>
+              <h3>Edit Activities</h3>
+              <p>Here you can {info ? 'edit' : 'add'} Activities and their Information sections to "{volume.name}".
+              <br/>
+              Tap on a <AddIcon /> to add a new Activity or new Information screens. </p>
+            </Grid>
           </Grid>
-        </Grid>
+        }
+
       </div>
     );
   }
 }
 const mapDispatchToProps = {
+  getPath,
   setVolume,
   updateFolder,
   uploadFile,
