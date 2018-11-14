@@ -1,2 +1,5 @@
+# Local server needs and AWS needs vary.
+# These lines keep the package*.json files from merging in pull requests.
+# Please update these files in each branch rather than merging.
 package.json merge=ours
 package-lock.json merge=ours
