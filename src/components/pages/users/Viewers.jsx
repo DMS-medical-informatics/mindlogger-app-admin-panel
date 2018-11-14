@@ -56,7 +56,7 @@ class Viewers extends Component {
     let userDict = {...this.props.userDict};
     userDict[user._id] = [];
     meta.members.viewers = userDict;
-    
+
     volume.meta = meta;
     return updateObject('folder', volume._id, volume.name, meta).then(res => {
       setVolume({...volume});
@@ -95,17 +95,17 @@ class Viewers extends Component {
   }
 
   renderUsersByViewer() {
-    
+
   }
   render() {
-    const { volume: {meta: data}, userDict } = this.props;
+    const { volume: {meta: data}, userDict, name } = this.props;
     const { user } = this.state;
     const userIds = this.filterUsers();
     return (
       <div>
-        <h3>Manage {data.shortName} Viewers</h3>
+        <h3>Manage {data.shortName || name} Viewers</h3>
         <p className="pt-3">
-          Here you can add, edit, or remove Viewers of ETA Activity Set data, and add or remove Users whose data they view.
+          Here you can add, edit, or remove Viewers of {data.shortName || name} Activity Set data, and add or remove Users whose data they view.
           <br/>
           Users perform Activities in the App, and Viewers can view their data in a Dashboard.
           <br/>

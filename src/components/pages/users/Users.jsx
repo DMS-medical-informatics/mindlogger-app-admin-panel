@@ -31,13 +31,13 @@ class Users extends Component {
   }
 
   render() {
-    const { volume: {meta: data} } = this.props;
+    const { volume: {meta: data}, name } = this.props;
     const {user} = this.state;
     return (
       <div>
-        <h3>Manage {data.shortName} Users</h3>
+        <h3>Manage {data.shortName || name} Users</h3>
         <p className="pt-3">
-          Here you can add, edit, or remove Users of the {data.shortName} Activity Set, and view who are the Viewers of their data.
+          Here you can add, edit, or remove Users of the {data.shortName || name} Activity Set, and view who are the Viewers of their data.
           <br/>
           Users perform Activities in the App, and Viewers can view their data in a Dashboard.
           <br/>

@@ -4,17 +4,17 @@ import GroupTable from './GroupTable';
 
 class Editors extends Component {
   componentWillMount() {
-    
+
   }
-  
+
   render() {
-    const { volume: {meta: data} } = this.props;
+    const { volume: {meta: data}, name } = this.props;
 
     return (
       <div>
-        <h3>Manage {data.shortName} Editors</h3>
+        <h3>Manage {data.shortName || name} Editors</h3>
         <p className="pt-3">
-        Here you can add, edit, or remove Editors of the ETA Activity Set.
+        Here you can add, edit, or remove Editors of the {data.shortName || name} Activity Set.
         <br/>
         Editors can edit the content and settings for each Activity.
         </p>
@@ -29,7 +29,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editors)
