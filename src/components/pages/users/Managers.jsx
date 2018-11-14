@@ -3,15 +3,15 @@ import { connect } from 'react-redux'
 import GroupTable from './GroupTable';
 
 class Managers extends Component {
-  
+
   render() {
-    const { volume: {meta: data} } = this.props;
+    const { volume: {meta: data}, name } = this.props;
 
     return (
       <div>
-        <h3>Manage {data.shortName} Managers</h3>
+        <h3>Manage {data.shortName || name} Managers</h3>
         <p className="pt-3">
-          Here you can add, edit, or remove Managers of the ETA Activity Set.
+          Here you can add, edit, or remove Managers of the {data.shortName || name} Activity Set.
           <br/>
           Managers control who can be Users, Viewers, Editors, and other Managers.
         </p>
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Managers)
