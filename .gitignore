@@ -16,3 +16,6 @@ npm-debug.log
 
 # main.css is compiled file from scss, so should be ignored
 /src/static/css
+
+# SSL
+cert
