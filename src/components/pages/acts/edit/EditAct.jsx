@@ -118,7 +118,7 @@ class EditAct extends Component {
       }
       if (screensData[screen] && screensData[screen].survey && screensData[screen].survey.options) {
         for (let option=0; option < screensData[screen].survey.options.length; option++) { // Adjust 1-indexed storage to 0-indexed display for survey response options
-          if (screensData[screen].survey.options[option].screen) {
+          if (screensData[screen].survey.options[option] && screensData[screen].survey.options[option].screen) {
             screensData[screen].survey.options[option].screen -= 1;
           }
         }
@@ -327,7 +327,7 @@ class EditAct extends Component {
       }
       if (screen.survey && screen.survey.options) {
         for (let option=0; option < screen.survey.options.length; option++) { // Adjust 0-indexed storage to 1-indexed display for survey response options
-          if (screen.survey.options[option].screen) {
+          if (screen.survey.options[option] && screen.survey.options[option].screen) {
             screen.survey.options[option].screen += 1;
           }
         }
