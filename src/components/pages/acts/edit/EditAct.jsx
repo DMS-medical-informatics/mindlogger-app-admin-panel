@@ -113,10 +113,10 @@ class EditAct extends Component {
     const {index,screensData} = this.state;
     screensData[index] = {...body};
     for (let screen = 0; screen < screensData.length; screen++) {
-      if (screensData[screen].skipToScreen) { // adjust 1-indexed display to 0-indexed storage for screen
+      if (screensData[screen] && screensData[screen].skipToScreen) { // adjust 1-indexed display to 0-indexed storage for screen
         screensData[screen].skipToScreen -= 1;
       }
-      if (screensData[screen].survey && screensData[screen].survey.options) {
+      if (screensData[screen] && screensData[screen].survey && screensData[screen].survey.options) {
         for (let option=0; option < screensData[screen].survey.options.length; option++) { // Adjust 1-indexed storage to 0-indexed display for survey response options
           if (screensData[screen].survey.options[option].screen) {
             screensData[screen].survey.options[option].screen -= 1;
