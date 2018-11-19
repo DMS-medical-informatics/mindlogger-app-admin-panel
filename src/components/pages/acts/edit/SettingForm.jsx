@@ -32,7 +32,7 @@ const renderTimes = ({ fields, meta: { error }, initialValues, value }) => (
             <Field name={`${obj}.timeMode`} label="Scheduled:" component={InputRadioField} select="scheduled"/>
           </Grid>
           <Grid item>
-            <Field name={`${obj}.time`} component={InputTimeField} defaultValue={initialValues.notification.times[index].time ? initialValues.notification.times[index].time : "09:00"}/>
+            <Field name={`${obj}.time`} component={InputTimeField} defaultValue={initialValues.notification.times[index].time ? moment(initialValues.notification.times[index].time) : "09:00"}/>
           </Grid>
         </Grid>
         <Grid container alignItems="baseline">
@@ -41,10 +41,10 @@ const renderTimes = ({ fields, meta: { error }, initialValues, value }) => (
           </Grid>
           <Grid item>
             Start:
-            <Field name={`${obj}.timeStart`} component={InputTimeField} defaultValue={initialValues.notification.times[index].timeStart ? initialValues.notification.times[index].timeStart : "09:00"}/>
+            <Field name={`${obj}.timeStart`} component={InputTimeField} defaultValue={initialValues.notification.times[index].timeStart ? moment(initialValues.notification.times[index].timeStart) : "09:00"}/>
             <br/>
             End:
-            <Field name={`${obj}.timeEnd`} component={InputTimeField} defaultValue={initialValues.notification.times[index].timeEnd ? initialValues.notification.times[index].timeEnd :"21:00"}/>
+            <Field name={`${obj}.timeEnd`} component={InputTimeField} defaultValue={initialValues.notification.times[index].timeEnd ? moment(initialValues.notification.times[index].timeEnd) :"21:00"}/>
           </Grid>
         </Grid>
 
