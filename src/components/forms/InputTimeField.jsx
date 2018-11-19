@@ -22,4 +22,3 @@ export default ({
   use12Hours
   inputReadOnly
 />);
-
