@@ -13,11 +13,6 @@ export default reduxForm({
   form: "add-volume-form"
 })(({ handleSubmit, pristine, submitting, updating }) => (
   <div>
-    {
-      updating ? 
-      <p>Create a new Volume of Activities. Mindlogger will create a cross-platform app with these Activities.</p>
-      :
-      <p>Update volume</p>}
   <Form onSubmit={handleSubmit}>
     <Field
       name="shortName"
@@ -50,6 +45,7 @@ export default reduxForm({
       component={InputFileField}
       label="Logo"
       placeholder=""
+      accept="image/*"
     />
     <center>
     <Button

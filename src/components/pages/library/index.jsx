@@ -69,7 +69,7 @@ class Home extends Component {
     return (
       <Modal show={this.state.form} onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Volume</Modal.Title>
+          <Modal.Title>Add Activity Set</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <VolumeForm onSubmit={this.onAddVolume} />
