@@ -341,7 +341,7 @@ class EditAct extends Component {
           when={this.props.changed}
           message={location => 'You will lose any changes you have made if you don\'t submit them.'} />
         <h3>Edit the {act.meta.abbreviation || act.name} Activity in the {volume.meta.shortName || volume.name} Activity Set</h3>
-        <p>Configure notifications and other settings in the Settings tab, and build each screen in the Screens tab.</p>
+        <p>Configure {(info || act.meta.info) ? "" : "notifications and other "}settings in the Settings tab, and build each screen in the Screens tab.</p>
         <Tabs id="edit-act-tabs" onSelect={this.selectTab}  defaultActiveKey={1}>
           <Tab eventKey={1} title="Settings">
             <ActSetting setting={setting} onSetting={this.onSetting} onFormRef={ref => this.settingRef = ref } onDelete={this.handleDelete} info={info}/>
