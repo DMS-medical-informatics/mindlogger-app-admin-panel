@@ -45,6 +45,7 @@ export default reduxForm({
       component={InputFileField}
       label="Logo"
       placeholder=""
+      accept="image/*"
     />
     <center>
     <Button
