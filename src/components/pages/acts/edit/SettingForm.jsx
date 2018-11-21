@@ -14,9 +14,7 @@ import InputWeekdayField from './InputWeekdayField';
 import InputMonthDayField from './InputMonthDayField';
 import PadBlock from '../../../layout/PadBlock';
 
-import moment from 'moment';
-
-const renderTimes = ({ fields, meta: { error }, initialValues, value }) => (
+const renderTimes = ({ fields, meta: { error } }) => (
   <div>
     <InputRow>
       Times of day:<Button onClick={() => fields.push()}><AddIcon/></Button>
@@ -32,7 +30,7 @@ const renderTimes = ({ fields, meta: { error }, initialValues, value }) => (
             <Field name={`${obj}.timeMode`} label="Scheduled:" component={InputRadioField} select="scheduled"/>
           </Grid>
           <Grid item>
-            <Field name={`${obj}.time`} component={InputTimeField} defaultValue={initialValues.notification.times[index].time ? moment(initialValues.notification.times[index].time) : "09:00"}/>
+            <Field name={`${obj}.time`} component={InputTimeField} defaultValue="09:00"/>
           </Grid>
         </Grid>
         <Grid container alignItems="baseline">
@@ -41,15 +39,15 @@ const renderTimes = ({ fields, meta: { error }, initialValues, value }) => (
           </Grid>
           <Grid item>
             Start:
-            <Field name={`${obj}.timeStart`} component={InputTimeField} defaultValue={initialValues.notification.times[index].timeStart ? moment(initialValues.notification.times[index].timeStart) : "09:00"}/>
+            <Field name={`${obj}.timeStart`} component={InputTimeField} defaultValue="09:00"/>
             <br/>
             End:
-            <Field name={`${obj}.timeEnd`} component={InputTimeField} defaultValue={initialValues.notification.times[index].timeEnd ? moment(initialValues.notification.times[index].timeEnd) :"21:00"}/>
+            <Field name={`${obj}.timeEnd`} component={InputTimeField} defaultValue="21:00"/>
           </Grid>
         </Grid>
-
+        
       </div>))}
-
+    
     {error && <li className="error">{error}</li>}
     </PadBlock>
   </div>
@@ -73,7 +71,7 @@ const renderCalendarDay = ({ fields, meta: { error } }) => (
 )
 class SettingForm extends Component {
   render() {
-    const {handleSubmit, info, initialValues} = this.props;
+    const {handleSubmit, info} = this.props
     return (
       <form onSubmit={ handleSubmit }>
         {info !== true &&
@@ -86,7 +84,7 @@ class SettingForm extends Component {
             <Field name="description" componentClass="textarea" label="Description:" component={InputField} />
           </Col>
         </Row>
-        { info !== true &&
+        { info !== true && 
         (<div>
           <div className="section-title">
             <Row>
@@ -110,11 +108,11 @@ class SettingForm extends Component {
               <Field name="notification[modeDate]" label="Calendar date:" component={InputCheckField} select="calendar_date"/>
               </Grid>
               <FieldArray name="notification[calendarDay]" component={renderCalendarDay} />
-
+              
               <Field name="notification[resetDate]" label="User can reset day/dates" component={InputCheckField} />
             </PadBlock>
-
-              <FieldArray name="notification[times]" component={renderTimes} initialValues={initialValues} />
+            
+              <FieldArray name="notification[times]" component={renderTimes} />
             <PadBlock>
               <Field name="notification[resetTime]" label="User can reset time" component={InputCheckField} />
             </PadBlock>
@@ -166,7 +164,7 @@ class SettingForm extends Component {
           </div>
         </div>)
         }
-
+        
       </form>
     );
   }

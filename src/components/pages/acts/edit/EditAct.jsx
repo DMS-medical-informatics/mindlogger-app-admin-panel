@@ -144,7 +144,6 @@ class EditAct extends Component {
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject(`folder/${actId}`).then(act => {
-      console.log(act);
       this.decodeData(act);
     });
     this.loadAllScreens();
