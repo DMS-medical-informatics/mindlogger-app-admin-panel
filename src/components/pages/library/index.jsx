@@ -8,7 +8,7 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import { getObject, getCollection, getFolders, addFolder, updateFolder, uploadFile } from "../../../actions/api";
+import { getObject, getCollection, getFolders, addFolder, updateFolder, updateFolderAccess, uploadFile } from "../../../actions/api";
 import { setVolume } from "../../../actions/core";
 import VolumeForm from "./VolumeForm";
 import plus from './plus.svg';
@@ -31,30 +31,32 @@ class Home extends Component {
   };
 
   onAddVolume = ({name, logo, ...data}) => {
-    const {addFolder, updateFolder, collection, getFolders, uploadFile, user} = this.props;
+    const {addFolder, updateFolderAccess, updateFolder, collection, getFolders, uploadFile, user} = this.props;
     return addFolder(name, {
-        ...data,
-        members: {
-          editors: [user._id],
-          managers: [user._id],
-          users: [],
-          viewers: {},
-        }
+      ...data,
+      members: {
+        editors: [user._id],
+        managers: [user._id],
+        users: [],
+        viewers: {},
       }
-      , collection._id, 'collection').then(folder => {
-      if(logo && Array.isArray(logo) && logo.length > 0) {
-        let fileObject = logo[0];
-        return uploadFile(fileObject.name, fileObject, 'folder', folder._id).then(res => {
-          return updateFolder(folder._id, name, {
-            ...data,
-            logoImage: {
-              name: res.name,
-              '@id': `file/${res._id}`
-            }
+    }
+    , collection._id, 'collection').then(folder => {
+      return updateFolderAccess(folder._id, {groups: [], users: [{flags: [], id: user._id, level: 2}]}, true).then(res => {
+        if(logo && Array.isArray(logo) && logo.length > 0) {
+          let fileObject = logo[0];
+          return uploadFile(fileObject.name, fileObject, 'folder', folder._id).then(res => {
+            return updateFolder(folder._id, name, {
+              ...data,
+              logoImage: {
+                name: res.name,
+                '@id': `file/${res._id}`
+              }
+            });
           });
-        });
-      }
-      return true;
+        }
+        return true;
+      });
     }).then(res => {
       this.close();
       return getFolders(collection._id, 'volumes');
@@ -137,6 +139,7 @@ const mapDispatchToProps = {
   getCollection,
   getFolders,
   addFolder,
+  updateFolderAccess,
   uploadFile,
   updateFolder,
   setVolume,

@@ -5,7 +5,7 @@ function generateQuery(params) {
   let result = []
   Object.keys(params)
     .forEach(k => {
-      if(params[k]) 
+      if(params[k])
         result.push(esc(k) + '=' + esc(params[k]))
     })
   return result.join('&')
@@ -273,6 +273,17 @@ export const addFolder = (name, meta, parentId, parentType, reuseExisting = true
   },
 });
 
+export const updateFolderAccess = (id, accessList, recurse=false) => ({
+  type: types.UPDATE_OBJECT,
+  method: 'PUT',
+  objectType: 'folder',
+  path: `/folder/${id}/access`,
+  body: {
+    access:JSON.stringify(accessList),
+    recurse,
+  },
+});
+
 export const updateFolder = (id, name, meta) => ({
   type: types.UPDATE_OBJECT,
   method: 'PUT',
@@ -304,7 +315,7 @@ export const uploadFile = (name, fileObject, parentType, parentId) => ({
     size:fileObject.size,
     mimeType: fileObject.type,
   })}`,
-  isUpload: true, 
+  isUpload: true,
   body: fileObject,
   extraHeaders: { 'Content-Type': fileObject.type }
 })
