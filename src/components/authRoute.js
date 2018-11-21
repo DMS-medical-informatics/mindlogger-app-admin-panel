@@ -15,7 +15,10 @@ class AuthRoute extends React.Component {
     if (user.admin) {
 
     } else if (role === 'user' || role === 'viewer') {
-      
+
+    } else if (user) {
+      redirectPath = '/library'
+
     } else {
       redirectPath = '/login'
     }

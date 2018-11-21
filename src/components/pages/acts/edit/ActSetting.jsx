@@ -15,6 +15,7 @@ class ActSetting extends Component {
   render() {
     const {setting, onSetting, onFormRef, onDelete, info} = this.props;
     const isInfo = (setting && setting.info) || info
+    console.log("setting", setting);
     return (
       <div className="setting">
         {!isInfo && (

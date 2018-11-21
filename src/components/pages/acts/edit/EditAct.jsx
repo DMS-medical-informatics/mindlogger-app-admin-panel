@@ -90,10 +90,6 @@ class EditAct extends Component {
     }
     this.setState({open: 'add'});
 
-    // const {volume, addItem} = this.props;
-    // addItem('item', 'screen',{}, volume._id, 'collection').then(res => {
-
-    // });
   }
 
   selectScreen = (index, key) => {
@@ -144,7 +140,6 @@ class EditAct extends Component {
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject(`folder/${actId}`).then(act => {
-      console.log(act);
       this.decodeData(act);
     });
     this.loadAllScreens();
