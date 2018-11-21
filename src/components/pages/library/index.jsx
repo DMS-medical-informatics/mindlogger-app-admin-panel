@@ -107,7 +107,7 @@ class Home extends Component {
   }
 
   render() {
-    const {volumes, user} = this.props;
+    const {volumes, user, collection} = this.props;
     return (
       <div>
         <div className="volumes">
@@ -117,7 +117,7 @@ class Home extends Component {
             )
           }
           {
-            user && user.admin && <div className="plus-button" onClick={() => this.setState({form: true})}>
+            user && (collection && collection._accessLevel > 0) && <div className="plus-button" onClick={() => this.setState({form: true})}>
               <img src={plus} alt="plus"/>
             </div>
           }
