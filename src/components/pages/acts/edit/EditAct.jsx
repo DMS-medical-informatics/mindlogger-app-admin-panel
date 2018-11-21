@@ -90,10 +90,6 @@ class EditAct extends Component {
     }
     this.setState({open: 'add'});
 
-    // const {volume, addItem} = this.props;
-    // addItem('item', 'screen',{}, volume._id, 'collection').then(res => {
-
-    // });
   }
 
   selectScreen = (index, key) => {

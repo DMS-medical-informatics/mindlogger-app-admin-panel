@@ -38,10 +38,10 @@ const renderTimes = ({ fields, meta: { error } }) => (
             <Field name={`${obj}.timeMode`} label="Random:" component={InputRadioField} select="random"/>
           </Grid>
           <Grid item>
-            Start:
+            Start: &nbsp;
             <Field name={`${obj}.timeStart`} component={InputTimeField} defaultValue="09:00"/>
             <br/>
-            End:
+            End: &nbsp;
             <Field name={`${obj}.timeEnd`} component={InputTimeField} defaultValue="21:00"/>
           </Grid>
         </Grid>
