@@ -12,10 +12,10 @@ export const getTimestamp = (str) => {
   return (new Date(str)).getTime()
 }
 
-export const userContain = (user, keyword) => 
+export const userContain = (user, keyword) =>
 {
-return user && 
-    (user.firstName.includes(keyword) || user.lastName.includes(keyword) || user.email.includes(keyword))
+return user &&
+    (user.firstName.includes(keyword) || user.lastName.includes(keyword) || (user.email && user.email.includes(keyword)))
 }
 
 export const fileLink = (file, token) => {

@@ -56,7 +56,7 @@ class SelectUser extends Component {
             {user.login}
           </TableCell>
           <TableCell>{user.firstName} {user.lastName}</TableCell>
-          <TableCell>{user.email}</TableCell>
+          <TableCell>{user.email || "🔐 private"}</TableCell>
         </TableRow>)
   }
 
@@ -118,7 +118,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectUser)
