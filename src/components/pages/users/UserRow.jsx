@@ -9,7 +9,7 @@ import ClearIcon from '@material-ui/icons/Clear';
 
 
 class UserRow extends Component {
-  
+
   render() {
     const {user, onSelect, onDelete} = this.props;
     if (user) {
@@ -17,15 +17,15 @@ class UserRow extends Component {
         <TableRow hover>
           <TableCell onClick={() => onSelect && onSelect(user)}>{user.login}</TableCell>
           <TableCell onClick={() => onSelect && onSelect(user)}>{user.firstName} {user.lastName}</TableCell>
-          <TableCell onClick={() => onSelect && onSelect(user)}>{user.email}</TableCell>
+          <TableCell onClick={() => onSelect && onSelect(user)}>{user.email || "🔐 private"}</TableCell>
           <TableCell><Button onClick={() => onDelete && onDelete(user)}><ClearIcon /></Button></TableCell>
         </TableRow>
       )
     } else {
       return (<TableRow></TableRow>)
     }
-    
-    
+
+
   }
 }
 
