@@ -125,7 +125,9 @@ class ScreenForm extends Component {
             </InputRow>
             <InputRow>
               <Field name="surveyType" component={InputRadioField} label="Slider bar" select="slider"/>
-              { surveyType === 'slider' && this.renderModalButton('survey')}
+            </InputRow>
+            <InputRow>
+              <Field name="surveyType" component={InputRadioField} label="Time Entry" select="time"/>
             </InputRow>
             <InputRow>
               <Field name="surveyType" component={InputRadioField} label="Record audio" select="audio"/>
