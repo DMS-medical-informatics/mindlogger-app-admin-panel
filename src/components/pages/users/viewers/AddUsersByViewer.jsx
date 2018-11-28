@@ -28,9 +28,8 @@ class AddUsersByViewer extends Component {
   }
 
   handleSelectAllClick = event => {
-    const {userIds} = this.props;
     if (event.target.checked) {
-      this.setState(state => ({ selected: userIds }));
+      this.setState(state => ({ selected: this.filterUsers() }));
       return;
     }
     this.setState({ selected: [] });
