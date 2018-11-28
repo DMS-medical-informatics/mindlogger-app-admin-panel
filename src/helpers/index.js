@@ -14,8 +14,8 @@ export const getTimestamp = (str) => {
 
 export const userContain = (user, keyword) => 
 {
-return user && 
-    (user.firstName.includes(keyword) || user.lastName.includes(keyword) || user.email.includes(keyword))
+return user && (user.firstName && user.lastName) &&
+    (user.firstName.includes(keyword) || user.lastName.includes(keyword) || (user.email && user.email.includes(keyword)))
 }
 
 export const fileLink = (file, token) => {
