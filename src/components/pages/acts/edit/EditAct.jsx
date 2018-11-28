@@ -93,6 +93,8 @@ class EditAct extends Component {
   }
 
   selectScreen = (index, key) => {
+    console.log(index);
+    console.log(key);
     if (this.state.index === undefined ) {
       this.loadScreen(index, key);
     } else {
@@ -108,18 +110,6 @@ class EditAct extends Component {
   onSaveScreen = (body) => {
     const {index,screensData} = this.state;
     screensData[index] = {...body};
-    for (let screen = 0; screen < screensData.length; screen++) {
-      if (screensData[screen].skipToScreen) { // adjust 1-indexed display to 0-indexed storage for screen
-        screensData[screen].skipToScreen -= 1;
-      }
-      if (screensData[screen].survey && screensData[screen].survey.options) {
-        for (let option=0; option < screensData[screen].survey.options.length; option++) { // Adjust 1-indexed storage to 0-indexed display for survey response options
-          if (screensData[screen].survey.options[option] && screensData[screen].survey.options[option].screen) {
-            screensData[screen].survey.options[option].screen -= 1;
-          }
-        }
-      }
-    }
     this.setState({screensData});
   }
 
@@ -128,6 +118,7 @@ class EditAct extends Component {
     let {screens, screensData, index} = this.state;
     let screen = screensData.splice(index,1)[0];
     screens.splice(index,1);
+    console.log(screen);
     deleteObject(screen.id, 'item').then(res => {
       this.setState({screensData})
       if(screensData.length <= index) {
@@ -142,6 +133,7 @@ class EditAct extends Component {
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject(`folder/${actId}`).then(act => {
+      console.log(act);
       this.decodeData(act);
     });
     this.loadAllScreens();
@@ -256,9 +248,9 @@ class EditAct extends Component {
   renderBookmarks() {
     const {index, screens } = this.state;
     const {screensHash} = this.props;
-    let defaultScreens = new Set(screens.map(a => a.name));
-    let extraScreens = [];
-    for (let s in screensHash){
+    var defaultScreens = new Set(screens.map(a => a.name));
+    var extraScreens = [];
+    for (var s in screensHash){
       if (!defaultScreens.has(s.substring(5))) {
         extraScreens.push(screensHash[s]);
       }
@@ -317,18 +309,6 @@ class EditAct extends Component {
     const {screensData, index, setting} = this.state;
     const {act, info, volume} = this.props;
     let screen = screensData[index];
-    if (screen) {
-      if (screen.skipToScreen) { // Adjust 0-indexed storage to 1-indexed display for screens
-        screen.skipToScreen += 1;
-      }
-      if (screen.survey && screen.survey.options) {
-        for (let option=0; option < screen.survey.options.length; option++) { // Adjust 0-indexed storage to 1-indexed display for survey response options
-          if (screen.survey.options[option] && screen.survey.options[option].screen) {
-            screen.survey.options[option].screen += 1;
-          }
-        }
-      }
-    }
     if (!setting) {
       return (<section className="edit-act"></section>)
     }

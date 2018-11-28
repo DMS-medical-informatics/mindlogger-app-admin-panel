@@ -28,7 +28,7 @@ class Screen extends Component {
     } else {
       this.setState({});
     }
-
+    
   }
   close = () => {
     const {body: {surveyType, canvasType}, destroy} = this.props;
@@ -52,13 +52,9 @@ class Screen extends Component {
       let { screen: {survey, canvas }} = nextProps;
       this.setState({survey, canvas});
     }
-
+    
   }
-
-  adjustScreenNumber(event) {
-    this.setState({value: event.target.value - 1});
-  }
-
+  
 
   renderSurveyForm(surveyType) {
     const {survey} = this.state;
@@ -124,7 +120,7 @@ class Screen extends Component {
     const {survey, canvas} = this.state;
     this.props.onSaveScreen({...body, canvas, survey});
   }
-
+  
   render() {
     const {index, screen, onFormRef, onDelete} = this.props;
     return (
@@ -134,9 +130,9 @@ class Screen extends Component {
           <ScrollLink to="survey">Survey</ScrollLink>
           <ScrollLink to="canvas">Canvas</ScrollLink>
         </ul>
-
+        
         {
-          screen &&
+          screen && 
           <ScreenForm
             ref={ref => ref && onFormRef(ref) }
             index={index}
@@ -158,7 +154,7 @@ class Screen extends Component {
             Delete screen
           </ConfirmButton>
         </PadBlock>
-
+        
       </div>
     );
   }
