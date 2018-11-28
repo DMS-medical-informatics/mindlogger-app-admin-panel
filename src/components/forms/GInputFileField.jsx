@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import {uploadFile} from '../../actions/api';
 import { connect } from 'react-redux';
+import { FormControl, FormHelperText } from '@material-ui/core';
 
 const dropzoneStyle = {
   position: 'relative',
@@ -29,7 +30,7 @@ class GInputFileField extends Component {
   render() {
   const { name, input, label, meta: {touched, error}} = this.props;
   return (
-    <div>
+    <FormControl error={touched && error && true}>
       <Dropzone
         name={name}
         style={dropzoneStyle}
@@ -39,13 +40,13 @@ class GInputFileField extends Component {
       </Dropzone>
       {touched &&
         error &&
-        <span className="error">{error}</span>}
+        <FormHelperText className="error">{error}</FormHelperText>}
       {input.value && Array.isArray(input.value) && (
         <ul>
           { input.value.map((file, i) => <li key={i}>{file.name}</li>) }
         </ul>
       )}
-    </div>
+    </FormControl>
     );
   }
 }
