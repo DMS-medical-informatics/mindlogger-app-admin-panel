@@ -108,13 +108,15 @@ class EditAct extends Component {
   onSaveScreen = (body) => {
     const {index,screensData} = this.state;
     screensData[index] = {...body};
-    if (body.skipToScreen) { // adjust 1-indexed display to 0-indexed storage for screen
-      screensData[index].skipToScreen = body.skipToScreen - 1;
-    }
-    if (body.survey && body.survey.options) {
-      for (let option=0; option < screensData[index].survey.options.length; option++) { // Adjust 1-indexed storage to 0-indexed display for survey response options
-        if (body.survey.options[option] && body.survey.options[option].screen) {
-          screensData[index].survey.options[option].screen = body.survey.options[option].screen - 1;
+    for (let screen = 0; screen < screensData.length; screen++) {
+      if (screensData[screen] && screensData[screen].skipToScreen) { // adjust 1-indexed display to 0-indexed storage for screen
+        screensData[screen].skipToScreen -= 1;
+      }
+      if (screensData[screen] && screensData[screen].survey && screensData[screen].survey.options) {
+        for (let option=0; option < screensData[screen].survey.options.length; option++) { // Adjust 1-indexed storage to 0-indexed display for survey response options
+          if (screensData[screen].survey.options[option] && screensData[screen].survey.options[option].screen) {
+            screensData[screen].survey.options[option].screen -= 1;
+          }
         }
       }
     }
