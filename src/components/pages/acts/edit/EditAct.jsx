@@ -40,7 +40,7 @@ class EditAct extends Component {
     });
   }
 
-  loadScreen(index, key, screens) {
+  loadScreen(index, screens) {
     let {screensData} = this.state;
     const {screensHash} = this.props;
     if (!screens) {
@@ -51,7 +51,7 @@ class EditAct extends Component {
       if (screensData[index] === undefined) {
         const key = `item/${screens[index]['name']}`;
         const id = screens[index]['@id'];
-        console.log("loading…", key.substring(5));
+        console.log("loading..", key);
 
         if (screensHash[key]) {
           this.updateScreen(index, screensHash[key]);
@@ -60,16 +60,6 @@ class EditAct extends Component {
             this.updateScreen(index, res);
           })
         }
-      } else {
-        this.setState({index}, () => {
-          this.formRef.reset();
-        });
-      }
-    } else if (screensHash && screensHash['item/' + key]) {
-      console.log(screensHash['item/' + key]);
-      if (screensData[index] === undefined) {
-        console.log("loading…", key);
-        this.updateScreen(index, screensHash['item/' + key]);
       } else {
         this.setState({index}, () => {
           this.formRef.reset();
@@ -92,19 +82,18 @@ class EditAct extends Component {
 
   }
 
-  selectScreen = (index, key) => {
-    console.log(index);
-    console.log(key);
+  selectScreen = (index) => {
     if (this.state.index === undefined ) {
-      this.loadScreen(index, key);
+      this.loadScreen(index);
     } else {
       let formErrors = this.formRef.submit();
       if (formErrors === undefined) {
-        this.loadScreen(index, key);
+        this.loadScreen(index);
       } else {
         window.alert("Please fix validation errors");
       }
     }
+
   }
 
   onSaveScreen = (body) => {
@@ -246,15 +235,7 @@ class EditAct extends Component {
   }
 
   renderBookmarks() {
-    const {index, screens } = this.state;
-    const {screensHash} = this.props;
-    var defaultScreens = new Set(screens.map(a => a.name));
-    var extraScreens = [];
-    for (var s in screensHash){
-      if (!defaultScreens.has(s.substring(5))) {
-        extraScreens.push(screensHash[s]);
-      }
-    }
+    const {index, screens} = this.state;
     return (
       <div className="bookmarks">
         { screens && screens.map((screen,idx) =>
@@ -271,18 +252,7 @@ class EditAct extends Component {
           <Button variant="fab" aria-label="Add" onClick={this.addScreen}>
             <AddIcon />
           </Button>
-          <hr />
         </center>
-        { extraScreens && extraScreens.map((screen,idx) =>
-          <Bookmark
-            index={idx + screens.length}
-            key={screen.name}
-            selected={idx + screens.length === index}
-            onSelect={this.selectScreen}
-            defaultLength={screens.length + extraScreens.length}
-            screen={this.getScreen(null, `item/${screen['name']}`)}
-            />)
-        }
       </div>
     );
   }
@@ -351,7 +321,7 @@ const mapStateToProps = ({entities: {data, objects, actChanged, auth, volume}}, 
   changed: actChanged,
   user: auth || {},
   volume: volume,
-  screensHash: (objects && objects[`folder/${ownProps.actId}`]) || {}
+  screensHash: (objects && objects[`folder/${ownProps.actId}`]) || {},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAct);
