@@ -28,9 +28,8 @@ class AddUsersByViewer extends Component {
   }
 
   handleSelectAllClick = event => {
-    const {userIds} = this.props;
     if (event.target.checked) {
-      this.setState(state => ({ selected: userIds }));
+      this.setState(state => ({ selected: this.filterUsers() }));
       return;
     }
     this.setState({ selected: [] });
@@ -76,7 +75,7 @@ class AddUsersByViewer extends Component {
       <PadBlock>
         <TextField className="searchText" onChange={this.onSearch} placeholder="Search"/>
       </PadBlock>
-      <PagedTable className="table-wrapper" rowsPerPage={25} data={filteredIds} header={
+      <PagedTable className="table-wrapper" rowsPerPage={10} data={filteredIds} header={
       <TableRow><TableCell padding="checkbox"><Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={numSelected === rowCount}
@@ -88,7 +87,7 @@ class AddUsersByViewer extends Component {
             checked={selected.includes(id)}
           />
         </TableCell>
-        <TableCell>{users[id].firstName} {users[id].lastName}({users[id].login})</TableCell></TableRow>} />
+        <TableCell>{users[id] && users[id].firstName} {users[id] && users[id].lastName}({users[id] && users[id].login})</TableCell></TableRow>} />
         <center>
           <Button variant="outlined" onClick={() => onAddUsers(selected)}>Select</Button>
           <Button variant="outlined" onClick={onCancel}>Cancel</Button>

@@ -40,7 +40,7 @@ class EditAct extends Component {
     });
   }
 
-  loadScreen(index, key, screens) {
+  loadScreen(index, screens) {
     let {screensData} = this.state;
     const {screensHash} = this.props;
     if (!screens) {
@@ -51,7 +51,7 @@ class EditAct extends Component {
       if (screensData[index] === undefined) {
         const key = `item/${screens[index]['name']}`;
         const id = screens[index]['@id'];
-        console.log("loading…", key.substring(5));
+        console.log("loading..", key);
 
         if (screensHash[key]) {
           this.updateScreen(index, screensHash[key]);
@@ -60,16 +60,6 @@ class EditAct extends Component {
             this.updateScreen(index, res);
           })
         }
-      } else {
-        this.setState({index}, () => {
-          this.formRef.reset();
-        });
-      }
-    } else if (screensHash && screensHash['item/' + key]) {
-      console.log(screensHash['item/' + key]);
-      if (screensData[index] === undefined) {
-        console.log("loading…", key);
-        this.updateScreen(index, screensHash['item/' + key]);
       } else {
         this.setState({index}, () => {
           this.formRef.reset();
@@ -92,32 +82,23 @@ class EditAct extends Component {
 
   }
 
-  selectScreen = (index, key) => {
+  selectScreen = (index) => {
     if (this.state.index === undefined ) {
-      this.loadScreen(index, key);
+      this.loadScreen(index);
     } else {
       let formErrors = this.formRef.submit();
       if (formErrors === undefined) {
-        this.loadScreen(index, key);
+        this.loadScreen(index);
       } else {
         window.alert("Please fix validation errors");
       }
     }
+
   }
 
   onSaveScreen = (body) => {
     const {index,screensData} = this.state;
     screensData[index] = {...body};
-    if (body.skipToScreen) { // adjust 1-indexed display to 0-indexed storage for screen
-      screensData[index].skipToScreen = body.skipToScreen - 1;
-    }
-    if (body.survey && body.survey.options) {
-      for (let option=0; option < screensData[index].survey.options.length; option++) { // Adjust 1-indexed storage to 0-indexed display for survey response options
-        if (body.survey.options[option] && body.survey.options[option].screen) {
-          screensData[index].survey.options[option].screen = body.survey.options[option].screen - 1;
-        }
-      }
-    }
     this.setState({screensData});
   }
 
@@ -126,6 +107,7 @@ class EditAct extends Component {
     let {screens, screensData, index} = this.state;
     let screen = screensData.splice(index,1)[0];
     screens.splice(index,1);
+    console.log(screen);
     deleteObject(screen.id, 'item').then(res => {
       this.setState({screensData})
       if(screensData.length <= index) {
@@ -140,6 +122,7 @@ class EditAct extends Component {
   componentWillMount() {
     const {actId, getObject} = this.props;
     getObject(`folder/${actId}`).then(act => {
+      console.log(act);
       this.decodeData(act);
     });
     this.loadAllScreens();
@@ -252,15 +235,7 @@ class EditAct extends Component {
   }
 
   renderBookmarks() {
-    const {index, screens } = this.state;
-    const {screensHash} = this.props;
-    let defaultScreens = new Set(screens.map(a => a.name));
-    let extraScreens = [];
-    for (let s in screensHash){
-      if (!defaultScreens.has(s.substring(5))) {
-        extraScreens.push(screensHash[s]);
-      }
-    }
+    const {index, screens} = this.state;
     return (
       <div className="bookmarks">
         { screens && screens.map((screen,idx) =>
@@ -277,18 +252,7 @@ class EditAct extends Component {
           <Button variant="fab" aria-label="Add" onClick={this.addScreen}>
             <AddIcon />
           </Button>
-          <hr />
         </center>
-        { extraScreens && extraScreens.map((screen,idx) =>
-          <Bookmark
-            index={idx + screens.length}
-            key={screen.name}
-            selected={idx + screens.length === index}
-            onSelect={this.selectScreen}
-            defaultLength={screens.length + extraScreens.length}
-            screen={this.getScreen(null, `item/${screen['name']}`)}
-            />)
-        }
       </div>
     );
   }
@@ -315,18 +279,6 @@ class EditAct extends Component {
     const {screensData, index, setting} = this.state;
     const {act, info, volume} = this.props;
     let screen = screensData[index];
-    if (screen) {
-      if (screen.skipToScreen) { // Adjust 0-indexed storage to 1-indexed display for screens
-        screen.skipToScreen += 1;
-      }
-      if (screen.survey && screen.survey.options) {
-        for (let option=0; option < screen.survey.options.length; option++) { // Adjust 0-indexed storage to 1-indexed display for survey response options
-          if (screen.survey.options[option] && screen.survey.options[option].screen) {
-            screen.survey.options[option].screen += 1;
-          }
-        }
-      }
-    }
     if (!setting) {
       return (<section className="edit-act"></section>)
     }
@@ -369,7 +321,7 @@ const mapStateToProps = ({entities: {data, objects, actChanged, auth, volume}}, 
   changed: actChanged,
   user: auth || {},
   volume: volume,
-  screensHash: (objects && objects[`folder/${ownProps.actId}`]) || {}
+  screensHash: (objects && objects[`folder/${ownProps.actId}`]) || {},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditAct);

@@ -31,9 +31,9 @@
 }
 
 .add-users-by-viewer {
-  width: 300px;
+  width: 500px;
   .table-wrapper {
-    height: 300px;
+    overflow-x: scroll;
   }
 }
 

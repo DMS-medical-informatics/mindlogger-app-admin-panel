@@ -35,10 +35,10 @@ export default class PagedTable extends Component {
   };
 
   render() {
-    const {header, row, data} = this.props;
+    const {header, row, data, className} = this.props;
     const { rowsPerPage, page } = this.state;
     return (
-      <div>
+      <div className={className}>
         <Table>
           <TableHead>
             {header}
