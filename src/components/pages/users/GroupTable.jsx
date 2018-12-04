@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddUser from './modal/AddUser';
 
-import { updateObject, getUsers } from '../../../actions/api';
+import { updateObject, getUsers, getFolderAccess, updateFolderAccess } from '../../../actions/api';
 import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
@@ -25,7 +25,7 @@ class GroupTable extends Component {
 
   componentWillMount() {
     this.props.getUsers();
-    
+
   }
   onSearch = (e) => {
     let keyword = e.target.value;
@@ -60,7 +60,17 @@ class GroupTable extends Component {
     let members = (volume.meta && volume.meta.members) || {};
     let userIds = members[group] || [];
     if (!userIds.includes(user._id)) {
+      let newAccessLevel=0; // default for "users"
+      let depth="deep"; // default for "users"
       userIds.push(user._id);
+      if (group === "managers") {
+        newAccessLevel=1;
+        depth="shallow";
+      } else if (group === "editors") {
+        newAccessLevel=1;
+        depth="deep";
+      }
+      this.updateAccessList(volume, user, newAccessLevel, depth, members, group);
     }
     members[group] = [...userIds];
     meta.members = members;
@@ -74,6 +84,42 @@ class GroupTable extends Component {
     });
   }
 
+
+  updateAccessList = (folder, user, newAccessLevel, depth, members, group) => {
+    const {getFolderAccess, updateFolderAccess} = this.props;
+    if (newAccessLevel !== null) { // increase access
+      getFolderAccess(folder._id).then(accessList => {
+        const thisUser = accessList.users.filter(userAccess => userAccess.id == user._id);
+        if (!accessList.users.includes(user._id) || (newAccessLevel > thisUser[0].level)) {
+          const newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
+          newAccessUsers.push({id: user._id, level: newAccessLevel});
+          updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, false);
+        }
+      });
+    } else { // reduce access
+      getFolderAccess(folder._id).then(accessList => {
+        const userTypes = {"users": 0, "editors": 1, "managers": 1, "owners": 2};
+        const newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
+        accessList.users = newAccessUsers;
+        let minimumAccess = null;
+        Object.keys(userTypes).forEach(function(userType) {
+          console.log(minimumAccess);
+          if (userType !== group) {
+            if (members[userType].includes(user._id) && (userTypes[userType] > minimumAccess)) {
+              minimumAccess = userTypes[userType];
+            }
+          }
+        });
+        console.log(minimumAccess);
+        if (minimumAccess !== null) {
+          newAccessUsers.push({id: user._id, level: minimumAccess});
+        }
+        console.log(accessList);
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, false);
+      });
+    }
+  }
+
   handleDelete = (user) => {
     const {volume, updateObject, group, setVolume} = this.props;
     const meta = volume.meta;
@@ -82,6 +128,8 @@ class GroupTable extends Component {
     const index = userIds.indexOf(user._id);
     if (index>=0) {
       userIds.splice(index,1);
+
+      this.updateAccessList(volume, user, null, null, members, group);
     }
     members[group] = [...userIds];
     meta.members = members;
@@ -93,9 +141,9 @@ class GroupTable extends Component {
 
   render() {
     let {groupName, onSelect, withTitle} = this.props;
-    
+
     const userIds = this.filterUsers();
-    
+
     return (
       <div>
         <div className="search-box">
@@ -127,6 +175,8 @@ const mapDispatchToProps = {
   updateObject,
   setVolume,
   getUsers,
+  getFolderAccess,
+  updateFolderAccess,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupTable)
