@@ -11,7 +11,7 @@ import InputFileField from '../../../forms/GInputFileField';
 
 class ScreenForm extends Component {
   componentWillMount() {
-    
+
   }
   renderModalButton(type) {
     return (<Button variant="contained" onClick={() => this.props.showModal(type)}>Edit</Button>);
@@ -122,6 +122,7 @@ class ScreenForm extends Component {
             </InputRow>
             <InputRow>
               <Field name="surveyType" component={InputRadioField} label="Slider bar" select="slider"/>
+              { surveyType === 'slider' && this.renderModalButton('survey')}
             </InputRow>
             <InputRow>
               <Field name="surveyType" component={InputRadioField} label="Time Entry" select="time"/>
