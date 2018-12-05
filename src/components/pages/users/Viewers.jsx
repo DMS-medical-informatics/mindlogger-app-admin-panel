@@ -94,10 +94,10 @@ class Viewers extends Component {
         newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         accessList.users = newAccessUsers;
         let minimumAccess = null;
-        if ((group === "managers") && members["editors"].includes(user._id)) {
+        if ((group === "viewers") && members["editors"].includes(user._id)) {
           minimumAccess = 1;
           updatedDepth = "deep";
-        } else if ((group === "editors") && members["managers"].includes(user._id)) {
+        } else if ((group === "viewers") && members["managers"].includes(user._id)) {
           minimumAccess = 1;
           updatedDepth = "shallow";
         } else {
