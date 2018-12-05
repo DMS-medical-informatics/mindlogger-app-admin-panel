@@ -86,7 +86,7 @@ class GroupTable extends Component {
 
 
   /**
-   * updateAccessList() is a recursive function to check Girder access levels
+   * updateAccessList() is a function to check Girder access levels
    * and update those levels according to permissions set in the admin panel
    * and defined in the `members` JSON Object.
    * @param {Object} folder - Folder on which to update permissions
@@ -99,12 +99,13 @@ class GroupTable extends Component {
   updateAccessList = (folder, user, newAccessLevel, depth, members, group) => {
     const {getFolderAccess, updateFolderAccess} = this.props;
     let newAccessUsers = {};
+    let updatedDepth = depth;
     if (newAccessLevel !== null) { // increase access
       getFolderAccess(folder._id).then(accessList => {
         newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         const thisUser = accessList.users.filter(userAccess => userAccess.id == user._id);
         newAccessUsers.push((!accessList.users.includes(user._id) || (newAccessLevel > thisUser[0].level)) ? {id: user._id, level: newAccessLevel} : thisUser);
-        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, false);
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth=="deep") ? true : false));
       });
     } else { // reduce access
       getFolderAccess(folder._id).then(accessList => {
@@ -112,17 +113,25 @@ class GroupTable extends Component {
         newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         accessList.users = newAccessUsers;
         let minimumAccess = null;
-        for(const userType of Object.keys(userTypes)) {
-          if (userType !== group) {
-            if (members[userType] && members[userType].includes(user._id) && ((minimumAccess == null) || (userTypes[userType] > minimumAccess))) {
-              minimumAccess = userTypes[userType];
+        if ((group === "managers") && members["editors"].includes(user._id)) {
+          minimumAccess = 1;
+          updatedDepth = "deep";
+        } else if ((group === "editors") && members["managers"].includes(user._id)) {
+          minimumAccess = 1;
+          updatedDepth = "shallow";
+        } else {
+          for(const userType of Object.keys(userTypes)) {
+            if (userType !== group) {
+              if (members[userType] && members[userType].includes(user._id) && ((minimumAccess == null) || (userTypes[userType] > minimumAccess))) {
+                minimumAccess = userTypes[userType];
+              }
             }
           }
         }
         if (minimumAccess !== null) {
           newAccessUsers.push({id: user._id, level: minimumAccess});
         }
-        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, false);
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth=="deep") ? true : false));
       });
     }
   }
@@ -131,12 +140,11 @@ class GroupTable extends Component {
     const {volume, updateObject, group, setVolume} = this.props;
     const meta = volume.meta;
     let members = (volume.meta && volume.meta.members) || {};
-    let userIds = members[group]
+    let userIds = members[group];
     const index = userIds.indexOf(user._id);
     if (index>=0) {
       userIds.splice(index,1);
-
-      this.updateAccessList(volume, user, null, null, members, group);
+      this.updateAccessList(volume, user, null, "deep", members, group);
     }
     members[group] = [...userIds];
     meta.members = members;
