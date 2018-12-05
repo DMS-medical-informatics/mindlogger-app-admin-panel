@@ -259,6 +259,13 @@ export const getFolders = (parentId, name, parentType='collection') => ({
   path: `/folder?${generateQuery({parentId, parentType})}`,
 });
 
+export const getFolderAccess = (id) => ({
+  type: types.LIST_OBJECTS,
+  method: 'GET',
+  objectType: 'folder',
+  path: `/folder/${id}/access`,
+});
+
 export const addFolder = (name, meta, parentId, parentType, reuseExisting = true) => ({
   type: types.ADD_OBJECT,
   method: 'POST',
