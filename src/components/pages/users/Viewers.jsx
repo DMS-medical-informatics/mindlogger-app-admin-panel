@@ -84,7 +84,7 @@ class Viewers extends Component {
       getFolderAccess(folder._id).then(accessList => {
         newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         const thisUser = accessList.users.filter(userAccess => userAccess.id == user._id);
-        newAccessUsers.push((newAccessLevel > thisUser[0].level) ? {id: user._id, level: newAccessLevel} : thisUser);
+        newAccessUsers.push((!thisUser || newAccessLevel > thisUser[0].level) ? {id: user._id, level: newAccessLevel} : thisUser);
         console.log(newAccessUsers);
         updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth=="deep") ? true : false));
       });
