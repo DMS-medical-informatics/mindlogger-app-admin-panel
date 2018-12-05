@@ -104,12 +104,12 @@ class GroupTable extends Component {
       getFolderAccess(folder._id).then(accessList => {
         newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         const thisUser = accessList.users.filter(userAccess => userAccess.id == user._id);
-        newAccessUsers.push((!accessList.users.includes(user._id) || (newAccessLevel > thisUser[0].level)) ? {id: user._id, level: newAccessLevel} : thisUser);
+        newAccessUsers.push((newAccessLevel > thisUser[0].level) ? {id: user._id, level: newAccessLevel} : thisUser);
         updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth=="deep") ? true : false));
       });
     } else { // reduce access
       getFolderAccess(folder._id).then(accessList => {
-        const userTypes = {"users": 0, "editors": 1, "managers": 1, "owners": 2};
+        const userTypes = {"users": 0, "viewers": 0, "editors": 1, "managers": 1, "owners": 2}; // articulate role values
         newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         accessList.users = newAccessUsers;
         let minimumAccess = null;
@@ -122,7 +122,7 @@ class GroupTable extends Component {
         } else {
           for(const userType of Object.keys(userTypes)) {
             if (userType !== group) {
-              if (members[userType] && members[userType].includes(user._id) && ((minimumAccess == null) || (userTypes[userType] > minimumAccess))) {
+              if (members[userType] && (userType === "viewers" ? Object.keys(members[userType]).includes(user._id) : members[userType].includes(user._id)) && ((minimumAccess == null) || (userTypes[userType] > minimumAccess))) {
                 minimumAccess = userTypes[userType];
               }
             }
