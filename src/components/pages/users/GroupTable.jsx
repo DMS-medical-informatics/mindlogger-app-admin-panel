@@ -85,6 +85,17 @@ class GroupTable extends Component {
   }
 
 
+  /**
+   * updateAccessList() is a recursive function to check Girder access levels
+   * and update those levels according to permissions set in the admin panel
+   * and defined in the `members` JSON Object.
+   * @param {Object} folder - Folder on which to update permissions
+   * @param {Object} user - User for which to update permissions
+   * @param {number} newAccessLevel - null for none, 0 for read, 1 for edit, 2 for own
+   * @param {string} depth - "shallow" for just this Folder, "deep" for this Folder and its contents
+   * @param {Object} members - admin-panel-defined access list
+   * @param {string} group - "users", "editors", "managers", "owners"
+   */
   updateAccessList = (folder, user, newAccessLevel, depth, members, group) => {
     const {getFolderAccess, updateFolderAccess} = this.props;
     let newAccessUsers = {};
