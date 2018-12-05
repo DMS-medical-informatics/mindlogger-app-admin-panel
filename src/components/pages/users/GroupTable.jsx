@@ -87,34 +87,30 @@ class GroupTable extends Component {
 
   updateAccessList = (folder, user, newAccessLevel, depth, members, group) => {
     const {getFolderAccess, updateFolderAccess} = this.props;
+    let newAccessUsers = {};
     if (newAccessLevel !== null) { // increase access
       getFolderAccess(folder._id).then(accessList => {
+        newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         const thisUser = accessList.users.filter(userAccess => userAccess.id == user._id);
-        if (!accessList.users.includes(user._id) || (newAccessLevel > thisUser[0].level)) {
-          const newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
-          newAccessUsers.push({id: user._id, level: newAccessLevel});
-          updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, false);
-        }
+        newAccessUsers.push((!accessList.users.includes(user._id) || (newAccessLevel > thisUser[0].level)) ? {id: user._id, level: newAccessLevel} : thisUser);
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, false);
       });
     } else { // reduce access
       getFolderAccess(folder._id).then(accessList => {
         const userTypes = {"users": 0, "editors": 1, "managers": 1, "owners": 2};
-        const newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
+        newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
         accessList.users = newAccessUsers;
         let minimumAccess = null;
-        Object.keys(userTypes).forEach(function(userType) {
-          console.log(minimumAccess);
+        for(const userType of Object.keys(userTypes)) {
           if (userType !== group) {
-            if (members[userType].includes(user._id) && (userTypes[userType] > minimumAccess)) {
+            if (members[userType] && members[userType].includes(user._id) && ((minimumAccess == null) || (userTypes[userType] > minimumAccess))) {
               minimumAccess = userTypes[userType];
             }
           }
-        });
-        console.log(minimumAccess);
+        }
         if (minimumAccess !== null) {
           newAccessUsers.push({id: user._id, level: minimumAccess});
         }
-        console.log(accessList);
         updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, false);
       });
     }
