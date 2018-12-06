@@ -103,9 +103,9 @@ class GroupTable extends Component {
     if (newAccessLevel !== null) { // increase access
       getFolderAccess(folder._id).then(accessList => {
         newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
-        const thisUser = accessList.users.filter(userAccess => userAccess.id == user._id);
-        newAccessUsers.push((!thisUser || newAccessLevel > thisUser[0].level) ? {id: user._id, level: newAccessLevel} : thisUser);
-        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth=="deep") ? true : false));
+        const thisUser = accessList.users.filter(userAccess => userAccess.id === user._id);
+        newAccessUsers.push((!thisUser || !thisUser[0] || newAccessLevel > thisUser[0].level) ? {id: user._id, level: newAccessLevel} : thisUser);
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth === "deep") ? true : false));
       });
     } else { // reduce access
       getFolderAccess(folder._id).then(accessList => {
@@ -131,7 +131,7 @@ class GroupTable extends Component {
         if (minimumAccess !== null) {
           newAccessUsers.push({id: user._id, level: minimumAccess});
         }
-        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth=="deep") ? true : false));
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth === "deep") ? true : false));
       });
     }
   }
