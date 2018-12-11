@@ -5,7 +5,7 @@ function generateQuery(params) {
   let result = []
   Object.keys(params)
     .forEach(k => {
-      if(params[k]) 
+      if(params[k])
         result.push(esc(k) + '=' + esc(params[k]))
     })
   return result.join('&')
@@ -210,7 +210,7 @@ export const getObject = (objectPath) => ({
   path: `/${objectPath}`,
 });
 
-export const addObject = (type, name, meta, options) => ({
+export const addObject = (type, name, meta, options={}) => ({
   type: types.ADD_OBJECT,
   method: 'POST',
   path: `/${type}`,
@@ -304,7 +304,7 @@ export const uploadFile = (name, fileObject, parentType, parentId) => ({
     size:fileObject.size,
     mimeType: fileObject.type,
   })}`,
-  isUpload: true, 
+  isUpload: true,
   body: fileObject,
   extraHeaders: { 'Content-Type': fileObject.type }
 })

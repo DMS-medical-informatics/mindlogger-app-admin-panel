@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import AddUser from './modal/AddUser';
 
-import { updateObject, getUsers } from '../../../actions/api';
+import { updateObject, getUsers, getObject } from '../../../actions/api';
 import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
@@ -25,7 +25,7 @@ class GroupTable extends Component {
 
   componentWillMount() {
     this.props.getUsers();
-    
+
   }
   onSearch = (e) => {
     let keyword = e.target.value;
@@ -59,6 +59,9 @@ class GroupTable extends Component {
     const meta = volume.meta;
     let members = (volume.meta && volume.meta.members) || {};
     let userIds = members[group] || [];
+    if (group==="managers") {
+
+    }
     if (!userIds.includes(user._id)) {
       userIds.push(user._id);
     }
@@ -93,9 +96,9 @@ class GroupTable extends Component {
 
   render() {
     let {groupName, onSelect, withTitle} = this.props;
-    
+
     const userIds = this.filterUsers();
-    
+
     return (
       <div>
         <div className="search-box">
@@ -127,6 +130,7 @@ const mapDispatchToProps = {
   updateObject,
   setVolume,
   getUsers,
+  getObject,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GroupTable)
