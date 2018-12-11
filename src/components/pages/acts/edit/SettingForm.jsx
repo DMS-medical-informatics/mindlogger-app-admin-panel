@@ -8,6 +8,7 @@ import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
 
 import { InputField } from '../../../forms/FormItems';
 import {InputCheckField, InputRadioField, InputTextField, InputRow} from '../../../forms/Material';
+import {DisabledInputCheckField, DisabledInputRadioField, DisabledInputTextField, DisabledInputRow} from '../../../forms/Disabled';
 import InputTimeField from '../../../forms/InputTimeField';
 import {isRequired} from '../../../forms/validation';
 import InputWeekdayField from './InputWeekdayField';
@@ -45,9 +46,9 @@ const renderTimes = ({ fields, meta: { error } }) => (
             <Field name={`${obj}.timeEnd`} component={InputTimeField} defaultValue="21:00"/>
           </Grid>
         </Grid>
-        
+
       </div>))}
-    
+
     {error && <li className="error">{error}</li>}
     </PadBlock>
   </div>
@@ -84,7 +85,7 @@ class SettingForm extends Component {
             <Field name="description" componentClass="textarea" label="Description:" component={InputField} />
           </Col>
         </Row>
-        { info !== true && 
+        { info !== true &&
         (<div>
           <div className="section-title">
             <Row>
@@ -108,63 +109,63 @@ class SettingForm extends Component {
               <Field name="notification[modeDate]" label="Calendar date:" component={InputCheckField} select="calendar_date"/>
               </Grid>
               <FieldArray name="notification[calendarDay]" component={renderCalendarDay} />
-              
-              <Field name="notification[resetDate]" label="User can reset day/dates" component={InputCheckField} />
+
+              <Field name="notification[resetDate]" label="User can reset day/dates" component={DisabledInputCheckField} />
             </PadBlock>
-            
+
               <FieldArray name="notification[times]" component={renderTimes} />
             <PadBlock>
-              <Field name="notification[resetTime]" label="User can reset time" component={InputCheckField} />
+              <Field name="notification[resetTime]" label="User can reset time" component={DisabledInputCheckField} />
             </PadBlock>
             Reminders
             <PadBlock>
-              <InputRow>
-                <Field name="notification[advance]" label="Advance notification:" component={InputCheckField} inline/>
-                <Field name="notification[advanceMin]" type="number"component={InputTextField}/>
-                minutes
+              <InputRow className="disabled">
+                <Field name="notification[advance]" label="Advance notification:" component={DisabledInputCheckField} inline/>
+                <Field name="notification[advanceMin]" type="number"component={DisabledInputTextField}/>
+                <span class="disabled">minutes</span>
               </InputRow>
-              <InputRow>
-                <Field name="notification[dailyReminder]" label="Daily reminder for missed activity for up to:" component={InputCheckField} inline/>
-                <Field name="notification[dailyReminderDays]" type="number"component={InputTextField}/>
-                days
+              <InputRow className="disabled">
+                <Field name="notification[dailyReminder]" label="Daily reminder for missed activity for up to:" component={DisabledInputCheckField} inline/>
+                <Field name="notification[dailyReminderDays]" type="number"component={DisabledInputTextField}/>
+                <span class="disabled">days</span>
               </InputRow>
             </PadBlock>
           </div>
 
           <div className="section-title">
-            <a id="user-settings">User settings</a>
+            <a id="user-settings" class="disabled">User settings</a>
           </div>
           <div className="section-body">
-            <p>User can resume an Activity later:</p>
+            <p class="disabled">User can resume an Activity later:</p>
             <PadBlock>
-              <Field name="resumeMode" label="cannot resume later" component={InputRadioField} select="not"/>
+              <Field name="resumeMode" label="cannot resume later" component={DisabledInputRadioField} select="not"/>
               <br/>
-              <Field name="resumeMode" label="from the beginning" component={InputRadioField} select="start"/>
+              <Field name="resumeMode" label="from the beginning" component={DisabledInputRadioField} select="start"/>
               <br/>
-              <Field name="resumeMode" label="where left off, going forward" component={InputRadioField} select="forward"/>
+              <Field name="resumeMode" label="where left off, going forward" component={DisabledInputRadioField} select="forward"/>
               <br/>
-              <Field name="resumeMode" label="where left off, going forward or backward" component={InputRadioField} select="free"/>
+              <Field name="resumeMode" label="where left off, going forward or backward" component={DisabledInputRadioField} select="free"/>
               <br/>
-              <Field name="resumeMode" label="only skipped portions and remainder" component={InputRadioField} select="remainder"/>
+              <Field name="resumeMode" label="only skipped portions and remainder" component={DisabledInputRadioField} select="remainder"/>
             </PadBlock>
-            <Field name="permission[font]" label="User can change font size in the app" component={InputCheckField} />
+            <Field name="permission[font]" label="User can change font size in the app" component={DisabledInputCheckField} />
             <br/>
-            <Field name="permission[delete]" label="Users can delete all of their data on the server" component={InputCheckField} />
+            <Field name="permission[delete]" label="Users can delete all of their data on the server" component={DisabledInputCheckField} />
           </div>
 
           <div className="section-title">
             <a id="display-settings">Display settings</a>
           </div>
           <div className="section-body">
-            <Field name="permission[skip]" label="Allow skipping screens" component={InputCheckField} />
+            <Field name="permission[skip]" label="Allow skipping screens" component={DisabledInputCheckField} />
             <br/>
-            <Field name="permission[prev]" label="Allow returning to previous screens" component={InputCheckField} />
+            <Field name="permission[prev]" label="Allow returning to previous screens" component={DisabledInputCheckField} />
             <br/>
             <Field name="display[progress]" label="Show progress bar on top (for survey screens)" component={InputCheckField} />
           </div>
         </div>)
         }
-        
+
       </form>
     );
   }

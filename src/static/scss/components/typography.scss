@@ -17,3 +17,8 @@ form {
     margin-bottom: 0px;
   }
 }
+
+.disabled, .disabled:hover, .disabled:active, span.disabled, span.disabled:hover, span.disabled:active, div.disabled, div.disabled:hover, div.disabled:active {
+  color:grey;
+  font-style: italic;
+}
