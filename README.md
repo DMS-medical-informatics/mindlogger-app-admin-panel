@@ -21,7 +21,7 @@
 5. Change the `API_HOST` variable [in `src/constants/index.js`](https://github.com/ChildMindInstitute/mindlogger-app-admin-panel/blob/9392b8de30db8b07f6abf94b80ef2979896ba499/src/constants/index.js#L1) to the URL of your running Girder instance.
 
 #### Local admin panel
-Without spinning up your own MongoDB and Girder instances, you can run your own admin panel connected to our development database ([api.mindlogger.info](api.mindlogger.info)). See [the instructions above](#your-own-database-1) to have full control of your database.
+Without spinning up your own MongoDB and Girder instances, you can run your own admin panel connected to our development database ([api.mindlogger.info](api.mindlogger.info)). See [the instructions above](#your-own-database-1) to have full control of your database. Clone this repository, and run these shell commands in the top-level directory of your copy:
 
 1. ```sh
    npm install
@@ -33,5 +33,4 @@ Without spinning up your own MongoDB and Girder instances, you can run your own 
 
 ### Links:
 * [develoment admin panel (app.mindlogger.info)](https://app.mindlogger.info)
-* [development admin panel (childmind-admin-staging.herokuapp.com)](https://childmind-admin-staging.herokuapp.com)
 * [database (api.mindlogger.info)](https://api.mindlogger.info)
