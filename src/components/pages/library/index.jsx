@@ -57,7 +57,7 @@ class Home extends Component {
       return true;
     }).then(res => {
       this.close();
-      addObject("group", name+" managers", {}, {public:true}).then(mgrs => {
+      addObject("group", name+" managers", {}, {public:true, reuseExisting:true}).then(mgrs => {
         mgrs._id
       });
       return getFolders(collection._id, 'volumes');

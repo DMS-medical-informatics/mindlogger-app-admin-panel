@@ -67,7 +67,7 @@ export const inviteUser = (body, meta) => ({
   body: {
     ...body,
     metadata:JSON.stringify(meta),
-    admin: true,
+    admin: false,
   },
 })
 
