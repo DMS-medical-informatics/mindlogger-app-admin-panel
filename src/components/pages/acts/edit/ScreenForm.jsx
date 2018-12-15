@@ -47,6 +47,7 @@ class ScreenForm extends Component {
             <Field name="audio[display]" label="Play audio file:" component={InputCheckField} />
             <PadBlock>
               <Field name="audio[files]" label="Upload file:" component={InputFileField} data={{parentType: 'item', parentId: id}}/>
+              <br/>
               <Field name="audio[playbackIcon]" label="Show playback icon (left of text) and allow replay" component={InputCheckField} />
               <br/>
               <Field name="audio[autoplay]" label="Autoplay audio" component={InputCheckField} />
