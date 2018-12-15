@@ -31,6 +31,7 @@ class ScreenForm extends Component {
             <Field name="pictureVideo[display]" label={<div>Display picture<span class="disabled">/video</span> at the top of the screen:</div>} component={InputCheckField} />
             <PadBlock>
               <Field name="pictureVideo[files]" label={<div>Upload picture<span class="disabled">/video</span></div>} component={InputFileField} data={{parentType: 'item', parentId: id}}/>
+              <br/>
               <Field name="pictureVideo[playbackIcon]" label="Show video playback icon and allow replay" component={DisabledInputCheckField} />
               <br/>
               <Field name="pictureVideo[autoplay]" label="Autoplay video" component={DisabledInputCheckField} />
