@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import { destroy } from 'redux-form';
-import SurveyDrawForm from './SurveyDrawForm';
+import DrawForm from './DrawForm';
 
 
 
-class SurveyCanvasDrawForm extends Component {
+class CanvasDrawForm extends Component {
   componentWillMount() {
     this.setState({page:1, body: {}});
   }
@@ -21,19 +21,19 @@ class SurveyCanvasDrawForm extends Component {
   onSubmit = (body) => {
     const {onSubmit, destroy} = this.props;
     onSubmit(body);
-    destroy('survey-draw-form');
+    destroy('canvas-draw-form');
   }
   render() {
     
     return (
       <div className="p-3">
-        <SurveyDrawForm onSubmit={this.onSubmit} nitialValues={this.props.data} screenId={this.props.screenId}/>
+        <DrawForm onSubmit={this.onSubmit} nitialValues={this.props.data} screenId={this.props.screenId}/>
       </div>
     );
   }
 }
 
-SurveyCanvasDrawForm.propTypes = {
+CanvasDrawForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
@@ -45,4 +45,4 @@ const mapDispatchToProps = {
   destroy
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SurveyCanvasDrawForm);
+export default connect(mapStateToProps, mapDispatchToProps)(CanvasDrawForm);
