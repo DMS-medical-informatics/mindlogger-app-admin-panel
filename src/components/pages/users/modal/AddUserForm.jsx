@@ -12,12 +12,12 @@ class AddUserForm extends Component {
     const {handleSubmit} = this.props
     return (
         <form onSubmit={ handleSubmit }>
-          
+
           <Field name="login" type="text" component={InputField} label="Username" placeholder="" validate={isRequired} />
           <Field name="firstName" type="text" component={InputField} label="First Name" placeholder="" validate={isRequired} />
           <Field name="lastName" type="text" component={InputField} label="Last Name" placeholder="" validate={isRequired} />
           <Field name="email" type="email" component={InputField} label="Email" placeholder="" validate={isRequired} />
-          {/* <Field name="password" component={InputField} label="Password" placeholder="" validate={isRequired} readOnly/> */}
+          <Field name="password" type="password" component={InputField} label="Password" placeholder="" validate={isRequired} />
           <Button variant="contained" color="primary" type="submit">Add</Button>
         </form>
     )
