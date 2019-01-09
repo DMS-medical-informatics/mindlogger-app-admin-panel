@@ -9,7 +9,7 @@ import InputFileField from '../../../../../forms/GInputFileField';
 
 
 
-class SurveyDrawForm extends Component {
+class DrawForm extends Component {
   
   render() {
     const {handleSubmit, screenId} = this.props;
@@ -37,5 +37,5 @@ class SurveyDrawForm extends Component {
 }
 export default reduxForm({
   // a unique name for the form
-  form: 'survey-draw-form',
-})(SurveyDrawForm);
+  form: 'canvas-draw-form',
+})(DrawForm);

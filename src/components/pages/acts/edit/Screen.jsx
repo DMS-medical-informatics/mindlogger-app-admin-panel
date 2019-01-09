@@ -10,7 +10,7 @@ import ScreenForm from './ScreenForm';
 import SurveyListForm from './survey/survey-list';
 import SurveyTableForm from './survey/survey-table';
 import SurveySliderForm from './survey/slider';
-import SurveyCanvasDrawForm from './survey/draw';
+import CanvasDrawForm from './canvas/draw';
 import ScrollLink from '../../../layout/ScrollLink';
 import PadBlock from '../../../layout/PadBlock';
 import ConfirmButton from '../../../controls/ConfirmButton';
@@ -81,11 +81,11 @@ class Screen extends Component {
     }
   }
   renderCanvasForm(canvasType) {
-    const {screenId} = this.props;
+    const {screen} = this.props;
     const {canvas} = this.state;
     switch(canvasType) {
       case 'draw':
-        return <SurveyCanvasDrawForm onSubmit={this.onCanvasForm} initialValues={canvas} screenId={screenId}/>
+        return <CanvasDrawForm onSubmit={this.onCanvasForm} initialValues={canvas} screenId={screen.id}/>
       case 'sort_picture':
         return '';
       default:
