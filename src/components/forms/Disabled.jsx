@@ -8,15 +8,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Radio from '@material-ui/core/Radio';
 import Grid from '@material-ui/core/Grid';
 
-export const InputRow = ({
+export const DisabledInputRow = ({
   label,
   row,
   children
 }) => (
-  <Grid container alignItems="center">
+  <Grid container alignItems="center" className="disabled">
     {
       label &&
-            <Grid item xs={row}>
+            <Grid item xs={row} className="disabled">
               {label}
             </Grid>
     }
@@ -24,18 +24,18 @@ export const InputRow = ({
   </Grid>
 )
 
-export const InputTextField = ({
+export const DisabledInputTextField = ({
   input,
   placeholder,
   options,
   type,
   componentClass,
-  readOnly,
+  readOnly=true,
   required,
   className,
   meta: { touched, error, warning }
 }) => (
-  <FormControl error={touched && error && true} className={className}>
+  <FormControl error={touched && error && true} className={`disabled ${className}`}>
     <Input
       type={type}
       value={input.value}
@@ -50,10 +50,11 @@ export const InputTextField = ({
       }}
       placeholder={placeholder}
       required={required}
-      className={`form-input form-control-${type}`} />
+      className={`form-input form-control-${type} ${className} disabled`} />
     {touched && error && <FormHelperText>{error}</FormHelperText>}
   </FormControl>);
-export const InputCheckField = ({
+
+export const DisabledInputCheckField = ({
   input,
   label,
   inline,
@@ -63,13 +64,15 @@ export const InputCheckField = ({
   {
     return (<FormControlLabel
       classes={{
-        label: "form-label"
+        label: "form-label disabled",
+        root: "disabled"
       }}
       control={
         <Checkbox
           onChange={() => input.onChange(input.value != true)}
           checked={input.value === true}
           color="default"
+          className="disabled"
         />
       }
       label={label}
@@ -77,7 +80,7 @@ export const InputCheckField = ({
   }
 
 
-export const InputRadioField = ({
+export const DisabledInputRadioField = ({
   input,
   label,
   select,
@@ -89,7 +92,8 @@ export const InputRadioField = ({
     <FormControl error={touched && error && true} className={className}>
       <FormControlLabel
         classes={{
-          label: "form-label"
+          label: "form-label disabled",
+          root: "disabled"
         }}
         control={
           <Radio
@@ -97,6 +101,7 @@ export const InputRadioField = ({
             checked={input.value === select}
             color="default"
             value={String(select)}
+            className="disabled"
           />
         }
         label={label}

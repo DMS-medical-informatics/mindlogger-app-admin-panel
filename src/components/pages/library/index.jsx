@@ -8,7 +8,7 @@ import {
   Modal,
 } from "react-bootstrap";
 
-import { getObject, getCollection, getFolders, addFolder, updateFolder, uploadFile } from "../../../actions/api";
+import { getObject, getCollection, getFolders, addFolder, updateFolder, uploadFile, addObject } from "../../../actions/api";
 import { setVolume } from "../../../actions/core";
 import VolumeForm from "./VolumeForm";
 import plus from './plus.svg';
@@ -31,7 +31,7 @@ class Home extends Component {
   };
 
   onAddVolume = ({name, logo, ...data}) => {
-    const {addFolder, updateFolder, collection, getFolders, uploadFile, user} = this.props;
+    const {addFolder, updateFolder, collection, getFolders, uploadFile, user, addObject} = this.props;
     return addFolder(name, {
         ...data,
         members: {
@@ -57,6 +57,9 @@ class Home extends Component {
       return true;
     }).then(res => {
       this.close();
+      addObject("group", name+" managers", {}, {public:true, reuseExisting:true}).then(mgrs => {
+        mgrs._id
+      });
       return getFolders(collection._id, 'volumes');
     });
   };
@@ -117,7 +120,7 @@ class Home extends Component {
             )
           }
           {
-            user && user.admin && <div className="plus-button" onClick={() => this.setState({form: true})}>
+            user && <div className="plus-button" onClick={() => this.setState({form: true})}>
               <img src={plus} alt="plus"/>
             </div>
           }
@@ -140,6 +143,7 @@ const mapDispatchToProps = {
   uploadFile,
   updateFolder,
   setVolume,
+  addObject,
 };
 
 const mapStateToProps = state => ({

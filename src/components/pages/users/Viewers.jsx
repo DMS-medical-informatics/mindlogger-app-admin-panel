@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
 import AddUser from './modal/AddUser';
-import { updateObject, getUsers } from '../../../actions/api';
+import { updateObject, getUsers, getFolderAccess, updateFolderAccess } from '../../../actions/api';
 import { setVolume } from '../../../actions/core';
 import SelectUser from './modal/SelectUser';
 import UsersTable from './UsersTable';
@@ -56,13 +56,65 @@ class Viewers extends Component {
     let userDict = {...this.props.userDict};
     userDict[user._id] = [];
     meta.members.viewers = userDict;
-
+    this.updateAccessList(volume, user, 0, "deep", meta.members, "viewers");
     volume.meta = meta;
     return updateObject('folder', volume._id, volume.name, meta).then(res => {
       setVolume({...volume});
       getUsers();
       this.closeModal();
     });
+  }
+
+  /**
+   * updateAccessList() is a function to check Girder access levels
+   * and update those levels according to permissions set in the admin panel
+   * and defined in the `members` JSON Object.
+   * @param {Object} folder - Folder on which to update permissions
+   * @param {Object} user - User for which to update permissions
+   * @param {number} newAccessLevel - null for none, 0 for read, 1 for edit, 2 for own
+   * @param {string} depth - "shallow" for just this Folder, "deep" for this Folder and its contents
+   * @param {Object} members - admin-panel-defined access list
+   * @param {string} group - "users", "editors", "managers", "owners"
+   */
+  updateAccessList = (folder, user, newAccessLevel, depth, members, group) => {
+    const {getFolderAccess, updateFolderAccess} = this.props;
+    let newAccessUsers = {};
+    let updatedDepth = depth;
+    if (newAccessLevel !== null) { // increase access
+      getFolderAccess(folder._id).then(accessList => {
+        newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
+        const thisUser = accessList.users.filter(userAccess => userAccess.id === user._id);
+        newAccessUsers.push((!thisUser || !thisUser[0] || newAccessLevel > thisUser[0].level) ? {id: user._id, level: newAccessLevel} : thisUser);
+        console.log(newAccessUsers);
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth === "deep") ? true : false));
+      });
+    } else { // reduce access
+      getFolderAccess(folder._id).then(accessList => {
+        const userTypes = {"users": 0, "viewers": 0, "editors": 1, "managers": 1, "owners": 2}; // articulate role values
+        newAccessUsers = accessList.users.filter(userAccess => userAccess.id !== user._id);
+        accessList.users = newAccessUsers;
+        let minimumAccess = null;
+        if ((group === "viewers") && members["editors"].includes(user._id)) {
+          minimumAccess = 1;
+          updatedDepth = "deep";
+        } else if ((group === "viewers") && members["managers"].includes(user._id)) {
+          minimumAccess = 1;
+          updatedDepth = "shallow";
+        } else {
+          for(const userType of Object.keys(userTypes)) {
+            if (userType !== group) {
+              if (members[userType] && (userType === "viewers" ? Object.keys(members[userType]).includes(user._id) : members[userType].includes(user._id)) && ((minimumAccess == null) || (userTypes[userType] > minimumAccess))) {
+                minimumAccess = userTypes[userType];
+              }
+            }
+          }
+        }
+        if (minimumAccess !== null) {
+          newAccessUsers.push({id: user._id, level: minimumAccess});
+        }
+        updateFolderAccess(folder._id, {users: newAccessUsers, groups: accessList.groups}, ((depth === "deep") ? true : false));
+      });
+    }
   }
 
   handleDelete = (user) => {
@@ -72,6 +124,7 @@ class Viewers extends Component {
     delete userDict[user._id];
     meta.members.viewers = userDict;
     meta.members.viewers = userDict;
+    this.updateAccessList(volume, user, null, "deep", meta.members, "viewers");
     volume.meta = meta;
     return updateObject('folder', volume._id, volume.name, meta).then(res => {
       setVolume({...volume});
@@ -149,6 +202,8 @@ const mapDispatchToProps = {
   getUsers,
   updateObject,
   setVolume,
+  getFolderAccess,
+  updateFolderAccess
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Viewers)

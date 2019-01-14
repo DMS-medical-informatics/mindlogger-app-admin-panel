@@ -12,7 +12,7 @@ export const getTimestamp = (str) => {
   return (new Date(str)).getTime()
 }
 
-export const userContain = (user, keyword) => 
+export const userContain = (user, keyword) =>
 {
 return user && (user.firstName && user.lastName) &&
     (user.firstName.toLowerCase().includes(keyword) || user.lastName.toLowerCase().includes(keyword) || (user.email && user.email.includes(keyword)))
