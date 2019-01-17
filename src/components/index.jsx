@@ -39,7 +39,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={this.props.store} >
-      <BrowserRouter>
+      <BrowserRouter basename="/mindlogger-app-admin-panel">
         <div>
           <Header />
           <div className="container content">
