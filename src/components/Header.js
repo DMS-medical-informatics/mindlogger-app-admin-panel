@@ -47,17 +47,17 @@ class Header extends Component {
       canView = viewers && Object.keys(viewers).includes(user._id)
       canManage = managers && managers.includes(user._id)
       canEdit = editors && editors.includes(user._id);
-
+      
       return (
           <Navbar className="navbar-blue" collapseOnSelect>
           <Navbar.Header>
             <Navbar.Brand>
-              <Link to={authed ? "/library" : "/"}><img alt="MindLogger" className="logo" src="mindlogger-app-admin-panel/logo.svg"/>MindLogger</Link>
+              <Link to={authed ? "/library" : "/"}><img alt="MindLogger" className="logo" src="/logo.svg"/>MindLogger</Link>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>
           <Navbar.Collapse>
-            {volume &&
+            {volume && 
             <Nav>
               <NavDropdown id="resourceId" title={`${volume.meta && volume.meta.shortName} Menu`}>
                 {/* <LinkContainer eventKey="1" to="/take-acts"><NavItem>Go to Web App</NavItem></LinkContainer> */}
@@ -82,7 +82,7 @@ class Header extends Component {
                 <LinkContainer eventKey="1" to="/acts"><NavItem>Activities</NavItem></LinkContainer>
                 <LinkContainer eventKey="2" to="/images"><NavItem>Images</NavItem></LinkContainer>
               </NavDropdown> */}
-
+              
               <NavDropdown id="dropdownId" title={`Hi, ${user.firstName}`}>
                 <LinkContainer eventKey="1" to="/profile"><NavItem>Profile</NavItem></LinkContainer>
                 <NavItem eventKey="2" onClick={this.onSignout}>Logout</NavItem>
@@ -111,7 +111,7 @@ const mapDispatchToProps = {
     signout,
     setPageTitle
 }
-
+  
 const mapStateToProps = ({entities: {auth, self, volume, pageTitle}}) => ({
     auth,
     user: self,
