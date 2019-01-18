@@ -7,7 +7,7 @@
   }
   .navbar-brand {
     text-transform: uppercase;
-    
+
   }
   .navbar-nav > li > a {
     &:hover, &:focus {
@@ -21,6 +21,33 @@
     &, &:hover, &:focus {
       color: white;
       background: #0067A0;
+    }
+  }
+}
+
+.navbar-default.navbar-submarine {
+  color: white;
+  background: #919d9d;
+  .navbar-brand, .navbar-nav > li > a {
+    color: white;
+    font-weight: lighter;
+  }
+  .navbar-brand {
+    text-transform: uppercase;
+
+  }
+  .navbar-nav > li > a {
+    &:hover, &:focus {
+      color: #aaf;
+    }
+  }
+  .navbar-nav > li.active > a {
+    background-color: #337ABB;
+  }
+  .navbar-nav > .open > a {
+    &, &:hover, &:focus {
+      color: white;
+      background: #919d9d;
     }
   }
 }
