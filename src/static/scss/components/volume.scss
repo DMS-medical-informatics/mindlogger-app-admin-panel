@@ -37,8 +37,17 @@
   }
   .plus-button {
     padding:1.25rem;
-    img {
+    svg {
       width: 5rem;
+      vertical-align: middle;
+      &:hover {
+        circle {
+          stroke: #97E2EF;
+        }
+        path {
+          fill: #97E2EF;
+        }
+      }
     }
   }
 }

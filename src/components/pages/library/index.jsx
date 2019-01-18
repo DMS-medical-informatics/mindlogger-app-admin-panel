@@ -11,7 +11,6 @@ import {
 import { getObject, getCollection, getFolders, addFolder, updateFolder, uploadFile, addObject } from "../../../actions/api";
 import { setVolume } from "../../../actions/core";
 import VolumeForm from "./VolumeForm";
-import plus from './plus.svg';
 import Image from "../../controls/Image";
 
 
@@ -121,7 +120,10 @@ class Home extends Component {
           }
           {
             user && <div className="plus-button" onClick={() => this.setState({form: true})}>
-              <img src={plus} alt="plus"/>
+              <svg width="90" height="90" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="60" cy="60" r="55" fill="white" stroke="#919d9d" stroke-width="10"/>
+                <path d="M43.9102 24.2461H65.0625V39.5391H43.9102V63.4453H27.7969V39.5391H6.58594V24.2461H27.7969V1.33594H43.9102V24.2461Z" transform="translate(24 30)" fill="#919d9d"/>
+              </svg>
             </div>
           }
 
