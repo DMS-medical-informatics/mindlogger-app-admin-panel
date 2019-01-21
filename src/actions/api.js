@@ -345,7 +345,7 @@ export const getFoldersDict = (objectType, parentId, parentType='folder') => ({
   path: `/${objectType}?${generateQuery({parentId, parentType})}`,
 });
 
-export const getUsers = (params) => ({
+export const getUsers = (limit=20000, params) => ({
   type: types.GET_OBJECTS_HASH,
   method: 'GET',
   group: 'users',
