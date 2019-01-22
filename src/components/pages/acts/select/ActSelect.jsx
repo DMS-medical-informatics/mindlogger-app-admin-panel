@@ -12,7 +12,7 @@ import { getPath, getOrganizations } from "../../../../actions/api";
 import { setPublicActs } from "../../../../actions/core";
 import ProgressCircle from '../../../layout/ProgressCircle';
 
-const actContain = (act, keyword) => 
+const actContain = (act, keyword) =>
 {
   return act.name.toLowerCase().includes(keyword) || act.volumeName.toLowerCase().includes(keyword);
 }
@@ -53,14 +53,14 @@ class ActSelect extends Component {
     let keyword = e.target.value.toLowerCase();
     this.setState({keyword});
   }
-  
+
   renderHeader(text) {
     return (<TableRow>
         <TableCell>
         <h4><strong>{text}</strong></h4>
         </TableCell>
       <TableCell>
-        <h4><strong>Volume</strong></h4>
+        <h4><strong>Activity Set</strong></h4>
       </TableCell>
       <TableCell>
         <h4><strong>Organization</strong></h4>
@@ -115,7 +115,7 @@ class ActSelect extends Component {
       <p>(1) Type keywords in the search box below.</p>
       </Grid>
       <Grid item>
-      <p>(2) Select one Activity, or a Volume of Activities to explore further.</p>
+      <p>(2) Select one Activity or an Activity Set to explore further.</p>
       </Grid>
       <Grid container spacing={8} justify="space-between">
         <Grid item xs={3}>
