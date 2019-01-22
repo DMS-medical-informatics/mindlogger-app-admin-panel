@@ -47,7 +47,7 @@ class Volume extends Component {
     return (
       <Modal show={this.state.form} onHide={this.close}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Volume</Modal.Title>
+          <Modal.Title>Edit Activity Set</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
@@ -79,7 +79,7 @@ class Volume extends Component {
           <Grid item>
             <h2>{volume.name}</h2>
             <p>{volume.meta.description}</p>
-            { canEdit && 
+            { canEdit &&
               <Button variant="contained" onClick={() => this.setState({form: true})}>Edit</Button>
             }
             {this.renderEditVolumeModal()}
