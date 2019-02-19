@@ -27,7 +27,7 @@ const renderTimes = ({ fields, meta: { error } }) => (
         </InputRow>
         <Grid container alignItems="baseline">
           <Grid item sm={3}>
-            <Field name={`${obj}.timeMode`} label="Scheduled:" component={InputRadioField} select="scheduled"/>
+            <Field name={`${obj}.timeMode`} label="Scheduled:" component={InputRadioField} select="scheduled" validate={isRequired} />
           </Grid>
           <Grid item>
             <Field name={`${obj}.time`} component={InputTimeField} defaultValue="09:00"/>
@@ -35,7 +35,7 @@ const renderTimes = ({ fields, meta: { error } }) => (
         </Grid>
         <Grid container alignItems="baseline">
           <Grid item sm={3}>
-            <Field name={`${obj}.timeMode`} label="Random:" component={InputRadioField} select="random"/>
+            <Field name={`${obj}.timeMode`} label="Random:" component={InputRadioField} select="random" validate={isRequired} />
           </Grid>
           <Grid item>
             Start: &nbsp;
