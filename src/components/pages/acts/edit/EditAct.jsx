@@ -151,20 +151,6 @@ class EditAct extends Component {
   };
 
   onSetting = (setting) => {
-    let l = setting.notification.times.length;
-    for(let i=0;i<l;i++){
-      if(setting.notification.times[i] != null){
-      if(setting.notification.times[i].time == null){
-        setting.notification.times[i].time = "09:00";
-      }
-    }else{
-        var element = {};
-        element.time = "09:00";
-        element.timeMode = "scheduled";
-        setting.notification.times[i] = element;
-      }
-     
-    }
     this.setState({setting});
   }
 
